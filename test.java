@@ -25,7 +25,7 @@
 public class test {
 	
 	public static void main (String[] args) {
-		System.out.println("Piece of Shit");
+		System.out.println("Hello");
 	}
 }
 
