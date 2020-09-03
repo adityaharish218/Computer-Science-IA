@@ -27,6 +27,7 @@ public class test {
 	public static void main (String[] args) {
 		System.out.println("Hello");
 		System.out.println("My names is Aditya Harish");
+		System.out.print("Yea");
 		
 	}
 }
