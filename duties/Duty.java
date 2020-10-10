@@ -23,5 +23,9 @@ public class Duty {
 		this.time = time;
 	}
 	
+	public String toString() {
+		return "Location of Duty: " + this.location + " Time of duty: " + this.time;
+	}
+	
 	
 }

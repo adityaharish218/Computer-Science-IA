@@ -46,4 +46,28 @@ public class Teacher {
 	public void setAdmin(boolean admin) {
 		this.admin = admin;
 	}
+	
+	public String isAdmintoString() {
+		if(this.admin) {
+			return "yes";
+		}
+		return "no";
+	}
+	public String isHeadOfDepartmenttoString() {
+		if(this.headOfDepartment) {
+			return "yes";
+		}
+		return "no";
+	}
+	
+	
+	public String toString() {
+		String returningString = "Teacher Name : " + this.name + "\n";
+		returningString = returningString + "No of lessons in a week : " + this.noOfLessons + "\n";
+		returningString = returningString + "Hours worked: " + this.hoursWorked + "\n";
+		returningString = returningString + "HeadofDepartment: " + this.isHeadOfDepartmenttoString() + "\n";
+		returningString = returningString + "Admin: " + this.isAdmintoString() + "\n";
+		return returningString;
+	}
+	
 }
