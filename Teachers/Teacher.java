@@ -6,6 +6,7 @@ public class Teacher {
 	private boolean headOfDepartment; //whether the teacher is head of department or not
 	private int hoursWorked; // no of hours they worked
 	private boolean admin; //whether they are admin or not
+	int points;
 	
 	public Teacher() {}
 	public Teacher(String name, int noOfLessons, boolean headOfDepartement, int hoursWorked, boolean admin) {
@@ -14,6 +15,7 @@ public class Teacher {
 		this.setHeadOfDepartment(headOfDepartement);
 		this.setHoursWorked(hoursWorked);
 		this.setAdmin(admin);
+		setPoints();
 	}
 	
 	public String getName() {
@@ -58,6 +60,14 @@ public class Teacher {
 			return "yes";
 		}
 		return "no";
+	}
+	
+	private void setPoints() {
+		if(this.admin) {
+			this.points = 0;
+			return;
+		}
+		
 	}
 	
 	
