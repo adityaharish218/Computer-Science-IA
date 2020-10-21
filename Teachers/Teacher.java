@@ -2,21 +2,31 @@ package Teachers;
 
 public class Teacher {
 	private String name; //name of teacher
-	private int noOfLessons; // no of Lessons in the day
+	private int noOfLessonsinDay; // no of Lessons in the day
 	private boolean headOfDepartment; //whether the teacher is head of department or not
 	private int hoursWorked; // no of hours they worked
 	private boolean admin; //whether they are admin or not
+	private String meetingDay;
 	int points;
 	
 	public Teacher() {}
-	public Teacher(String name, int noOfLessons, boolean headOfDepartement, int hoursWorked, boolean admin) {
+	public Teacher(String name, int noOfLessonsinDay, boolean headOfDepartement, int hoursWorked, boolean admin, String meetingDay) {
 		this.setName(name);
-		this.setNoOfLessons(noOfLessons);
+		this.setNoOfLessonsinDay(noOfLessonsinDay
+				);
 		this.setHeadOfDepartment(headOfDepartement);
 		this.setHoursWorked(hoursWorked);
 		this.setAdmin(admin);
+		this.setMeetingDay(meetingDay);
 		setPoints();
 	}
+	public String getMeetingDay() {
+		return meetingDay;
+	}
+	public void setMeetingDay(String meetingDay) {
+		this.meetingDay = meetingDay;
+	}
+
 	
 	public String getName() {
 		return name;
@@ -24,11 +34,11 @@ public class Teacher {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getNoOfLessons() {
-		return noOfLessons;
+	public int getNoOfLessonsinDay() {
+		return noOfLessonsinDay;
 	}
-	public void setNoOfLessons(int noOfLessons) {
-		this.noOfLessons = noOfLessons;
+	public void setNoOfLessonsinDay(int noOfLessons) {
+		this.noOfLessonsinDay = noOfLessons;
 	}
 	public boolean isHeadOfDepartment() {
 		return headOfDepartment;
