@@ -2,7 +2,7 @@ package Teachers;
 
 public class Teacher {
 	private String name; //name of teacher
-	private int noOfLessonsinDay; // no of Lessons in the day
+	private int noOfLessonsinWeek; // no of Lessons in the day
 	private boolean headOfDepartment; //whether the teacher is head of department or not
 	private int hoursWorked; // no of hours they worked
 	private boolean admin; //whether they are admin or not
@@ -10,10 +10,9 @@ public class Teacher {
 	int points;
 	
 	public Teacher() {}
-	public Teacher(String name, int noOfLessonsinDay, boolean headOfDepartement, int hoursWorked, boolean admin, String meetingDay) {
+	public Teacher(String name, int noOfLessonsinWeek, boolean headOfDepartement, int hoursWorked, boolean admin, String meetingDay) {
 		this.setName(name);
-		this.setNoOfLessonsinDay(noOfLessonsinDay
-				);
+		this.setNoOfLessonsinDay(noOfLessonsinWeek);
 		this.setHeadOfDepartment(headOfDepartement);
 		this.setHoursWorked(hoursWorked);
 		this.setAdmin(admin);
@@ -35,10 +34,10 @@ public class Teacher {
 		this.name = name;
 	}
 	public int getNoOfLessonsinDay() {
-		return noOfLessonsinDay;
+		return noOfLessonsinWeek;
 	}
 	public void setNoOfLessonsinDay(int noOfLessons) {
-		this.noOfLessonsinDay = noOfLessons;
+		this.noOfLessonsinWeek = noOfLessons;
 	}
 	public boolean isHeadOfDepartment() {
 		return headOfDepartment;
@@ -83,7 +82,7 @@ public class Teacher {
 	
 	public String toString() {
 		String returningString = "Teacher Name : " + this.name + "\n";
-		returningString = returningString + "No of lessons in a week : " + this.noOfLessons + "\n";
+		returningString = returningString + "No of lessons in the week : " + this.noOfLessonsinWeek + "\n";
 		returningString = returningString + "Hours worked: " + this.hoursWorked + "\n";
 		returningString = returningString + "HeadofDepartment: " + this.isHeadOfDepartmenttoString() + "\n";
 		returningString = returningString + "Admin: " + this.isAdmintoString() + "\n";
