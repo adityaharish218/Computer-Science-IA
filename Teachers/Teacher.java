@@ -4,7 +4,7 @@ public class Teacher {
 	private String name; //name of teacher
 	private int noOfLessonsinWeek; // no of Lessons in the day
 	private boolean headOfDepartment; //whether the teacher is head of department or not
-	private int hoursWorked; // no of hours they worked
+	private int hoursWorked; // no of hours they worked in the day
 	private boolean admin; //whether they are admin or not
 	private String meetingDay;
 	int points;
