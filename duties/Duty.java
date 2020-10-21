@@ -2,7 +2,7 @@ package duties;
 
 public class Duty {
 	private String location; //where the duty is, ex atrium, 8th floor
-	private Time time; // when the duty is ex morning, first break, lunch, after school.
+	private Time time; // when the duty is ex 8:00, 12:00
 	int pointsDeducted;
 	
 	public Duty() {} //empty constructor
