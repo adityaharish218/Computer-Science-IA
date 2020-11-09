@@ -8,4 +8,6 @@ public class Teacher {
 	int dutiesToBeAssigned; // the number of duties that should be assigned to the teacher
 	int dutiesAssigned;// the number of duties currently done by the teacher
 	int points; // the number of points the teacher has. Based on conditions
+	Lesson[] lessons; // contains lessons teachers have on the day
+	Subject[] subject; //contains the number of subjects the teacher has
 }
