@@ -133,7 +133,7 @@ public class top_level {
 					
 				}
 				}
-			prevduty = assigned;
+			prevduty = assigned; //make this duty the previous duty
 			}
 		}
 
