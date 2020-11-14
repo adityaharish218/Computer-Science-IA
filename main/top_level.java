@@ -40,7 +40,7 @@ public class top_level {
 	public void assignTeachers() {
 		for (int i = 0; i < duties.size(); i++) { // going through all duties
 			Duty assigned = duties.get(i); // accessing duty
-			if(!(prevduty.getDayOfTheWeek().equals(assigned.getDayOfTheWeek()))){
+			if(!(prevduty.getDayOfTheWeek().equalsIgnoreCase(assigned.getDayOfTheWeek()))){
 				newDay();
 			}
 			Time dutyStartTime = assigned.getStartTime();// get the start time of the duty
