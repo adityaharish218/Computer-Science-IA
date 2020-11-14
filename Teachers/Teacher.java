@@ -10,6 +10,7 @@ public class Teacher {
 	private int points; // the number of points the teacher has. Based on conditions
 	private Lesson[] lessons; // contains lessons teachers have on the day
 	private Subject[] subject; //contains the number of subjects the teacher has
+	private boolean assignedToday; // if the teacher has been assigned today
 	//Setters and Getters 
 	public String getName() {
 		return name;
@@ -69,4 +70,11 @@ public class Teacher {
 	public void setSubject(Subject[] subject) {
 		this.subject = subject;
 	}
+	public boolean getAssignedToday() {
+		return assignedToday;
+	}
+	public void setAssignedToday(boolean assignedToday) {
+		this.assignedToday = assignedToday;
+	}
+	
 }
