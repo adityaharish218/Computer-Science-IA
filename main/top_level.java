@@ -14,8 +14,8 @@ public class top_level {
 	public ArrayList<AssignedDuty> assignedDuties; // list of duties with teachers assigned
 	public String[] daysOfTheWeek = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
 	public Duty prevduty = duties.get(0); //find the first duty
-	public int noOfAdmins;
-	public int dutiesAssignedToAdmins = 0;
+	public int noOfAdmins; // the number of admins 
+	public int dutiesAssignedToAdmins = 0; // the number of duties that have been assigned to admins
 	
 
 	public static void main(String[] args) {
@@ -32,10 +32,10 @@ public class top_level {
 	}
 	
 	public void newDay() { //change all teachers to not have duty on day 
-		for (int i = 0; i < teachers.size(); i++) {
-			Teacher teacher = teachers.get(i);
-			teacher.setAssignedToday(false);
-			teachers.set(i, teacher);
+		for (int i = 0; i < teachers.size(); i++) { // go through all teachers 
+			Teacher teacher = teachers.get(i); // make a copy
+			teacher.setAssignedToday(false); //set the copy to false
+			teachers.set(i, teacher); //put the copy in place of the real one
 		}
 	}
 
@@ -56,12 +56,12 @@ public class top_level {
 						}
 						Lesson [] teacherLessons = teacher.getLessons(); //access teacher lessons
 						int index = searchForDay(assigned.getDayOfTheWeek());// access the day of the week as index
-						if(teacherLessons[index].one == true) { //Check if teacher has lesson on period 1
+						if(teacherLessons[index].homebase == true) { //Check if teacher has a homebase or not
 							canAssign = false; //Set can assign to false as the teacher cannot be assigned the duty
 						}
 						
 						if(teacher.getDutiesAssigned() == teacher.getDutiesToBeAssigned()) { //check if the teacher can have more duties
-							canAssign = false; //Teacher cannot be assigned duty if the duties assinged are greater are greater
+							canAssign = false; //Teacher cannot be assigned duty if the duties assigned are greater are greater
 							
 						}
 					
@@ -75,7 +75,7 @@ public class top_level {
 						}
 						
 						if(teacher.getDutiesAssigned() == teacher.getDutiesToBeAssigned()) { //check if the teacher can have more duties
-							canAssign = false; //Teacher cannot be assigned duty if the duties assinged are greater are greater
+							canAssign = false; //Teacher cannot be assigned duty if the duties assigned are greater are greater
 						
 						}
 					
@@ -115,14 +115,14 @@ public class top_level {
 						}
 						
 						if(teacher.getDutiesAssigned() == teacher.getDutiesToBeAssigned()) { //check if the teacher can have more duties
-							canAssign = false; //Teacher cannot be assigned duty if the duties assinged are greater are greater
+							canAssign = false; //Teacher cannot be assigned duty if the duties assigned are greater are greater
 							
 						}
 					
 				}
 				if(canAssign && !(teacher.getAssignedToday())) { //check if the teacher can be assigned
 					AssignedDuty a = new AssignedDuty(assigned,teacher); //create a new assigned duty with the teacher
-					assignedDuties.add(a); //add this duty along with assinged teacher
+					assignedDuties.add(a); //add this duty along with assigned teacher
 					teacher.setDutiesAssigned(teacher.getDutiesAssigned() + 1); //increase this teacher's number of duties assigned by 1
 					teacher.setAssignedToday(true); // the teacher has been assigned a duty today so cannot be assigned again
 					teachers.set(i,teacher); // set this teacher into the teachers arraylist

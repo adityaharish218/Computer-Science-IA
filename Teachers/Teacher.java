@@ -3,7 +3,7 @@ package Teachers;
 public class Teacher {
 	private String name; //name of the teacher
 	private int lessonsPerWeek; //number of lessons the teacher has per week
-	private boolean admin; //whether the teacher is an administrator or not
+	private boolean admin; //whether the teacher is an administrator or not. This includes Subject area leaders and part timers
 	private int id; //id of the teacher
 	private int dutiesToBeAssigned; // the number of duties that should be assigned to the teacher
 	private int dutiesAssigned;// the number of duties currently done by the teacher
