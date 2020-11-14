@@ -13,7 +13,7 @@ public class top_level {
 	public ArrayList<Duty> duties; // list of duties
 	public ArrayList<AssignedDuty> assignedDuties; // list of duties with teachers assigned
 	public String[] daysOfTheWeek = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
-	public Duty prevduty = duties.get(0);
+	public Duty prevduty = duties.get(0); //find the first duty
 	
 
 	public static void main(String[] args) {
@@ -29,7 +29,7 @@ public class top_level {
 		return -1; // default return - 1
 	}
 	
-	public void newDay() {
+	public void newDay() { //change all teachers to not have duty on day 
 		for (int i = 0; i < teachers.size(); i++) {
 			Teacher teacher = teachers.get(i);
 			teacher.setAssignedToday(false);
@@ -40,8 +40,8 @@ public class top_level {
 	public void assignTeachers() {
 		for (int i = 0; i < duties.size(); i++) { // going through all duties
 			Duty assigned = duties.get(i); // accessing duty
-			if(!(prevduty.getDayOfTheWeek().equalsIgnoreCase(assigned.getDayOfTheWeek()))){
-				newDay();
+			if(!(prevduty.getDayOfTheWeek().equalsIgnoreCase(assigned.getDayOfTheWeek()))){ //check if this new duty's day of the week is the same as the previous one
+				newDay(); //if it is not, that means it is a new day and so set it such that all teachers can be assigned
 			}
 			Time dutyStartTime = assigned.getStartTime();// get the start time of the duty
 			for (int j = 0; j < teachers.size(); j++) { // going through all teachers
