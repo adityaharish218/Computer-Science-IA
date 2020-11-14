@@ -14,6 +14,8 @@ public class top_level {
 	public ArrayList<AssignedDuty> assignedDuties; // list of duties with teachers assigned
 	public String[] daysOfTheWeek = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
 	public Duty prevduty = duties.get(0); //find the first duty
+	public int noOfAdmins;
+	public int dutiesAssignedToAdmins = 0;
 	
 
 	public static void main(String[] args) {
@@ -49,19 +51,20 @@ public class top_level {
 				Teacher teacher = teachers.get(j); // accessing teacher
 				
 				if (dutyStartTime.getHours() == 8) { // Check if the duty begins at before school, Begins at 8:00
-					for (int k = 0; k < teacher.getSubject().length; k++) { // going through all of the teacher subjects
+						if(!(teacher.isAdmin()) && dutiesAssignedToAdmins < noOfAdmins) { //check if teacher is admin or not, my client usually gives admin the early morning duties. Also check if there are any admins still left to be assigned duties. 
+							canAssign = false; // cannot assign duty because it needs to be admin
+						}
 						Lesson [] teacherLessons = teacher.getLessons(); //access teacher lessons
 						int index = searchForDay(assigned.getDayOfTheWeek());// access the day of the week as index
 						if(teacherLessons[index].one == true) { //Check if teacher has lesson on period 1
 							canAssign = false; //Set can assign to false as the teacher cannot be assigned the duty
-							break; //break out of loop
 						}
 						
 						if(teacher.getDutiesAssigned() == teacher.getDutiesToBeAssigned()) { //check if the teacher can have more duties
 							canAssign = false; //Teacher cannot be assigned duty if the duties assinged are greater are greater
 							
 						}
-					}
+					
 				}
 				if (dutyStartTime.getHours() == 11) { // Check if the duty begins at break, break begins at 11 hence hours = 11
 						Lesson [] teacherLessons = teacher.getLessons(); //access teacher lessons
@@ -123,6 +126,9 @@ public class top_level {
 					teacher.setDutiesAssigned(teacher.getDutiesAssigned() + 1); //increase this teacher's number of duties assigned by 1
 					teacher.setAssignedToday(true); // the teacher has been assigned a duty today so cannot be assigned again
 					teachers.set(i,teacher); // set this teacher into the teachers arraylist
+					if(teacher.isAdmin()) { // check if the teacher being assigned is admin
+						dutiesAssignedToAdmins = dutiesAssignedToAdmins + 1; //if they are, increase it by one
+					}
 					break; //break out of loop as teacher has been assigned 
 					
 				}
