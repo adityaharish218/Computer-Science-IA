@@ -16,6 +16,6 @@ public class Subject {
 	public void setMeetingDay(String meetingDay) {
 		this.meetingDay = meetingDay;
 	}
-	
+	 
 	
 }
