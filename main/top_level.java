@@ -17,10 +17,11 @@ public class top_level {
 	public ArrayList<Teacher> teachers; // List of teachers
 	public ArrayList<Duty> duties; // list of duties
 	public ArrayList<AssignedDuty> assignedDuties; // list of duties with teachers assigned
+	public ArrayList<Integer> adminIds; //list of adminIds
 	public String[] daysOfTheWeek = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
 	public Duty prevduty = duties.get(0); //find the first duty
 	public String line = "";//create an empty string (Will be used when importing teachers and duties)
-	public int noOfAdmins; // the number of admins 
+	public int noOfAdmins = 0; // the number of admins 
 	public int dutiesAssignedToAdmins = 0; // the number of duties that have been assigned to admins
 	
 
@@ -50,6 +51,14 @@ public class top_level {
 			return false; //if yes return false
 		}
 		return true; //if no, return true and assume teacher has lesson
+	}
+	
+	public void setTeachersDutiesToBeAssigned() { //function to set the duties assigned of all teachers
+		for(int i = 0; i < teachers.size(); i++) { //goes through each teacher
+			Teacher teacher = teachers.get(i); //gets the teacher
+			teacher.setDutiesToBeAssigned(); //calls the setDutiesToBeAssigned function which sets the number of duties each teacher can have based on conditions
+			teachers.set(i, teacher); // sets the teacher back into the list
+		}
 	}
 
 	public void assignTeachers() {
@@ -185,6 +194,46 @@ public class top_level {
 		
 		return true;
 	}
-
+	public boolean importAdmins(String path) { //importing all the admins 
+		
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new BufferedReader
+			while((line = br.readLine())!= null) { //While the next line is not null;
+			String[] values = line.split(","); //create an array which has values with split
+			int id = Integer.parseInt(values[0]);//first element is the ID
+			adminIds.add(id);//add the ID to the list
+			
+			}
+			br.close(); //close the bufferedreader
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		for (int k = 0; k < adminIds.size(); k++) { //going through all the adminIds
+			int id = adminIds.get(k); //get the adminId
+			boolean adminfound = false; //boolean to find the admin, assume not found
+		for(int i = 0; i < teachers.size(); i++) { //going through all the teachers
+			Teacher t = teachers.get(i); //get the teacher
+			if(t.getId() == id ) { //check if teachers id matches the adminId
+				t.setAdmin(true); //set the teacher to be an admin
+				teachers.set(i, t); //set that teacher into the arraylist
+				noOfAdmins = noOfAdmins + 1; //increase no of admins by 1
+				adminfound = true; //admin is found, change boolean to true
+				break; //break out of loop 
+			}
+		}
+		if(!adminfound) { //if admin is not found 
+			System.out.println("Error, admin id" + id + "not found"); //output error message and where it occurred
+			return false; // exit the function with false
+		}
+		}
+		setTeachersDutiesToBeAssigned(); //change the teacher duties 
+		return true; //import successful
+		
+	}
 	}
 
