@@ -1,6 +1,11 @@
 package main;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import Teachers.Lesson;
 import Teachers.Subject;
@@ -14,6 +19,7 @@ public class top_level {
 	public ArrayList<AssignedDuty> assignedDuties; // list of duties with teachers assigned
 	public String[] daysOfTheWeek = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
 	public Duty prevduty = duties.get(0); //find the first duty
+	public String line = "";//create an empty string (Will be used when importing teachers and duties)
 	public int noOfAdmins; // the number of admins 
 	public int dutiesAssignedToAdmins = 0; // the number of duties that have been assigned to admins
 	
@@ -38,6 +44,13 @@ public class top_level {
 			teachers.set(i, teacher); //put the copy in place of the real one
 		}
 	}
+	
+	public boolean setLesson(String s) { // method to set lessons 
+		if(s.equals(null)) { //check if the string equals null
+			return false; //if yes return false
+		}
+		return true; //if no, return true and assume teacher has lesson
+	}
 
 	public void assignTeachers() {
 		for (int i = 0; i < duties.size(); i++) { // going through all duties
@@ -54,9 +67,7 @@ public class top_level {
 						if(!(teacher.isAdmin()) && dutiesAssignedToAdmins < noOfAdmins) { //check if teacher is admin or not, my client usually gives admin the early morning duties. Also check if there are any admins still left to be assigned duties. 
 							canAssign = false; // cannot assign duty because it needs to be admin
 						}
-						Lesson [] teacherLessons = teacher.getLessons(); //access teacher lessons
-						int index = searchForDay(assigned.getDayOfTheWeek());// access the day of the week as index
-						if(teacherLessons[index].homebase == true) { //Check if teacher has a homebase or not
+						if(teacher.isHomebase() == true) { //Check if teacher has a homebase or not
 							canAssign = false; //Set can assign to false as the teacher cannot be assigned the duty
 						}
 						
@@ -136,6 +147,44 @@ public class top_level {
 			prevduty = assigned; //make this duty the previous duty
 			}
 		}
+	public boolean importTeachers() { //returns a boolean, if true, then the teachers have been imported properly, if false means there is error
+		System.out.println("Enter path of file (Option + Right Click then select 'Copy as Pathname' "); // Ask user to input the filepath
+		Scanner in = new Scanner(System.in); //create a new scanner so that it can read path name
+		String path = in.next(); //create a new string called path which stores the filepath
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new buffered reader which reads the path
+			int i = 0; //counter variable
+			while ((line = br.readLine()) != null) { //while line != null, keep on running 
+				String [] values = line.split(",");
+				Teacher t = new Teacher(); //create a new teacher
+				t.setId(Integer.parseInt(values[0])); //first element is ID, set that to the teacher
+				t.setName(values[1]);// second element is Name so set the teachers name to be that 
+				t.setLessonsPerWeek(Integer.parseInt(values[3])); //third element is the number of lessons the teacher has
+				boolean homebase = setLesson(values[4]);
+				t.setHomebase(homebase);
+				for(int j = 0; j < 5; j++) { //going through all the teacher days
+					
+				}
+				br.close();
+				teachers.add(t);
+				i++;
+			}
+			
+		} catch (FileNotFoundException e) { //catch the file not found exception
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			in.close();
+			return false;
+		} catch (IOException e) { //catch the IO exception caused by br.readLine()
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			in.close();
+			return false;
+		}
+		in.close();
+		
+		return true;
+	}
 
 	}
 

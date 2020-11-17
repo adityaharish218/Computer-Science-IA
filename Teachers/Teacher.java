@@ -11,6 +11,7 @@ public class Teacher {
 	private Lesson[] lessons; // contains lessons teachers have on the day
 	private Subject[] subject; //contains the number of subjects the teacher has
 	private boolean assignedToday; // if the teacher has been assigned today
+	private boolean homebase; // whether the teacher has a homebase or not 
 	//Setters and Getters 
 	public String getName() {
 		return name;
@@ -75,6 +76,12 @@ public class Teacher {
 	}
 	public void setAssignedToday(boolean assignedToday) {
 		this.assignedToday = assignedToday;
+	}
+	public boolean isHomebase() {
+		return homebase;
+	}
+	public void setHomebase(boolean homebase) {
+		this.homebase = homebase;
 	}
 	
 }
