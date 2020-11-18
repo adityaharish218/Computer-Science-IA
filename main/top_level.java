@@ -186,16 +186,16 @@ public class top_level {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			in.close();
-			return false;
+			return false; //return false as there is an error that has occurred
 		} catch (IOException e) { //catch the IO exception caused by br.readLine()
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			in.close();
-			return false;
+			return false; //return false as there is an error that has occurred 
 		}
-		in.close();
+		in.close(); //close the scanner
 		
-		return true;
+		return true; //return true as the teachers have been imported 
 	}
 	public boolean importAdmins(String path) { //importing all the admins 
 		
