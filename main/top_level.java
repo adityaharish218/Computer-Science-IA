@@ -163,7 +163,7 @@ public class top_level {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new buffered reader which reads the path
 			int i = 0; //counter variable
-			br.readLine(); //going through first line because it doesn't matter
+			br.readLine(); //going through first line because it doesn't matter 
 			while (br.ready()) {//check if the the bufferedreader is ready
 				line = br.readLine(); // read the next line 
 				String [] values = line.split(",");
@@ -174,7 +174,7 @@ public class top_level {
 				boolean homebase = setLesson(values[4]); //fourth element is the teacher's homebase
 				t.setHomebase(homebase); //set this to a boolean
 				for(int j = 0; j < 5; j++) { //going through all the teacher days
-					br.readLine(); //read the next line because the line does not have important information (Teacher rooms, not relevant
+					br.readLine(); //read the next line because the line does not have important information  either (Teacher rooms, not important for my code)
 					
 				}
 				br.close();
