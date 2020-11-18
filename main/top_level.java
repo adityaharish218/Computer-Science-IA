@@ -163,15 +163,18 @@ public class top_level {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new buffered reader which reads the path
 			int i = 0; //counter variable
-			while ((line = br.readLine()) != null) { //while line != null, keep on running 
+			br.readLine(); //going through first line because it doesn't matter
+			while (br.ready()) {//check if the the bufferedreader is ready
+				line = br.readLine(); // read the next line 
 				String [] values = line.split(",");
 				Teacher t = new Teacher(); //create a new teacher
 				t.setId(Integer.parseInt(values[0])); //first element is ID, set that to the teacher
 				t.setName(values[1]);// second element is Name so set the teachers name to be that 
 				t.setLessonsPerWeek(Integer.parseInt(values[3])); //third element is the number of lessons the teacher has
-				boolean homebase = setLesson(values[4]);
-				t.setHomebase(homebase);
+				boolean homebase = setLesson(values[4]); //fourth element is the teacher's homebase
+				t.setHomebase(homebase); //set this to a boolean
 				for(int j = 0; j < 5; j++) { //going through all the teacher days
+					br.readLine(); //read the next line because the line does not have important information (Teacher rooms, not relevant
 					
 				}
 				br.close();
