@@ -170,17 +170,25 @@ public class top_level {
 				Teacher t = new Teacher(); //create a new teacher
 				t.setId(Integer.parseInt(values[0])); //first element is ID, set that to the teacher
 				t.setName(values[1]);// second element is Name so set the teachers name to be that 
-				t.setLessonsPerWeek(Integer.parseInt(values[3])); //third element is the number of lessons the teacher has
-				boolean homebase = setLesson(values[4]); //fourth element is the teacher's homebase
+				t.setLessonsPerWeek(Integer.parseInt(values[2])); //third element is the number of lessons the teacher has
+				boolean homebase = setLesson(values[3]); //fourth element is the teacher's homebase
 				t.setHomebase(homebase); //set this to a boolean
+				Lesson tempLessons [] = null; //create a temporary lesson
 				for(int j = 0; j < 5; j++) { //going through all the teacher days
-					br.readLine(); //read the next line because the line does not have important information  either (Teacher rooms, not important for my code)
+					tempLessons[j].one = setLesson(values[(j * 6) + 4]); //get the first lesson and if it's there then set the teacher's lesson to be true
+					tempLessons[j].two = setLesson(values[(j * 6) + 5]);
+					tempLessons[j].three = setLesson(values[(j * 6) + 6]);
+					tempLessons[j].four = setLesson(values[(j * 6) + 7]);
+					tempLessons[j].lunch = setLesson(values[(j * 6) + 8]);
+					tempLessons[j].five = setLesson(values[(j * 6) + 9]);
 					
 				}
-				br.close();
+				t.setLessons(tempLessons);// set the teacher's lessons
+				br.readLine(); //read the next line because the line does not have important information  either (Teacher rooms, not important for my code)
 				teachers.add(t);
 				i++;
 			}
+			br.close(); //Close the bufferedreader
 			
 		} catch (FileNotFoundException e) { //catch the file not found exception
 			// TODO Auto-generated catch block

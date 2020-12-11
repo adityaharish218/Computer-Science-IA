@@ -7,5 +7,6 @@ public class Lesson {
 	public boolean four;//Whether teacher has lesson four
 	public boolean five;//Whether teacher has lesson five
 	public boolean six;//Whether teacher has lesson six
+	public boolean lunch; //Whether teacher has a lesson in lunch or not
 	
 }
