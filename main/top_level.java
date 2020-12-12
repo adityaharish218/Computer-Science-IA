@@ -14,19 +14,22 @@ import duties.Duty;
 import duties.Time;
 
 public class top_level {
-	public ArrayList<Teacher> teachers; // List of teachers
-	public ArrayList<Duty> duties; // list of duties
-	public ArrayList<AssignedDuty> assignedDuties; // list of duties with teachers assigned
-	public ArrayList<Integer> adminIds; //list of adminIds
+	public static ArrayList<Teacher> teachers = new ArrayList<Teacher>(); // List of teachers
+	public static ArrayList<Duty> duties = new ArrayList<Duty>(); // list of duties
+	public ArrayList<AssignedDuty> assignedDuties = new ArrayList<AssignedDuty>(); // list of duties with teachers assigned
+	public ArrayList<Integer> adminIds = new ArrayList<Integer>(); //list of adminIds
 	public String[] daysOfTheWeek = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
 	public Duty prevduty = duties.get(0); //find the first duty
-	public String line = "";//create an empty string (Will be used when importing teachers and duties)
+	public static String line = "";//create an empty string (Will be used when importing teachers and duties)
 	public int noOfAdmins = 0; // the number of admins 
 	public int dutiesAssignedToAdmins = 0; // the number of duties that have been assigned to admins
+	public static Lesson allFalse = new Lesson(false,false,false,false,false,false,false); //Creating an lesson with all lessons being false
+	
 	
 
 	public static void main(String[] args) {
-
+		boolean b = importTeachers();
+		System.out.println(teachers.get(0).toStringWithLessons());
 	}
 	
 	public int searchForDay(String day) {
@@ -46,8 +49,8 @@ public class top_level {
 		}
 	}
 	
-	public boolean setLesson(String s) { // method to set lessons 
-		if(s.equals(null)) { //check if the string equals null
+	public static boolean setLesson(String s) { // method to set lessons 
+		if(s.equals("") || s.equals(" ")) { //check if the string equals null
 			return false; //if yes return false
 		}
 		return true; //if no, return true and assume teacher has lesson
@@ -113,7 +116,7 @@ public class top_level {
 					}
 						Lesson [] teacherLessons = teacher.getLessons(); //access teacher lessons
 						int index = searchForDay(assigned.getDayOfTheWeek());// access the day of the week as index
-						if(teacherLessons[index].four == true || teacherLessons[index].five == true) { //Check if teacher has lesson on  period 4 or 5
+						if(teacherLessons[index].four == true || teacherLessons[index].five == true || teacherLessons[index].lunch == true) { //Check if teacher has lesson on period 4, lunch or 5
 							canAssign = false; //Set can assign to false as the teacher cannot be assigned the duty
 							
 						}
@@ -156,36 +159,60 @@ public class top_level {
 			prevduty = assigned; //make this duty the previous duty
 			}
 		}
-	public boolean importTeachers() { //returns a boolean, if true, then the teachers have been imported properly, if false means there is error
+	
+	public static boolean importTeachers() { //returns a boolean, if true, then the teachers have been imported properly, if false means there is error
 		System.out.println("Enter path of file (Option + Right Click then select 'Copy as Pathname' "); // Ask user to input the filepath
 		Scanner in = new Scanner(System.in); //create a new scanner so that it can read path name
 		String path = in.next(); //create a new string called path which stores the filepath
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new buffered reader which reads the path
 			int i = 0; //counter variable
-			br.readLine(); //going through first line because it doesn't matter 
+			br.readLine(); //going through first line because it doesn't matter (days of the week)
 			while (br.ready()) {//check if the the bufferedreader is ready
 				line = br.readLine(); // read the next line 
-				String [] values = line.split(",");
+				String [] values = new String[34]; //initialize a values array with 33 elements (Max number of elements that a row can have (discounting period 6))
+				String [] read = line.split(","); //store the values of line into a new array called read;
+				for (int b = 0; b < values.length; b++) { //loop through the whole of the values array 
+					if (b < read.length) { //check if the value of b is less than the length of the read array
+					values[b] = read[b]; // if so add the value of read[b] into the values[b]
+					} else {
+						values[b] = ""; //otherwise set the values of value[b] to be empty
+					}
+				}
+				for (int z = 0; z < values.length; z++) {
+					System.out.println(z + " " + values[z]);
+				}
 				Teacher t = new Teacher(); //create a new teacher
 				t.setId(Integer.parseInt(values[0])); //first element is ID, set that to the teacher
 				t.setName(values[1]);// second element is Name so set the teachers name to be that 
 				t.setLessonsPerWeek(Integer.parseInt(values[2])); //third element is the number of lessons the teacher has
 				boolean homebase = setLesson(values[3]); //fourth element is the teacher's homebase
 				t.setHomebase(homebase); //set this to a boolean
-				Lesson tempLessons [] = null; //create a temporary lesson
-				for(int j = 0; j < 5; j++) { //going through all the teacher days
-					tempLessons[j].one = setLesson(values[(j * 6) + 4]); //get the first lesson and if it's there then set the teacher's lesson to be true
+				//Setting all the temp lessons to false to avoid NullPointer exception
+				Lesson tempLessons [] = new Lesson[5];//create a temporary lesson
+				tempLessons[0] = allFalse;
+				tempLessons[1] = allFalse;
+				tempLessons[2] = allFalse;
+				tempLessons[3] = allFalse;
+				tempLessons[4] = allFalse;
+				for(int j = 0; j < 5; j++) { //going through all the days in the week 
+					tempLessons[j].one = setLesson(values[(j * 6) + 4]); 
 					tempLessons[j].two = setLesson(values[(j * 6) + 5]);
 					tempLessons[j].three = setLesson(values[(j * 6) + 6]);
 					tempLessons[j].four = setLesson(values[(j * 6) + 7]);
 					tempLessons[j].lunch = setLesson(values[(j * 6) + 8]);
 					tempLessons[j].five = setLesson(values[(j * 6) + 9]);
 					
+					/* the above is a calculation that will help me get each lesson on each day of the week. There are 6 lessons (Omitting lesson 6 and including lunch)
+					 * that occur in each day. All of them will be stored in values. The calculation will help me get a specific lesson on one day. For example, lesson
+					 * 3 on thursday will be the teacher's 18th lesson. In the values array that will be stored in index no 24. Using this calculation we will also get
+					 * index no 22 (thursday means j = 3 so 3*6 + 6 = 24)  */
+					
+					
 				}
 				t.setLessons(tempLessons);// set the teacher's lessons
 				br.readLine(); //read the next line because the line does not have important information  either (Teacher rooms, not important for my code)
-				teachers.add(t);
+				teachers.add(t); //add the teacher into the array lesson
 				i++;
 			}
 			br.close(); //Close the bufferedreader
@@ -193,21 +220,23 @@ public class top_level {
 		} catch (FileNotFoundException e) { //catch the file not found exception
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			in.close();
+			in.close(); //close the scanner.
+			System.out.println("Error, File not found"); //output error message. 
 			return false; //return false as there is an error that has occurred
 		} catch (IOException e) { //catch the IO exception caused by br.readLine()
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-			in.close();
+			e.printStackTrace(); 
+			in.close(); //close the scanner
 			return false; //return false as there is an error that has occurred 
 		}
 		in.close(); //close the scanner
 		
-		return true; //return true as the teachers have been imported 
+		return true; //Import successful
 	}
 	public boolean importAdmins(String path) { //importing all the admins 
 		
 		try {
+			//First add all admin IDs to an arraylist
 			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new BufferedReader
 			while((line = br.readLine())!= null) { //While the next line is not null;
 			String[] values = line.split(","); //create an array which has values with split
@@ -223,7 +252,7 @@ public class top_level {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		//Check adminID against all teachers and then set admin if found
 		for (int k = 0; k < adminIds.size(); k++) { //going through all the adminIds
 			int id = adminIds.get(k); //get the adminId
 			boolean adminfound = false; //boolean to find the admin, assume not found
