@@ -84,7 +84,7 @@ public class Teacher {
 		this.homebase = homebase;
 	}
 	
-	public String toString() {
+	public String toString() { //To string method without lessons 
 		String k = " ";
 		k = k + "Teacher ID : " + this.getId();
 		k = k + " Name : " + this.getName();
@@ -92,7 +92,7 @@ public class Teacher {
 		return k;
 	}
 	
-	public String toStringWithLessons() {
+	public String toStringWithLessons() { //To string method with lessons
 		String k = this.toString() + " ";
 		Lesson [] temp = this.getLessons();
 		for (int i = 0; i < this.getLessons().length; i++) {

@@ -29,7 +29,7 @@ public class top_level {
 
 	public static void main(String[] args) {
 		boolean b = importTeachers();
-		System.out.println(teachers.get(0).toStringWithLessons());
+		System.out.println(teachers.get(0).toStringWithLessons()); //Problem occurs here
 	}
 	
 	public int searchForDay(String day) {
@@ -179,6 +179,7 @@ public class top_level {
 						values[b] = ""; //otherwise set the values of value[b] to be empty
 					}
 				}
+				//Going through the values array and seeing what it stores
 				for (int z = 0; z < values.length; z++) {
 					System.out.println(z + " " + values[z]);
 				}
