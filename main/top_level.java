@@ -187,7 +187,7 @@ public class top_level {
 				}
 				//Going through the values array and seeing what it stores
 				for (int z = 0; z < values.length; z++) {
-					System.out.println(z + " " + values[z]);
+					System.out.println(z + " " + values[z] + " " + setLesson(values[z]));
 				}
 				Teacher t = new Teacher(); //create a new teacher
 				t.setId(Integer.parseInt(values[0])); //first element is ID, set that to the teacher
@@ -210,14 +210,26 @@ public class top_level {
 					tempLessons[j].four = setLesson(values[(j * 6) + 7]);
 					tempLessons[j].lunch = setLesson(values[(j * 6) + 8]);
 					tempLessons[j].five = setLesson(values[(j * 6) + 9]);
-					
+					System.out.println(values[(j * 6) + 4]);
+					System.out.println(tempLessons[j].one);
+					System.out.println(values[(j * 6) + 5]);
+					System.out.println(tempLessons[j].two);
+					System.out.println(values[(j * 6) + 6]);
+					System.out.println(tempLessons[j].three);
+					System.out.println(values[(j * 6) + 7]);
+					System.out.println(tempLessons[j].four);
+					System.out.println(values[(j * 6) + 8]);
+					System.out.println(tempLessons[j].lunch);
+					System.out.println(values[(j * 6) + 9]);
+					System.out.println(tempLessons[j].five);
 					/* the above is a calculation that will help me get each lesson on each day of the week. There are 6 lessons (Omitting lesson 6 and including lunch)
 					 * that occur in each day. All of them will be stored in values. The calculation will help me get a specific lesson on one day. For example, lesson
-					 * 3 on thursday will be the teacher's 18th lesson. In the values array that will be stored in index no 24. Using this calculation we will also get
-					 * index no 22 (thursday means j = 3 so 3*6 + 6 = 24)  */
-					
-					
-				}
+					 * 3 on thursday will be the teacher's 21st lesson. In the values array that will be stored in index no 24. Using this calculation we will also get
+					 * index no 24 (thursday means j = 3 so 3*6 + 6 = 24)  
+*/
+
+				} 
+			
 				t.setLessons(tempLessons);// set the teacher's lessons
 				br.readLine(); //read the next line because the line does not have important information  either (Teacher rooms, not important for my code)
 				teachers.add(t); //add the teacher into the array lesson
