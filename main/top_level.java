@@ -50,8 +50,14 @@ public class top_level {
 	}
 	
 	public static boolean setLesson(String s) { // method to set lessons 
-		if(s.equals("") || s.equals(" ")) { //check if the string equals null
+		if(s.equalsIgnoreCase("")) { //check if the string equals null
 			return false; //if yes return false
+		}
+		if (s.equalsIgnoreCase(" ")) {
+			return false;
+		}
+		if(s.equals(null)) {
+			return false;
 		}
 		return true; //if no, return true and assume teacher has lesson
 	}
@@ -176,7 +182,7 @@ public class top_level {
 					if (b < read.length) { //check if the value of b is less than the length of the read array
 					values[b] = read[b]; // if so add the value of read[b] into the values[b]
 					} else {
-						values[b] = ""; //otherwise set the values of value[b] to be empty
+						values[b] = " "; //otherwise set the values of value[b] to be empty
 					}
 				}
 				//Going through the values array and seeing what it stores
@@ -196,6 +202,7 @@ public class top_level {
 				tempLessons[2] = allFalse;
 				tempLessons[3] = allFalse;
 				tempLessons[4] = allFalse;
+				
 				for(int j = 0; j < 5; j++) { //going through all the days in the week 
 					tempLessons[j].one = setLesson(values[(j * 6) + 4]); 
 					tempLessons[j].two = setLesson(values[(j * 6) + 5]);

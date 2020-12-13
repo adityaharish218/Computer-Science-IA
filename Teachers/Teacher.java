@@ -96,7 +96,7 @@ public class Teacher {
 		String k = this.toString() + " ";
 		Lesson [] temp = this.getLessons();
 		for (int i = 0; i < this.getLessons().length; i++) {
-			k = k + "Day " + i + " " + temp[i].toString() + " ";
+			k = k + "Day " + (i + 1) + " " + temp[i].toString() + " ";
 		}
 		return k;
 	}
