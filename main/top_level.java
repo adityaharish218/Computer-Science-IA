@@ -349,6 +349,19 @@ public class top_level {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		for(int i = 0; i < teachers.size(); i++) { //loop through teachers 
+			Teacher t = teachers.get(i); //get the teacher at index
+			for(int j = 0; j < t.getSubject().length; j++ ) { //loop until the number of the subjects of the teacher 
+				for(int k = 0; k< SubjectsWithDays.size(); k++) { //loop until the number of subjects
+					if(t.getSubject()[j].getName() == SubjectsWithDays.get(k).getName()) { //check if teacher subject name is equal to SubjectWithDays subject name
+						t.getSubject()[j] = SubjectsWithDays.get(k); //repalce the subject to include the day
+						break; //break out of the loop 
+					}
+				}
+			}
+			teachers.set(i, t); //replace the teacher with t (Teacher with subjects and meeting days) 
+		}
 		return true; //import successful 
 	}
 }
