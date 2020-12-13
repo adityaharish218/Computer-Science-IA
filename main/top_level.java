@@ -24,6 +24,7 @@ public class top_level {
 	public int noOfAdmins = 0; // the number of admins 
 	public int dutiesAssignedToAdmins = 0; // the number of duties that have been assigned to admins
 	public static Lesson allFalse = new Lesson(false,false,false,false,false,false,false); //Creating an lesson with all lessons being false
+	public static Scanner in = new Scanner(System.in); //public scanner that is used by all methods
 
 
 
@@ -168,8 +169,9 @@ public class top_level {
 
 	public static boolean importTeachers() { //returns a boolean, if true, then the teachers have been imported properly, if false means there is error
 		System.out.println("Enter path of file (Option + Right Click then select 'Copy as Pathname' "); // Ask user to input the filepath
-		Scanner in = new Scanner(System.in); //create a new scanner so that it can read path name
+	 
 		String path = in.next(); //create a new string called path which stores the filepath
+		in.close(); //close the scanner
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new buffered reader which reads the path
 			int i = 0; //counter variable
@@ -238,8 +240,10 @@ public class top_level {
 
 		return true; //Import successful
 	}
-	public boolean importAdmins(String path) { //importing all the admins 
-
+	public boolean importAdmins() { //importing all the admins 
+		System.out.println("Enter List of Admins");
+		String path = in.next();
+		in.close(); //close the scanner
 		try {
 			//First add all admin IDs to an arraylist
 			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new BufferedReader
@@ -281,8 +285,8 @@ public class top_level {
 
 	}
 	public boolean importSubjects() { //import the teacher subjects 
-		Scanner in = new Scanner(System.in); //create a new scanner
-		System.out.println("Enter path name"); // ask user to input path name
+	
+		System.out.println("Enter file name for teaching departments"); // ask user to input path name
 		String path = in.next(); //store path name 
 		in.close(); //close the scanner
 
@@ -300,8 +304,15 @@ public class top_level {
 					t = teachers.get(i); //move on to the next teacher 
 					i++; //increase i 
 				}
-				String [] k = values[3].split(", ");
-				
+				String [] k = values[3].split(", "); //create an array for the subjects as there might be more than one (multiple subjects in the CSV file are shown as "Maths, Physics"
+				k[0] = k[0].replace('"', ' '); //replace the " in the beginning with a space 
+				k[k.length - 1] = k[k.length - 1].replace('"', ' '); //replace the " in the end with a space
+				Subject [] temp = new Subject[k.length];
+				for(int index = 0; index < k.length; index++) { //go through the subject array
+					temp[index].setName(k[index]);  //set the name of the subject to be the array
+				}
+				t.setSubject(temp);
+				teachers.set(i, t);
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -313,6 +324,32 @@ public class top_level {
 
 
 		return true;// import is successful return true 
+	}
+	
+	public boolean importSubjectMeetindDays() {
+		ArrayList<Subject> SubjectsWithDays = new ArrayList<Subject>(); //create a new array with 
+		System.out.println("Enter list of subjects and meeting days"); 
+		String path = in.next(); //read the filepath
+		in.close(); //close the scanner 
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new buffered reader 
+			br.readLine(); //read first line as it is not important
+			
+			while(br.ready()) { //loop while it is ready 
+				line = br.readLine(); //read the line 
+				String [] values = line.split(","); //split and store into array 
+				Subject s = new Subject(values[0],values[1]); //first value is the name and second is meetingday
+				SubjectsWithDays.add(s); //store into the array list
+			}
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return true; //import successful 
 	}
 }
 

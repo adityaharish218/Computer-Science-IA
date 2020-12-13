@@ -16,6 +16,10 @@ public class Subject {
 	public void setMeetingDay(String meetingDay) {
 		this.meetingDay = meetingDay;
 	}
+	public Subject(String name, String meetingDay) {
+		this.name = name;
+		this.meetingDay = meetingDay;
+	}
 	 
 	
 }
