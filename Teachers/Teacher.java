@@ -101,4 +101,9 @@ public class Teacher {
 		return k;
 	}
 	
+	public void Clear() {
+		this.name = null;
+		this.lessonsPerWeek = 0;
+	}
+	
 }

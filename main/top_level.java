@@ -16,16 +16,15 @@ import duties.Time;
 public class top_level {
 	public static ArrayList<Teacher> teachers = new ArrayList<Teacher>(); // List of teachers
 	public static ArrayList<Duty> duties = new ArrayList<Duty>(); // list of duties
-	public ArrayList<AssignedDuty> assignedDuties = new ArrayList<AssignedDuty>(); // list of duties with teachers assigned
-	public ArrayList<Integer> adminIds = new ArrayList<Integer>(); //list of adminIds
-	public String[] daysOfTheWeek = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
-	public Duty prevduty = duties.get(0); //find the first duty
-	public static String line = "";//create an empty string (Will be used when importing teachers and duties)
-	public int noOfAdmins = 0; // the number of admins 
-	public int dutiesAssignedToAdmins = 0; // the number of duties that have been assigned to admins
+	public static ArrayList<AssignedDuty> assignedDuties = new ArrayList<AssignedDuty>(); // list of duties with teachers assigned
+	public static ArrayList<Integer> adminIds = new ArrayList<Integer>(); //list of adminIds
+	public static String[] daysOfTheWeek = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};	
+	public static Duty prevduty; //create a duty
+	public static int noOfAdmins = 0; // the number of admins 
+	public static int dutiesAssignedToAdmins = 0; // the number of duties that have been assigned to admins
 	public static Lesson allFalse = new Lesson(false,false,false,false,false,false,false); //Creating an lesson with all lessons being false
 	public static Scanner in = new Scanner(System.in); //public scanner that is used by all methods
-
+	public static String line = "";
 
 
 	public static void main(String[] args) {
@@ -68,6 +67,7 @@ public class top_level {
 	}
 
 	public void assignTeachers() {
+		prevduty = duties.get(0); //get the first duty
 		for (int i = 0; i < duties.size(); i++) { // going through all duties
 			Duty assigned = duties.get(i); // accessing duty
 			if(!(prevduty.getDayOfTheWeek().equalsIgnoreCase(assigned.getDayOfTheWeek()))){ //check if this new duty's day of the week is the same as the previous one
