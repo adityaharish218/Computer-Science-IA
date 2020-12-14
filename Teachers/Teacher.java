@@ -104,6 +104,9 @@ public class Teacher {
 	public void Clear() {
 		this.name = null;
 		this.lessonsPerWeek = 0;
+		this.admin = false;
+		this.id = 0;
+		
 	}
 	
 }
