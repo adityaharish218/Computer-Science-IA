@@ -51,16 +51,11 @@ public class top_level {
 	}
 
 	public static boolean setLesson(String s) { // method to set lessons 
-		if(s.equalsIgnoreCase("")) { //check if the string equals null
-			return false; //if yes return false
+		
+		if(s.length() > 0) {
+			return true; //if the length is greater than 0, return true
 		}
-		if (s.equalsIgnoreCase(" ")) {
-			return false;
-		}
-		if(s.equals(null)) {
-			return false;
-		}
-		return true; //if no, return true and assume teacher has lesson
+		return false;  //else assume length is 0 and return false
 	}
 
 	public void setTeachersDutiesToBeAssigned() { //function to set the duties assigned of all teachers
@@ -184,10 +179,13 @@ public class top_level {
 					if (b < read.length) { //check if the value of b is less than the length of the read array
 						values[b] = read[b]; // if so add the value of read[b] into the values[b]
 					} else {
-						values[b] = " "; //otherwise set the values of value[b] to be empty
+						values[b] = ""; //otherwise set the values of value[b] to be empty
 					}
 				}
 				//Going through the values array and seeing what it stores
+				for(int z = 0; z < values.length; z++) {
+					System.out.println(values[z] + setLesson(values[z]));
+				}
 				Teacher t = new Teacher(); //create a new teacher
 				t.setId(Integer.parseInt(values[0])); //first element is ID, set that to the teacher
 				t.setName(values[1]);// second element is Name so set the teachers name to be that 
@@ -205,6 +203,7 @@ public class top_level {
 				for(int j = 0; j < 5; j++) { //going through all the days in the week 
 					tempLessons[j].one = setLesson(values[(j * 6) + 4]); 
 					tempLessons[j].two = setLesson(values[(j * 6) + 5]);
+					System.out.println(">>>"+ tempLessons[j].two);
 					tempLessons[j].three = setLesson(values[(j * 6) + 6]);
 					tempLessons[j].four = setLesson(values[(j * 6) + 7]);
 					tempLessons[j].lunch = setLesson(values[(j * 6) + 8]);
