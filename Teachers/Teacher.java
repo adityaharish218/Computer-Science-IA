@@ -106,7 +106,21 @@ public class Teacher {
 		this.lessonsPerWeek = 0;
 		this.admin = false;
 		this.id = 0;
-		
+		this.dutiesToBeAssigned = 0;
+		this.dutiesAssigned = 0;
+		this.lessons = null;
+		this.subject = null;
+		this.assignedToday = false;
+		this.homebase = false;
+	}
+	
+	public Teacher() {} //empty constructor
+	public Teacher(String name, int ID, int lessonsPerWeek, boolean homebase, Lesson [] lessons) {
+		this.name = name;
+		this.id = ID;
+		this.lessonsPerWeek = lessonsPerWeek;
+		this.homebase = homebase;
+		this.lessons = lessons;
 	}
 	
 }

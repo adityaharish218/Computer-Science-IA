@@ -31,6 +31,7 @@ public class top_level {
 		boolean b = importTeachers();
 		System.out.println(teachers.get(0).toStringWithLessons());
 		System.out.println(teachers.get(1).toStringWithLessons());//Problem occurs here
+		
 	}
 
 	public int searchForDay(String day) {
@@ -187,28 +188,23 @@ public class top_level {
 				for(int z = 0; z < values.length; z++) {
 					System.out.println(values[z] + setLesson(values[z]));
 				}
-				Teacher t = new Teacher(); //create a new teacher
-				t.setId(Integer.parseInt(values[0])); //first element is ID, set that to the teacher
-				t.setName(values[1]);// second element is Name so set the teachers name to be that 
-				t.setLessonsPerWeek(Integer.parseInt(values[2])); //third element is the number of lessons the teacher has
+				
+				int Id = Integer.parseInt(values[0]); //first element is ID
+				String name = values[1];// second element is Name  
+				int lessonsPerWeek = Integer.parseInt(values[2]); //third element is the number of lessons the teacher has
 				boolean homebase = setLesson(values[3]); //fourth element is the teacher's homebase
-				t.setHomebase(homebase); //set this to a boolean
 				//Setting all the temp lessons to false to avoid NullPointer exception
-				Lesson tempLessons [] = new Lesson[5];//create a temporary lesson
-				tempLessons[0] = allFalse;
-				tempLessons[1] = allFalse;
-				tempLessons[2] = allFalse;
-				tempLessons[3] = allFalse;
-				tempLessons[4] = allFalse;
+				Lesson tempLessons [] = {allFalse, allFalse, allFalse, allFalse, allFalse};
 
 				for(int j = 0; j < 5; j++) { //going through all the days in the week 
-					tempLessons[j].one = setLesson(values[(j * 6) + 4]); 
-					tempLessons[j].two = setLesson(values[(j * 6) + 5]);
-					System.out.println(">>>"+ tempLessons[j].two);
-					tempLessons[j].three = setLesson(values[(j * 6) + 6]);
-					tempLessons[j].four = setLesson(values[(j * 6) + 7]);
-					tempLessons[j].lunch = setLesson(values[(j * 6) + 8]);
-					tempLessons[j].five = setLesson(values[(j * 6) + 9]);
+					boolean one = setLesson(values[(j*6) + 4]); //get lesson one 
+					boolean two = setLesson(values[(j*6) + 5]); //get lesson two
+					boolean three = setLesson(values[(j*6) + 6]); //get lesson three
+					boolean four = setLesson(values[(j*6) + 7]); //get lesson four
+					boolean lunch = setLesson(values[(j*6) + 8]); //get lunch lesson
+					boolean five = setLesson(values[(j*6) + 9]); // get lesson 5
+					Lesson temp = new Lesson(one, two, three, four, lunch, five, false); //create a new lesson (Lesson 6 is false for now)
+					tempLessons[j] = temp; //set the day to be this
 					/* the above is a calculation that will help me get each lesson on each day of the week. There are 6 lessons (Omitting lesson 6 and including lunch)
 					 * that occur in each day. All of them will be stored in values. The calculation will help me get a specific lesson on one day. For example, lesson
 					 * 3 on thursday will be the teacher's 21st lesson. In the values array that will be stored in index no 24. Using this calculation we will also get
@@ -217,9 +213,11 @@ public class top_level {
 
 				} 
 
-				t.setLessons(tempLessons);// set the teacher's lessons
+					// set the teacher's lessons
 				br.readLine(); //read the next line because the line does not have important information  either (Teacher rooms, not important for my code)
-				teachers.add(t); //add the teacher into the array lesson
+				Teacher temp = new Teacher(name, Id, lessonsPerWeek, homebase, tempLessons); //create a new teacher with the attributes
+				teachers.add(temp);//add the teacher into the arraylist
+				
 				i++;
 			}
 			br.close(); //Close the bufferedreader
