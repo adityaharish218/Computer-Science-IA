@@ -30,7 +30,8 @@ public class top_level {
 
 	public static void main(String[] args) {
 		boolean b = importTeachers();
-		System.out.println(teachers.get(0).toStringWithLessons()); //Problem occurs here
+		System.out.println(teachers.get(0).toStringWithLessons());
+		System.out.println(teachers.get(1).toStringWithLessons());//Problem occurs here
 	}
 
 	public int searchForDay(String day) {
@@ -364,4 +365,5 @@ public class top_level {
 		return true; //import successful 
 	}
 }
+
 
