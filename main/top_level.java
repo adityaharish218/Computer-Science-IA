@@ -18,6 +18,7 @@ public class top_level {
 	public static ArrayList<Duty> duties = new ArrayList<Duty>(); // list of duties
 	public static ArrayList<AssignedDuty> assignedDuties = new ArrayList<AssignedDuty>(); // list of duties with teachers assigned
 	public static ArrayList<Integer> adminIds = new ArrayList<Integer>(); //list of adminIds
+	public static ArrayList<Subject> SubjectsWithDays = new ArrayList<Subject>(); 
 	public static String[] daysOfTheWeek = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};	
 	public static Duty prevduty; //create a duty
 	public static int noOfAdmins = 0; // the number of admins 
@@ -29,8 +30,10 @@ public class top_level {
 
 	public static void main(String[] args) {
 		boolean b = importTeachers();
-		System.out.println(teachers.get(0).toStringWithLessons());
-		System.out.println(teachers.get(1).toStringWithLessons());
+		boolean c = importSubjectMeetingDays(); 
+		boolean d = importSubjects();
+		System.out.println(teachers.get(0).toStringWithSubjects());
+		System.out.println(teachers.get(3).toStringWithSubjects());
 		
 	}
 
@@ -59,7 +62,7 @@ public class top_level {
 		return false;  //else assume length is 0 and return false
 	}
 
-	public void setTeachersDutiesToBeAssigned() { //function to set the duties assigned of all teachers
+	public static void setTeachersDutiesToBeAssigned() { //function to set the duties assigned of all teachers
 		for(int i = 0; i < teachers.size(); i++) { //goes through each teacher
 			Teacher teacher = teachers.get(i); //gets the teacher
 			teacher.setDutiesToBeAssigned(); //calls the setDutiesToBeAssigned function which sets the number of duties each teacher can have based on conditions
@@ -165,10 +168,9 @@ public class top_level {
 	}
 
 	public static boolean importTeachers() { //returns a boolean, if true, then the teachers have been imported properly, if false means there is error
-		System.out.println("Enter path of file (Option + Right Click then select 'Copy as Pathname' "); // Ask user to input the filepath
+		System.out.println("Enter file path for teachers (Option + Right Click then select 'Copy as Pathname' "); // Ask user to input the filepath
 	 
 		String path = in.next(); //create a new string called path which stores the filepath
-		in.close(); //close the scanner
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new buffered reader which reads the path
 			int i = 0; //counter variable
@@ -184,10 +186,7 @@ public class top_level {
 						values[b] = ""; //otherwise set the values of value[b] to be empty
 					}
 				}
-				//Going through the values array and seeing what it stores
-				for(int z = 0; z < values.length; z++) {
-					System.out.println(values[z] + setLesson(values[z]));
-				}
+			
 				
 				int Id = Integer.parseInt(values[0]); //first element is ID
 				String name = values[1];// second element is Name  
@@ -225,23 +224,23 @@ public class top_level {
 		} catch (FileNotFoundException e) { //catch the file not found exception
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			in.close(); //close the scanner.
+			 //close the scanner.
 			System.out.println("Error, File not found"); //output error message. 
 			return false; //return false as there is an error that has occurred
 		} catch (IOException e) { //catch the IO exception caused by br.readLine()
 			// TODO Auto-generated catch block
 			e.printStackTrace(); 
-			in.close(); //close the scanner
+			//close the scanner
 			return false; //return false as there is an error that has occurred 
 		}
-		in.close(); //close the scanner
+		//close the scanner
 
 		return true; //Import successful
 	}
-	public boolean importAdmins() { //importing all the admins 
-		System.out.println("Enter List of Admins");
+	public static boolean importAdmins() { //importing all the admins 
+		System.out.println("Enter file path for List of Admins");
 		String path = in.next();
-		in.close(); //close the scanner
+		 //close the scanner
 		try {
 			//First add all admin IDs to an arraylist
 			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new BufferedReader
@@ -282,35 +281,56 @@ public class top_level {
 		return true; //import successful
 
 	}
-	public boolean importSubjects() { //import the teacher subjects 
+	public static  boolean importSubjects() { //import the teacher subjects 
 	
-		System.out.println("Enter file name for teaching departments"); // ask user to input path name
+		System.out.println("Enter file path for teaching departments"); // ask user to input path name
 		String path = in.next(); //store path name 
-		in.close(); //close the scanner
+	 //close the scanner
 
 		try {
-			BufferedReader br = new BufferedReader(new FileReader (path)); //create a new bufferedreader
+			BufferedReader br = new BufferedReader(new FileReader(path));
 			br.readLine(); //read the first line as it is not important
-			 
-			while(br.ready()) { //while the bufferedreader is ready
-				line = br.readLine(); //read the next line 
-				String [] values = line.split(","); //split it by commas 
-				int i = 0;
-				Teacher t = teachers.get(i); //get the first teacher 
-				i++; //counter variable
-				while(t.getId() != Integer.parseInt(values[0])) {// check if the id at the first index of values is not equal to the teacher
-					t = teachers.get(i); //move on to the next teacher 
-					i++; //increase i 
+			int i = 0; //counter variable
+			while(br.ready()) { //while it is ready
+				line = br.readLine();
+				String [] values = line.split(","); //split and store into array
+				int Id = Integer.parseInt(values[0]); //get the teachers id
+				String [] Subjects = new String[values.length - 3]; //create a new array with size 3 less than the length of values (First 3 elements are ID, Last name and name)
+				for (int q = 0; q < Subjects.length; q++) { //loop through the subjects
+					Subjects[q] = values[q + 3]; //store the subject into the array
 				}
-				String [] k = values[3].split(","); //create an array for the subjects as there might be more than one (multiple subjects in the CSV file are shown as "Maths, Physics"
-				k[0] = k[0].replace('"', ' '); //replace the " in the beginning with a space 
-				k[k.length - 1] = k[k.length - 1].replace('"', ' '); //replace the " in the end with a space //Try '\"' if it doesn't work
-				Subject [] temp = new Subject[k.length];
-				for(int index = 0; index < k.length; index++) { //go through the subject array
-					temp[index].setName(k[index]);  //set the name of the subject to be the array
+				Subjects[0] = Subjects[0].replace('\"', ' '); //replace the quotation mark with a space
+				Subjects[Subjects.length - 1] = Subjects[Subjects.length - 1].replace('\"', ' '); //replace the last " again with a space
+				//for printing and testing
+				String tempName = values[2] + values[1];
+				System.out.print(">>>" + values[0] + " " + tempName);
+				for(int q = 0; q < Subjects.length; q++) {
+					System.out.print(" " + Subjects[q] + " ");
 				}
-				t.setSubject(temp);
-				teachers.set(i, t);
+				System.out.println();
+				Teacher temp = teachers.get(i); //get the teacher
+				if(Id != temp.getId()) { //check if ID does not match with ID stored in ArrayList (it should because it is alphabetical order
+					i++; //increase i
+					temp = teachers.get(i); //move onto next teacher
+				} 
+					Subject [] tempSubjects = new Subject[Subjects.length]; //create a new array the lenght of the subjects array
+					for(int j = 0; j < tempSubjects.length; j++) { //loop through all of the teachers subjects
+						String sName = Subjects[j]; //get the name of the teacher's subject
+						sName = sName.trim(); //trim it so that all the spaces are removed
+						for (int k = 0; k < SubjectsWithDays.size(); k++) { //loop through arrayList with subjects and meeting days
+							String sNameInList = SubjectsWithDays.get(k).getName(); //get the name of the subject in the list
+							if(sName.equals(sNameInList)) { //check if names math
+								tempSubjects[j] = SubjectsWithDays.get(k); //if they do then set that to the tempSubjects array
+								break; //break out of the loop
+							}
+						}
+					}
+					temp.setSubject(tempSubjects); //set the teacher subjects to be this
+				
+				teachers.set(i, temp); //add the new teacher to the teachers arraylist with the subjects
+				i++; // increase and move on to the next teacher
+				
+				
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -324,11 +344,10 @@ public class top_level {
 		return true;// import is successful return true 
 	}
 	
-	public boolean importSubjectMeetindDays() {
-		ArrayList<Subject> SubjectsWithDays = new ArrayList<Subject>(); //create a new array with 
-		System.out.println("Enter list of subjects and meeting days"); 
+	public static boolean importSubjectMeetingDays() {
+		//create a new array with 
+		System.out.println("Enter file path for list of subjects and meeting days"); 
 		String path = in.next(); //read the filepath
-		in.close(); //close the scanner 
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new buffered reader 
 			br.readLine(); //read first line as it is not important
@@ -348,18 +367,6 @@ public class top_level {
 			e.printStackTrace();
 		}
 		
-		for(int i = 0; i < teachers.size(); i++) { //loop through teachers 
-			Teacher t = teachers.get(i); //get the teacher at index
-			for(int j = 0; j < t.getSubject().length; j++ ) { //loop until the number of the subjects of the teacher 
-				for(int k = 0; k< SubjectsWithDays.size(); k++) { //loop until the number of subjects
-					if(t.getSubject()[j].getName() == SubjectsWithDays.get(k).getName()) { //check if teacher subject name is equal to SubjectWithDays subject name
-						t.getSubject()[j] = SubjectsWithDays.get(k); //repalce the subject to include the day
-						break; //break out of the loop 
-					}
-				}
-			}
-			teachers.set(i, t); //replace the teacher with t (Teacher with subjects and meeting days) 
-		}
 		return true; //import successful 
 	}
 }

@@ -100,6 +100,14 @@ public class Teacher {
 		}
 		return k;
 	}
+	public String toStringWithSubjects() { //print out teachers with subjects
+		String k = this.toString() + " ";
+		for(int i = 0; i < this.getSubject().length; i++) {
+			Subject [] temp = this.getSubject();
+			k = k + "Subject " + (i + 1) + ": " + temp[i].toString(); 
+		}
+		return k;
+	}
 	
 	public void Clear() {
 		this.name = null;

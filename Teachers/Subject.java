@@ -20,6 +20,9 @@ public class Subject {
 		this.name = name;
 		this.meetingDay = meetingDay;
 	}
+	public String toString() {
+		return " Name : " + this.getName() + " Meeting Day " + this.getMeetingDay() + " ";
+	}
 	 
 	
 }
