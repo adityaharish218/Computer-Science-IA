@@ -302,9 +302,9 @@ public class top_level {
 					t = teachers.get(i); //move on to the next teacher 
 					i++; //increase i 
 				}
-				String [] k = values[3].split(", "); //create an array for the subjects as there might be more than one (multiple subjects in the CSV file are shown as "Maths, Physics"
+				String [] k = values[3].split(","); //create an array for the subjects as there might be more than one (multiple subjects in the CSV file are shown as "Maths, Physics"
 				k[0] = k[0].replace('"', ' '); //replace the " in the beginning with a space 
-				k[k.length - 1] = k[k.length - 1].replace('"', ' '); //replace the " in the end with a space
+				k[k.length - 1] = k[k.length - 1].replace('"', ' '); //replace the " in the end with a space //Try '\"' if it doesn't work
 				Subject [] temp = new Subject[k.length];
 				for(int index = 0; index < k.length; index++) { //go through the subject array
 					temp[index].setName(k[index]);  //set the name of the subject to be the array
