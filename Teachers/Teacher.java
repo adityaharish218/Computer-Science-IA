@@ -109,6 +109,19 @@ public class Teacher {
 		return k;
 	}
 	
+	public String toStringWithAll(){
+		String k = this.toString();
+		Lesson [] temp = this.getLessons();
+		for (int i = 0; i < this.getLessons().length; i++) {
+			k = k + "Day " + (i + 1) + " " + temp[i].toString() + " ";
+		}
+		for(int i = 0; i < this.getSubject().length; i++) {
+			Subject [] temporary = this.getSubject();
+			k = k + "Subject " + (i + 1) + ": " + temporary[i].toString(); 
+		}
+		return k;
+	}
+	
 	public void Clear() {
 		this.name = null;
 		this.lessonsPerWeek = 0;

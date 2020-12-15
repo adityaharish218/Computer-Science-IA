@@ -32,8 +32,10 @@ public class top_level {
 		boolean b = importTeachers();
 		boolean c = importSubjectMeetingDays(); 
 		boolean d = importSubjects();
-		System.out.println(teachers.get(0).toStringWithSubjects());
-		System.out.println(teachers.get(3).toStringWithSubjects());
+		boolean e = importAdmins();
+	
+		System.out.println(teachers.get(0).toStringWithAll());
+		System.out.println(teachers.get(3).toStringWithAll());
 		
 	}
 
@@ -166,7 +168,10 @@ public class top_level {
 			prevduty = assigned; //make this duty the previous duty
 		}
 	}
-
+	public static boolean importTeachersWithoutSubjects() { //import those teachers who don't have any lessons but are still required to do duties (Principal, Subject area leaders
+		
+		return true;
+	}
 	public static boolean importTeachers() { //returns a boolean, if true, then the teachers have been imported properly, if false means there is error
 		System.out.println("Enter file path for teachers (Option + Right Click then select 'Copy as Pathname' "); // Ask user to input the filepath
 	 
@@ -243,10 +248,12 @@ public class top_level {
 		 //close the scanner
 		try {
 			//First add all admin IDs to an arraylist
-			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new BufferedReader
-			while((line = br.readLine())!= null) { //While the next line is not null;
+			BufferedReader br = new BufferedReader(new FileReader(path));//create a new BufferedReader
+			br.readLine(); //read the first line as it is not important
+			while(br.ready()) { //While the bufferedReader is ready
+				line = br.readLine(); //read the first line
 				String[] values = line.split(","); //create an array which has values with split
-				int id = Integer.parseInt(values[0]);//first element is the ID
+				int id = Integer.parseInt(values[1]);// Second element is the ID
 				adminIds.add(id);//add the ID to the list
 
 			}
@@ -263,10 +270,8 @@ public class top_level {
 			int id = adminIds.get(k); //get the adminId
 			boolean adminfound = false; //boolean to find the admin, assume not found
 			for(int i = 0; i < teachers.size(); i++) { //going through all the teachers
-				Teacher t = teachers.get(i); //get the teacher
-				if(t.getId() == id ) { //check if teachers id matches the adminId
-					t.setAdmin(true); //set the teacher to be an admin
-					teachers.set(i, t); //set that teacher into the arraylist
+				if(teachers.get(i).getId() == id ) { //check if teachers id matches the adminId
+					teachers.get(i).setAdmin(true); //set the teacher to be an admin
 					noOfAdmins = noOfAdmins + 1; //increase no of admins by 1
 					adminfound = true; //admin is found, change boolean to true
 					break; //break out of loop 
@@ -302,12 +307,6 @@ public class top_level {
 				Subjects[0] = Subjects[0].replace('\"', ' '); //replace the quotation mark with a space
 				Subjects[Subjects.length - 1] = Subjects[Subjects.length - 1].replace('\"', ' '); //replace the last " again with a space
 				//for printing and testing
-				String tempName = values[2] + values[1];
-				System.out.print(">>>" + values[0] + " " + tempName);
-				for(int q = 0; q < Subjects.length; q++) {
-					System.out.print(" " + Subjects[q] + " ");
-				}
-				System.out.println();
 				Teacher temp = teachers.get(i); //get the teacher
 				if(Id != temp.getId()) { //check if ID does not match with ID stored in ArrayList (it should because it is alphabetical order
 					i++; //increase i
