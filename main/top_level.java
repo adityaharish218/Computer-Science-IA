@@ -30,16 +30,18 @@ public class top_level {
 
 	public static void main(String[] args) {
 		boolean b = importTeachers();
-		boolean c = importSubjectMeetingDays(); 
-		boolean d = importSubjects();
-		boolean e = importAdmins();
+		//boolean c = importSubjectMeetingDays(); 
+		//boolean d = importSubjects();
+		//boolean e = importAdmins();
+		boolean f = importPeriodSix();
 	
-		System.out.println(teachers.get(0).toStringWithAll());
-		System.out.println(teachers.get(3).toStringWithAll());
+	//	System.out.println(teachers.get(0).toStringWithAll());
+	//	System.out.println(teachers.get(3).toStringWithAll());
+		System.out.println(teachers.get(26).getName() + " " + teachers.get(26).getLessons()[3].six);
 		
 	}
 
-	public int searchForDay(String day) {
+	public static int searchForDay(String day) {
 		for(int i = 0; i < 5; i ++) { //Going through all days of the week
 			if(day.equalsIgnoreCase(daysOfTheWeek[i])) { //if the day of the week is found
 				return i; //return the index of that
@@ -168,7 +170,51 @@ public class top_level {
 			prevduty = assigned; //make this duty the previous duty
 		}
 	}
-	public static boolean importTeachersWithoutSubjects() { //import those teachers who don't have any lessons but are still required to do duties (Principal, Subject area leaders
+	public static boolean importPeriodSix() { //import teachers who have period six
+		System.out.println("Enter file path for list of teachers with period 6"); //output message 
+		String path = in.next(); //read the path
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new bufferedReader
+			br.readLine(); //read the first Line as it is not important
+			while(br.ready()) { //while the BufferedReader is ready
+				line = br.readLine(); //read the line
+				String values[] = line.split(","); //split it and store in array 
+				int Id = Integer.parseInt(values[0]); //get the Id which is the first element 
+				String [] tempDaysOfTheWeek = new String[values.length - 2]; //create a new array called days of the week with a size two less than values (First two elements are name and ID)
+				for (int q = 0; q < tempDaysOfTheWeek.length; q++) { //loop through subjects array
+					tempDaysOfTheWeek[q] = values[q + 2]; //store the subject in the array
+				}
+				boolean teacherFound = false; //flag variable
+				for(int i = 0; i < teachers.size(); i++) { //go through the whole teachers arrayList
+					
+					if(teachers.get(i).getId() == Id) { //check if the Id matches of the teacher in array list to Id in period 6 list
+						teacherFound = true; //teacher found so set true
+						for(int k = 0; k < tempDaysOfTheWeek.length; k++) { //go through array and populate teacher
+							int index = searchForDay(tempDaysOfTheWeek[k]); //find the index of the day of the week (I.e if monday then 0, tuesday than 1 etc)
+							Lesson [] tempLessons = teachers.get(i).getLessons();//get the teachers lessons
+							tempLessons[index].six = true; //change period six on that day to be true
+							teachers.get(i).setLessons(tempLessons);
+							
+						}
+					}
+					if(teacherFound) { //if the teacher has been found and populated, break out of the loop
+						break; //break out of the for loop and move onto the next teacher who has period 6
+					}
+				}
+				if(!teacherFound) {
+					System.out.println("Error, Id: " + Id + " not found. Please fix");
+					return false;
+				}
+			} 
+				
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		return true;
 	}
@@ -369,5 +415,3 @@ public class top_level {
 		return true; //import successful 
 	}
 }
-
-
