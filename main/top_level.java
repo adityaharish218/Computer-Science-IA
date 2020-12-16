@@ -30,14 +30,17 @@ public class top_level {
 
 	public static void main(String[] args) {
 		boolean b = importTeachers();
-		//boolean c = importSubjectMeetingDays(); 
-		//boolean d = importSubjects();
-		//boolean e = importAdmins();
+		boolean c = importSubjectMeetingDays(); 
+		boolean d = importSubjects();
+		boolean e = importAdmins();
 		boolean f = importPeriodSix();
 	
 	//	System.out.println(teachers.get(0).toStringWithAll());
 	//	System.out.println(teachers.get(3).toStringWithAll());
-		System.out.println(teachers.get(26).getName() + " " + daysOfTheWeek[3] + " " + teachers.get(26).getLessons()[3].six);
+		for(int i = 0; i < teachers.size(); i++) {
+			System.out.println(teachers.get(i).toStringWithAll());
+		}
+		System.out.println("No of Admins: " + noOfAdmins);
 		
 	}
 
