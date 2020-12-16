@@ -2,7 +2,7 @@ package Teachers;
 
 public class Subject {
 	private String name = ""; //Name of subject
-	private String meetingDay; //Day teachers meet
+	private String meetingDay = ""; //Day teachers meet
 	//Setters and Getters
 	public String getName() {
 		return name;
