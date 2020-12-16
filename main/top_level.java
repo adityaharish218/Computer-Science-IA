@@ -30,18 +30,15 @@ public class top_level {
 
 
 	public static void main(String[] args) {
-		boolean b = importTeachers();
-		boolean c = importSubjectMeetingDays(); 
-		boolean d = importSubjects();
-		boolean e = importAdmins();
-		boolean f = importPeriodSix();
-	
-	//	System.out.println(teachers.get(0).toStringWithAll());
-	//	System.out.println(teachers.get(3).toStringWithAll());
-		for(int i = 0; i < teachers.size(); i++) {
-			System.out.println(teachers.get(i).toStringWithAll());
+		//boolean b = importTeachers();
+		//boolean c = importSubjectMeetingDays(); 
+		//boolean d = importSubjects();
+		//boolean e = importAdmins();
+		//boolean f = importPeriodSix();
+		boolean g = importDuties(); 
+		for(int i = 0; i < duties.size(); i++) {
+			System.out.println(duties.get(i).toString());
 		}
-		System.out.println("No of Admins: " + noOfAdmins);
 		
 	}
 
@@ -449,22 +446,23 @@ public class top_level {
 			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new bufferedReader
 			while(br.ready()) { //while the bufferedReader is ready
 			line = br.readLine(); //read the first line and store into line
-			if(searchForDay(line) != -1) { //use search for day on line, this returns an index and the default is -1, if it is not -1 that means that this is a day of the week
+			System.out.println(">>>" + searchForDay(line) + " " + isInteger(line) + line);
+			if(searchForDay(line.trim()) > -1 && line != null && !(line.equalsIgnoreCase(""))) { //use search for day on line, this returns an index and the default is -1, if it is not -1 that means that this is a day of the week and check if it is not null or empty ("")
 				dayOfTheWeek = line; //day of the week is now line
 			}
-			else if (isInteger(line)) { //check if line is likely to be a time which means that all it's characters are in the numbers array
+			else if (isInteger(line.trim()) && line != null && !(line.equalsIgnoreCase(""))) { //check if line is likely to be a time which means that all it's characters are in the numbers array and it is not null and not empty ("")
 				String [] values = line.split("-"); //split the values in terms of "-", the time is like "11:35 - 12:00". So by splitting it in terms of -, it will give me two values
 				String [] forStartTime = values[0].split(":"); //now for the start time which is the first value stored in values array, split it by the ":". So if the value was like 11:35, this will give me an array with the values of 11 and 35
-				int starHour = Integer.parseInt(forStartTime[0]); //get the integer in the first value which will be the hour
-				int starMin = Integer.parseInt(forStartTime[1]); //get the integer in the second value which will be the minute
+				int starHour = Integer.parseInt(forStartTime[0]); //get the integer in the first value which will be the hour. Trim to remove the spaces
+				int starMin = Integer.parseInt(forStartTime[1].trim()); //get the integer in the second value which will be the minute. Trim to remove the spaces 
 				startTime.setTime(starHour, starMin);
 				//repeat the process for the ending time 
 				String [] forEndTime = values[1].split(":");
-				int endHour = Integer.parseInt(forEndTime[0]);
-				int endMin = Integer.parseInt(forEndTime[1]);
+				int endHour = Integer.parseInt(forEndTime[0].trim());
+				int endMin = Integer.parseInt(forEndTime[1].trim());
 				endTime.setTime(endHour, endMin);	
 			}
-			else if(line != null) { //check if line == null. The duties between days are separated by an empty row which means that it is not a duty Name
+			else if(line != null && !(line.equalsIgnoreCase(""))) { //check if line == null or empty The duties between days are separated by an empty row which means that it is not a duty Name
 				String dutyName = line; // if it isn't the other two, then it is the name of the duty. Store that as a string
 				Duty temp = new Duty(dutyName, startTime, endTime, dayOfTheWeek); //create a new duty with these parameters
 				duties.add(temp);
@@ -474,10 +472,13 @@ public class top_level {
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			System.out.println("Error, file not found");
+			return false;
 		} //create a new buffered reader 
 		catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
+			return false;
 		}
 		
 		return true; //import successful
