@@ -37,7 +37,7 @@ public class top_level {
 	
 	//	System.out.println(teachers.get(0).toStringWithAll());
 	//	System.out.println(teachers.get(3).toStringWithAll());
-		System.out.println(teachers.get(26).getName() + " " + teachers.get(26).getLessons()[3].six);
+		System.out.println(teachers.get(26).getName() + " " + daysOfTheWeek[3] + " " + teachers.get(26).getLessons()[3].six);
 		
 	}
 
