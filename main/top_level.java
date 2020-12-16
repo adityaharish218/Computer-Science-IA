@@ -19,13 +19,14 @@ public class top_level {
 	public static ArrayList<AssignedDuty> assignedDuties = new ArrayList<AssignedDuty>(); // list of duties with teachers assigned
 	public static ArrayList<Integer> adminIds = new ArrayList<Integer>(); //list of adminIds
 	public static ArrayList<Subject> SubjectsWithDays = new ArrayList<Subject>(); 
-	public static String[] daysOfTheWeek = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};	
+	public static final String[] daysOfTheWeek = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};	
 	public static Duty prevduty; //create a duty
 	public static int noOfAdmins = 0; // the number of admins 
 	public static int dutiesAssignedToAdmins = 0; // the number of duties that have been assigned to admins
 	public static Lesson allFalse = new Lesson(false,false,false,false,false,false,false); //Creating an lesson with all lessons being false
 	public static Scanner in = new Scanner(System.in); //public scanner that is used by all methods
 	public static String line = "";
+	public static final char[] numbers = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '-', ':', ' '};
 
 
 	public static void main(String[] args) {
@@ -53,14 +54,34 @@ public class top_level {
 		return -1; // default return - 1
 	}
 
-	public void newDay() { //change all teachers to not have duty on day 
+	public static void newDay() { //change all teachers to not have duty on day 
 		for (int i = 0; i < teachers.size(); i++) { // go through all teachers 
 			Teacher teacher = teachers.get(i); // make a copy
 			teacher.setAssignedToday(false); //set the copy to false
 			teachers.set(i, teacher); //put the copy in place of the real one
 		}
 	}
-
+	
+	public static boolean searchNumbers(char k) { //method to find if a certain character is a integer or - (Used for time) 
+		 
+		for(int i = 0; i < numbers.length; i++) { //loop through the whole numbers array
+			if(numbers[i] == k) { //check if k is in the numbers array
+				return true; //return true 
+			}
+		}
+		return false; //return false
+	}
+	public static boolean isInteger(String s) { //method to find out if it is time or not 
+		
+		for(int i = 0; i < s.length(); i++) { //loop through whole string
+			char k = s.charAt(i); //get the char at that particular index 
+			if (searchNumbers(k) == false) { //try to find the character in the Numbers array
+				return false; // if false that means the particular character is not
+			}
+		}
+		
+		return true; //assume it is true
+	}
 	public static boolean setLesson(String s) { // method to set lessons 
 		
 		if(s.length() > 0) {
@@ -77,7 +98,7 @@ public class top_level {
 		}
 	}
 
-	public void assignTeachers() {
+	public static void assignTeachers() {
 		prevduty = duties.get(0); //get the first duty
 		for (int i = 0; i < duties.size(); i++) { // going through all duties
 			Duty assigned = duties.get(i); // accessing duty
@@ -335,7 +356,7 @@ public class top_level {
 		return true; //import successful
 
 	}
-	public static  boolean importSubjects() { //import the teacher subjects 
+	public static boolean importSubjects() { //import the teacher subjects 
 	
 		System.out.println("Enter file path for teaching departments"); // ask user to input path name
 		String path = in.next(); //store path name 
@@ -392,7 +413,7 @@ public class top_level {
 		return true;// import is successful return true 
 	}
 	
-	public static boolean importSubjectMeetingDays() {
+	public static boolean importSubjectMeetingDays() { //method to import subjects with meeting days
 		//create a new array with 
 		System.out.println("Enter file path for list of subjects and meeting days"); 
 		String path = in.next(); //read the filepath
@@ -416,5 +437,49 @@ public class top_level {
 		}
 		
 		return true; //import successful 
+	}
+	
+	public static boolean importDuties() {
+		System.out.println("Enter file path for duties"); //Prompt output of file path 
+		String path = in.next();
+		String dayOfTheWeek = "Monday"; //create a day of the week
+		Time startTime = new Time(0,0); //create a new start time
+		Time endTime = new Time(0,0); //create a new end time 
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new bufferedReader
+			while(br.ready()) { //while the bufferedReader is ready
+			line = br.readLine(); //read the first line and store into line
+			if(searchForDay(line) != -1) { //use search for day on line, this returns an index and the default is -1, if it is not -1 that means that this is a day of the week
+				dayOfTheWeek = line; //day of the week is now line
+			}
+			else if (isInteger(line)) { //check if line is likely to be a time which means that all it's characters are in the numbers array
+				String [] values = line.split("-"); //split the values in terms of "-", the time is like "11:35 - 12:00". So by splitting it in terms of -, it will give me two values
+				String [] forStartTime = values[0].split(":"); //now for the start time which is the first value stored in values array, split it by the ":". So if the value was like 11:35, this will give me an array with the values of 11 and 35
+				int starHour = Integer.parseInt(forStartTime[0]); //get the integer in the first value which will be the hour
+				int starMin = Integer.parseInt(forStartTime[1]); //get the integer in the second value which will be the minute
+				startTime.setTime(starHour, starMin);
+				//repeat the process for the ending time 
+				String [] forEndTime = values[1].split(":");
+				int endHour = Integer.parseInt(forEndTime[0]);
+				int endMin = Integer.parseInt(forEndTime[1]);
+				endTime.setTime(endHour, endMin);	
+			}
+			else if(line != null) { //check if line == null. The duties between days are separated by an empty row which means that it is not a duty Name
+				String dutyName = line; // if it isn't the other two, then it is the name of the duty. Store that as a string
+				Duty temp = new Duty(dutyName, startTime, endTime, dayOfTheWeek); //create a new duty with these parameters
+				duties.add(temp);
+			}
+			}
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} //create a new buffered reader 
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return true; //import successful
 	}
 }

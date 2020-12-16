@@ -6,6 +6,7 @@ public class Duty {
 	private Time endTime; //End time of duty
 	private String dayOfTheWeek; //day of the week the duty is
 	private int pointsToDeduct; //points to deduct from teacher if duty is assigned
+	//setters and getters
 	public String getName() {
 		return name;
 	}
@@ -35,5 +36,22 @@ public class Duty {
 
 	public void setPointsToDeduct() {
 		
+	}
+	
+	public String toString() { //to string method 
+		String k = "";
+		k = k + this.dayOfTheWeek + " ";
+		k = k + this.startTime.toString() + " ";
+		k = k + this.endTime.toString() + " ";
+		k = k + this.name;
+		return k;
+	}
+	
+	
+	public Duty(String name, Time startTime, Time endTime, String dayOfTheWeek) { //constructor 
+		this.name = name;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.dayOfTheWeek = dayOfTheWeek;
 	}
 }
