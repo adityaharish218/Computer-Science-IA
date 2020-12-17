@@ -457,8 +457,8 @@ public class top_level {
 			while(br.ready()) { //while the bufferedReader is ready
 			line = br.readLine(); //read the first line and store into line
 			line = line.trim(); //remove all uncessary spaces 
-			if(line == null) {
-				line = "";
+			if(line == null) { //check if it's null
+				line = ""; //change it to empty string (Avoid null pointer exception) 
 			}
 			
 			// System.out.println(">>>" + searchForDay(line) + " " + isInteger(line) + line);
@@ -482,10 +482,11 @@ public class top_level {
 				
 				
 			}
-			else if(setLesson(line)) { //Check if the length of line is greater than 0;  The duties between days are separated by an empty row which means that it is not a duty Name
+			else if(setLesson(line)) { //Check if the length of line is greater than 0;  The duties between days are separated by an empty row which means that it is not a duty Name and it's length is 0
 				String dutyName = line; // if it isn't the other two, then it is the name of the duty. Store that as a string
 				Duty temp = new Duty(dutyName, startTime, endTime, dayOfTheWeek); //create a new duty with these parameters
 				duties.add(temp);
+				//printing and testing 
 				System.out.println("Duty no " + (index + 1));
 				System.out.println("Day of the week " + duties.get(index).getDayOfTheWeek());
 				System.out.println("Name " + duties.get(index).getName());
