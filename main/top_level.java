@@ -36,11 +36,15 @@ public class top_level {
 		//boolean e = importAdmins();
 		//boolean f = importPeriodSix();
 		boolean g = importDuties(); 
+		System.out.println(" >>> After I've stored all the duties ");
 		for(int i = 0; i < duties.size(); i++) {
+			
+			System.out.println("Duty no " + (i + 1));
 			System.out.println("Day of the week " + duties.get(i).getDayOfTheWeek());
 			System.out.println("Name " + duties.get(i).getName());
 			System.out.println("Start time " + duties.get(i).getStartTime().toString());
 			System.out.println("End time " + duties.get(i).getEndTime().toString());
+			System.out.println();
 		}
 		
 	}
@@ -446,6 +450,7 @@ public class top_level {
 		Time startTime = new Time(0,0); //create a new start time
 		Time endTime = new Time(0,0); //create a new end time 
 		int index = 0;
+		System.out.println("In arrayList immediately after I've added the Duty ");
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new bufferedReader
 			br.readLine(); //read the first line as it is not important (It is monday but that is already stored)
@@ -455,12 +460,12 @@ public class top_level {
 			if(line == null) {
 				line = "";
 			}
-			System.out.println(">>>" + line + " " + searchForDay(line));
-			System.out.println(">>>" + line + " " + isInteger(line));
+			
 			// System.out.println(">>>" + searchForDay(line) + " " + isInteger(line) + line);
+			
 			if(searchForDay(line.trim()) > -1 ) { //use search for day on line, this returns an index and the default is -1, if it is not -1 that means that this is a day of the week and check if it is not null or empty ("")
 				dayOfTheWeek = line; //day of the week is now line
-				System.out.println("Condition 1 " + line);
+				
 			}
 			else if (isInteger(line.trim()) && setLesson(line)) { //check if line is likely to be a time which means that all it's characters are in the numbers array. Also make sure that it's length is greater than 0
 				String [] values = line.split("-"); //split the values in terms of "-", the time is like "11:35 - 12:00". So by splitting it in terms of -, it will give me two values
@@ -473,20 +478,22 @@ public class top_level {
 				int endHour = Integer.parseInt(forEndTime[0].trim());
 				int endMin = Integer.parseInt(forEndTime[1].trim());
 				endTime.setTime(endHour, endMin);	
-				System.out.println("Condition 2 " + line);
-				System.out.println(startTime.toString());
-				System.out.println(endTime.toString());
+				
+				
 				
 			}
 			else if(setLesson(line)) { //Check if the length of line is greater than 0;  The duties between days are separated by an empty row which means that it is not a duty Name
 				String dutyName = line; // if it isn't the other two, then it is the name of the duty. Store that as a string
 				Duty temp = new Duty(dutyName, startTime, endTime, dayOfTheWeek); //create a new duty with these parameters
-				System.out.println(temp.toString());
 				duties.add(temp);
-				duties.set(index, temp);
-				System.out.println("In arrayList " + duties.get(index).toString());
+				System.out.println("Duty no " + (index + 1));
+				System.out.println("Day of the week " + duties.get(index).getDayOfTheWeek());
+				System.out.println("Name " + duties.get(index).getName());
+				System.out.println("Start time " + duties.get(index).getStartTime().toString());
+				System.out.println("End time " + duties.get(index).getEndTime().toString());
+				System.out.println();
 				index++;
-				System.out.println("Condition 3 " + line);
+				
 				
 			}
 			}
