@@ -26,7 +26,7 @@ public class top_level {
 	public static Lesson allFalse = new Lesson(false,false,false,false,false,false,false); //Creating an lesson with all lessons being false
 	public static Scanner in = new Scanner(System.in); //public scanner that is used by all methods
 	public static String line = "";
-	public static final char[] numbers = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '-', ':', ' '};
+	public static final char[] numbers = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '-', ':', ' ', '0'};
 
 
 	public static void main(String[] args) {
@@ -37,7 +37,10 @@ public class top_level {
 		//boolean f = importPeriodSix();
 		boolean g = importDuties(); 
 		for(int i = 0; i < duties.size(); i++) {
-			System.out.println(duties.get(i).toString());
+			System.out.println("Day of the week " + duties.get(i).getDayOfTheWeek());
+			System.out.println("Name " + duties.get(i).getName());
+			System.out.println("Start time " + duties.get(i).getStartTime().toString());
+			System.out.println("End time " + duties.get(i).getEndTime().toString());
 		}
 		
 	}
@@ -442,15 +445,24 @@ public class top_level {
 		String dayOfTheWeek = "Monday"; //create a day of the week
 		Time startTime = new Time(0,0); //create a new start time
 		Time endTime = new Time(0,0); //create a new end time 
+		int index = 0;
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new bufferedReader
+			br.readLine(); //read the first line as it is not important (It is monday but that is already stored)
 			while(br.ready()) { //while the bufferedReader is ready
 			line = br.readLine(); //read the first line and store into line
-			System.out.println(">>>" + searchForDay(line) + " " + isInteger(line) + line);
-			if(searchForDay(line.trim()) > -1 && line != null && !(line.equalsIgnoreCase(""))) { //use search for day on line, this returns an index and the default is -1, if it is not -1 that means that this is a day of the week and check if it is not null or empty ("")
-				dayOfTheWeek = line; //day of the week is now line
+			line = line.trim(); //remove all uncessary spaces 
+			if(line == null) {
+				line = "";
 			}
-			else if (isInteger(line.trim()) && line != null && !(line.equalsIgnoreCase(""))) { //check if line is likely to be a time which means that all it's characters are in the numbers array and it is not null and not empty ("")
+			System.out.println(">>>" + line + " " + searchForDay(line));
+			System.out.println(">>>" + line + " " + isInteger(line));
+			// System.out.println(">>>" + searchForDay(line) + " " + isInteger(line) + line);
+			if(searchForDay(line.trim()) > -1 ) { //use search for day on line, this returns an index and the default is -1, if it is not -1 that means that this is a day of the week and check if it is not null or empty ("")
+				dayOfTheWeek = line; //day of the week is now line
+				System.out.println("Condition 1 " + line);
+			}
+			else if (isInteger(line.trim()) && setLesson(line)) { //check if line is likely to be a time which means that all it's characters are in the numbers array. Also make sure that it's length is greater than 0
 				String [] values = line.split("-"); //split the values in terms of "-", the time is like "11:35 - 12:00". So by splitting it in terms of -, it will give me two values
 				String [] forStartTime = values[0].split(":"); //now for the start time which is the first value stored in values array, split it by the ":". So if the value was like 11:35, this will give me an array with the values of 11 and 35
 				int starHour = Integer.parseInt(forStartTime[0]); //get the integer in the first value which will be the hour. Trim to remove the spaces
@@ -461,11 +473,21 @@ public class top_level {
 				int endHour = Integer.parseInt(forEndTime[0].trim());
 				int endMin = Integer.parseInt(forEndTime[1].trim());
 				endTime.setTime(endHour, endMin);	
+				System.out.println("Condition 2 " + line);
+				System.out.println(startTime.toString());
+				System.out.println(endTime.toString());
+				
 			}
-			else if(line != null && !(line.equalsIgnoreCase(""))) { //check if line == null or empty The duties between days are separated by an empty row which means that it is not a duty Name
+			else if(setLesson(line)) { //Check if the length of line is greater than 0;  The duties between days are separated by an empty row which means that it is not a duty Name
 				String dutyName = line; // if it isn't the other two, then it is the name of the duty. Store that as a string
 				Duty temp = new Duty(dutyName, startTime, endTime, dayOfTheWeek); //create a new duty with these parameters
+				System.out.println(temp.toString());
 				duties.add(temp);
+				duties.set(index, temp);
+				System.out.println("In arrayList " + duties.get(index).toString());
+				index++;
+				System.out.println("Condition 3 " + line);
+				
 			}
 			}
 			
