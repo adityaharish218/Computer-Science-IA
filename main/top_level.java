@@ -32,13 +32,22 @@ public class top_level {
 
 
 	public static void main(String[] args) {
-		boolean b = importTeachers();
-		boolean c = importSubjectMeetingDays(); 
-		boolean d = importSubjects();
-		boolean e = importAdmins();
-		boolean f = importPeriodSix();
+		//boolean b = importTeachers();
+		//boolean c = importSubjectMeetingDays(); 
+		//boolean d = importSubjects();
+		//boolean e = importAdmins();
+		//boolean f = importPeriodSix();
 		boolean g = importDuties(); 
 		
+		System.out.println("After in the array and printing through main method");
+		for(int index = 0; index < duties.size(); index++) {
+			System.out.println("Duty no " + (index + 1));
+			System.out.println("Day of the week " + duties.get(index).getDayOfTheWeek());
+			System.out.println("Name " + duties.get(index).getName());
+			System.out.println("Start time " + duties.get(index).getStartTime().toString());
+			System.out.println("End time " + duties.get(index).getEndTime().toString());
+			System.out.println();
+		}
 		
 	}
 
@@ -438,8 +447,8 @@ public class top_level {
 	
 	public static boolean importDuties() {
 		System.out.println("Enter file path for duties"); //Prompt output of file path 
-		String path = in.next();
-		String dayOfTheWeek = "Monday"; //create a day of the week
+		String path = in.next(); //store path
+		String dayOfTheWeek = "Monday"; //create a day of the week and set it to monday which is the first duty
 		Time startTime = new Time(0,0); //create a new start time
 		Time endTime = new Time(0,0); //create a new end time 
 		int index = 0;
@@ -448,7 +457,7 @@ public class top_level {
 			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new bufferedReader
 			br.readLine(); //read the first line as it is not important (It is monday but that is already stored)
 			while(br.ready()) { //while the bufferedReader is ready
-			line = br.readLine(); //read the first line and store into line
+			line = br.readLine(); //read the line and store into the string line
 			line = line.trim(); //remove all uncessary spaces 
 			if(line == null) { //check if it's null
 				line = ""; //change it to empty string (Avoid null pointer exception) 
@@ -458,7 +467,6 @@ public class top_level {
 			
 			if(searchForDay(line.trim()) > -1 ) { //use search for day on line, this returns an index and the default is -1, if it is not -1 that means that this is a day of the week and check if it is not null or empty ("")
 				dayOfTheWeek = line; //day of the week is now line
-				
 			}
 			else if (isInteger(line.trim()) && setLesson(line)) { //check if line is likely to be a time which means that all it's characters are in the numbers array. Also make sure that it's length is greater than 0
 				String [] values = line.split("-"); //split the values in terms of "-", the time is like "11:35 - 12:00". So by splitting it in terms of -, it will give me two values
@@ -478,6 +486,8 @@ public class top_level {
 			else if(setLesson(line)) { //Check if the length of line is greater than 0;  The duties between days are separated by an empty row which means that it is not a duty Name and it's length is 0
 				String dutyName = line; // if it isn't the other two, then it is the name of the duty. Store that as a string
 				Duty temp = new Duty(dutyName, startTime, endTime, dayOfTheWeek); //create a new duty with these parameters
+				temp.setStartTime(startTime);
+				temp.setEndTime(endTime);
 				duties.add(temp);
 				//printing and testing 
 				System.out.println("Duty no " + (index + 1));
@@ -487,10 +497,9 @@ public class top_level {
 				System.out.println("End time " + duties.get(index).getEndTime().toString());
 				System.out.println();
 				index++;
-				
-				
 			}
 			}
+			
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
