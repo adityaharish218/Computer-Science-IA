@@ -27,7 +27,7 @@ public class AssignedDuty {
 	public String toStringWithCommas() { //method for returning duty to store in CSV file 
 		String k = "";
 		k = k + this.getDuty().getDayOfTheWeek() + ","; //add a comma to the end of each string. Used to seperate values in final CSV file
-		k = k + this.getDuty().getName();
+		k = k + this.getDuty().getName() + ",";
 		k = k + this.getDuty().getStartTime().toString() + ",";
 		k = k + this.getDuty().getEndTime().toString() + ",";
 		k = k + this.getTeacher().getName() + ",";

@@ -32,13 +32,14 @@ public class top_level {
 
 
 	public static void main(String[] args) {
-		//boolean b = importTeachers();
-		//boolean c = importSubjectMeetingDays(); 
-		//boolean d = importSubjects();
-		//boolean e = importAdmins();
-		//boolean f = importPeriodSix();
+		boolean b = importTeachers();
+		boolean c = importSubjectMeetingDays(); 
+		boolean d = importSubjects();
+		boolean e = importAdmins();
+		boolean f = importPeriodSix();
 		boolean g = importDuties(); 
-		
+		assignTeachers();
+		generateCSV();
 		System.out.println("After in the array and printing through main method");
 		for(int index = 0; index < duties.size(); index++) {
 			System.out.println("Duty no " + (index + 1));
@@ -189,7 +190,7 @@ public class top_level {
 					assignedDuties.add(a); //add this duty along with assigned teacher
 					teacher.setDutiesAssigned(teacher.getDutiesAssigned() + 1); //increase this teacher's number of duties assigned by 1
 					teacher.setAssignedToday(true); // the teacher has been assigned a duty today so cannot be assigned again
-					teachers.set(i,teacher); // set this teacher into the teachers arraylist
+					teachers.set(j,teacher); // set this teacher into the teachers arraylist
 					if(teacher.isAdmin()) { // check if the teacher being assigned is admin
 						dutiesAssignedToAdmins = dutiesAssignedToAdmins + 1; //if they are, increase it by one
 					}
