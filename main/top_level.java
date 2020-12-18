@@ -1,9 +1,11 @@
 package main;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -30,22 +32,13 @@ public class top_level {
 
 
 	public static void main(String[] args) {
-		//boolean b = importTeachers();
-		//boolean c = importSubjectMeetingDays(); 
-		//boolean d = importSubjects();
-		//boolean e = importAdmins();
-		//boolean f = importPeriodSix();
+		boolean b = importTeachers();
+		boolean c = importSubjectMeetingDays(); 
+		boolean d = importSubjects();
+		boolean e = importAdmins();
+		boolean f = importPeriodSix();
 		boolean g = importDuties(); 
-		System.out.println(" >>> After I've stored all the duties ");
-		for(int i = 0; i < duties.size(); i++) {
-			
-			System.out.println("Duty no " + (i + 1));
-			System.out.println("Day of the week " + duties.get(i).getDayOfTheWeek());
-			System.out.println("Name " + duties.get(i).getName());
-			System.out.println("Start time " + duties.get(i).getStartTime().toString());
-			System.out.println("End time " + duties.get(i).getEndTime().toString());
-			System.out.println();
-		}
+		
 		
 	}
 
@@ -501,16 +494,53 @@ public class top_level {
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 			System.out.println("Error, file not found");
 			return false;
-		} //create a new buffered reader 
+		} 
 		catch (IOException e) {
 			
-			e.printStackTrace();
+			//e.printStackTrace();
 			return false;
 		}
 		
 		return true; //import successful
+	}
+	
+	public static boolean generateCSV() {
+		System.out.println("Enter file path to where you wish to save final list"); //get the location client wishes to store final list 
+		String path = in.next(); //store the location
+		System.out.println("Enter name of file"); // get the name of the file
+		String name = in.next(); //store the name of the file 
+		try {
+			PrintWriter pw = new PrintWriter(new File(path + "/" + name + ".csv")); //create a new PrintWriter. Add a "/" after path (Normal way to save files on a computer) and a ".csv" (The file format of my file) 
+			StringBuilder sb = new StringBuilder(); //create a new string builder which will store the actual values
+			sb.append("Day of the week "); //first element is the day of the week
+			sb.append(","); //comma to separate the values 
+			sb.append("Duty name"); //second element is the duty name
+			sb.append(",");
+			sb.append("Start time"); //third element is the start time
+			sb.append(",");
+			sb.append("End time"); //fourth element is the end time
+			sb.append(",");
+			sb.append("Teacher name"); // fifth element is the name of the teacher
+			sb.append(",");
+			sb.append("Teacher ID"); //sixth element is the teacher ID
+			sb.append("\r\n"); //moves on to the next line
+			for(int i = 0; i < assignedDuties.size(); i++) { //loop through all assigned duties 
+				sb.append(assignedDuties.get(i).toStringWithCommas()); // use with commas method in AssignedDuty class (Puts in an element and then separates with a ",")
+				sb.append("\r\n"); //move on to the next line after adding each teacher
+			}
+			pw.write(sb.toString()); // Write the string into the file
+			pw.close();
+			System.out.println("Finished");
+			in.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+			System.out.println("Error, File path not found");
+			return false;
+		}
+		return true; //generated successfully
 	}
 }
