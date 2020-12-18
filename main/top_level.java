@@ -32,14 +32,14 @@ public class top_level {
 
 
 	public static void main(String[] args) {
-		boolean b = importTeachers();
-		boolean c = importSubjectMeetingDays(); 
-		boolean d = importSubjects();
-		boolean e = importAdmins();
-		boolean f = importPeriodSix();
+//		boolean b = importTeachers();
+//		boolean c = importSubjectMeetingDays(); 
+//		boolean d = importSubjects();
+//		boolean e = importAdmins();
+//		boolean f = importPeriodSix();
 		boolean g = importDuties(); 
-		assignTeachers();
-		generateCSV();
+//		assignTeachers();
+//		generateCSV();
 		System.out.println("After in the array and printing through main method");
 		for(int index = 0; index < duties.size(); index++) {
 			System.out.println("Duty no " + (index + 1));
@@ -202,8 +202,10 @@ public class top_level {
 		}
 	}
 	public static boolean importPeriodSix() { //import teachers who have period six
-		System.out.println("Enter file path for list of teachers with period 6"); //output message 
-		String path = in.next(); //read the path
+//		System.out.println("Enter file path for list of teachers with period 6"); //output message 
+//		String path = in.next(); //read the path
+		System.out.println("Importing period six");
+		String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/Period_6.csv";
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new bufferedReader
 			br.readLine(); //read the first Line as it is not important
@@ -250,9 +252,11 @@ public class top_level {
 		return true;
 	}
 	public static boolean importTeachers() { //returns a boolean, if true, then the teachers have been imported properly, if false means there is error
-		System.out.println("Enter file path for teachers (Option + Right Click then select 'Copy as Pathname' "); // Ask user to input the filepath
-	 
-		String path = in.next(); //create a new string called path which stores the filepath
+//		System.out.println("Enter file path for teachers (Option + Right Click then select 'Copy as Pathname' "); // Ask user to input the filepath
+//	 
+//		String path = in.next(); //create a new string called path which stores the filepath
+		System.out.println("Importing Teachers");
+		String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/HS_TT_summary_23Oct20.csv";
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new buffered reader which reads the path
 			int i = 0; //counter variable
@@ -320,9 +324,10 @@ public class top_level {
 		return true; //Import successful
 	}
 	public static boolean importAdmins() { //importing all the admins 
-		System.out.println("Enter file path for List of Admins");
-		String path = in.next();
-		 //close the scanner
+//		System.out.println("Enter file path for List of Admins");
+//		String path = in.next();
+		System.out.println("Importing admins");
+		String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/Teachers_Admin_List.csv";
 		try {
 			//First add all admin IDs to an arraylist
 			BufferedReader br = new BufferedReader(new FileReader(path));//create a new BufferedReader
@@ -365,10 +370,11 @@ public class top_level {
 	}
 	public static boolean importSubjects() { //import the teacher subjects 
 	
-		System.out.println("Enter file path for teaching departments"); // ask user to input path name
-		String path = in.next(); //store path name 
-	 //close the scanner
-
+//		System.out.println("Enter file path for teaching departments"); // ask user to input path name
+//		String path = in.next(); //store path name 
+//	 //close the scanner
+		System.out.println("Importing Subjects");
+		String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/HS_Tchng_Depts.csv";
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(path));
 			br.readLine(); //read the first line as it is not important
@@ -421,9 +427,11 @@ public class top_level {
 	}
 	
 	public static boolean importSubjectMeetingDays() { //method to import subjects with meeting days
-		//create a new array with 
-		System.out.println("Enter file path for list of subjects and meeting days"); 
-		String path = in.next(); //read the filepath
+		
+//		System.out.println("Enter file path for list of subjects and meeting days"); 
+//		String path = in.next(); //read the filepath
+		System.out.println("Import Subjects with Meeting days");
+		String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/Subject_Area_Meeting_Days.csv";
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new buffered reader 
 			br.readLine(); //read first line as it is not important
@@ -447,8 +455,9 @@ public class top_level {
 	}
 	
 	public static boolean importDuties() {
-		System.out.println("Enter file path for duties"); //Prompt output of file path 
-		String path = in.next(); //store path
+//		System.out.println("Enter file path for duties"); //Prompt output of file path 
+//		String path = in.next(); //store path
+		String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/HS_Duties_2020-1.csv";
 		String dayOfTheWeek = "Monday"; //create a day of the week and set it to monday which is the first duty
 		Time startTime = new Time(0,0); //create a new start time
 		Time endTime = new Time(0,0); //create a new end time 
@@ -491,12 +500,15 @@ public class top_level {
 				temp.setEndTime(endTime);
 				duties.add(temp);
 				//printing and testing 
-				System.out.println("Duty no " + (index + 1));
-				System.out.println("Day of the week " + duties.get(index).getDayOfTheWeek());
-				System.out.println("Name " + duties.get(index).getName());
-				System.out.println("Start time " + duties.get(index).getStartTime().toString());
-				System.out.println("End time " + duties.get(index).getEndTime().toString());
-				System.out.println();
+				
+					System.out.println("Duty no " + (index + 1));
+					System.out.println("Day of the week " + duties.get(index).getDayOfTheWeek());
+					System.out.println("Name " + duties.get(index).getName());
+					System.out.println("Start time " + duties.get(index).getStartTime().toString());
+					System.out.println("End time " + duties.get(index).getEndTime().toString());
+					System.out.println();
+				
+				
 				index++;
 			}
 			}
