@@ -37,7 +37,7 @@ public class top_level {
 //		boolean d = importSubjects();
 //		boolean e = importAdmins();
 //		boolean f = importPeriodSix();
-		boolean g = importDuties(); 
+		boolean g = importDuties();  //I've set it so that it doesn't prompt for user input as the file is stored locally on my Laptop. Please delete if you wish to test
 //		assignTeachers();
 //		generateCSV();
 		System.out.println("After in the array and printing through main method");
