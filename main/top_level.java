@@ -28,8 +28,9 @@ public class top_level {
 	public static Lesson allFalse = new Lesson(false,false,false,false,false,false,false); //Creating an lesson with all lessons being false
 	public static Scanner in = new Scanner(System.in); //public scanner that is used by all methods
 	public static String line = "";
-	public static final char[] numbers = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '-', ':', ' ', '0'};
-
+	public static final char[] numbers = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '-', ':', ' ', '0'}; //array for checking of time
+	public static final char[] IdNumbers = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'}; //array for validation of ID
+	public static final char[] allowedChars = {'(', ')', ' ', '.', '/', ','};
 
 	public static void main(String[] args) {
 //		boolean b = importTeachers();
@@ -60,7 +61,94 @@ public class top_level {
 		}
 		return -1; // default return - 1
 	}
-
+	public static boolean searchFor(char [] charArray, char k) { //method for searching for character in array
+		for(int i = 0; i < charArray.length; i++) { //loop through array
+			if(charArray[i] == k) { //check if the character matches 
+				return true; //return true 
+			}
+		}
+		return false; // return false as character has not been found 
+	}
+	public static int toASCII(char ch) { //method to convert character to ASCII
+		int k = ch; //converting character to ASCII value
+		return k; // returning the ASCII value
+	}
+	public static boolean isValidID(String id) { //validation for ID
+		//Presence Check 
+		if (id == null) { //check if id is null 
+			return false; //Invalid ID
+			}
+		id = id.trim(); //remove unnecessary spaces
+		//Length check 
+		if(id.length() != 5) { //check if length of ID is not 6
+			return false; //Invalid ID
+		}
+		//Format check (All characters are numbers)
+		for(int i = 0; i < id.length(); i++) {  //loop through all characters of string
+			char k = id.charAt(i); //get character at index
+			if(searchFor(IdNumbers, k) == false) { //try and find character in array
+				return false; //return false as character has not been found in the array thus Invalid ID
+			}
+		}
+		//checking ID is unique
+		for(int z = 0; z < teachers.size(); z++) { //looping through teachers arrayList so far
+			String compare = "" + teachers.get(z).getId(); //convert to string by getting teacher ID
+			compare = compare.trim(); //remove unnecessary spaces
+			if(id.equals(compare)) { //check if ID matches that of list
+				System.out.println("ID already taken by " + teachers.get(z).getName()); //print out error message indicating that it's not a unique ID
+				return false; //Invalid ID as it is not unique
+			}
+		}
+		return true; //Valid ID
+	}
+	public static boolean isValidName(String name) { //validation for Name
+		//Presence Check 
+		if(name == null) { //check if it null
+			return false; //Invalid Name
+		}
+		name = name.trim(); //remove unnecessary spaces
+		//Length Check
+		if(name.length() <= 1) { //check if length is less than or equal to 1
+			 return false; //Invalid Name
+		 }
+		//Format check (All alphabets and some special characters only)
+		for(int i = 0; i < name.length(); i++) { //loop through length of name
+			char k = name.charAt(i); //get the character at the index
+			int ASCII = toASCII(k); //convert to ASCII value
+				if(ASCII < 65 || ASCII > 90) {//check if it is not a capital letter
+					if(ASCII < 96 || ASCII > 122) { //check if it is not a letter
+						if(searchFor(allowedChars, k) == false) { //check if it is not an allowed character like '(' or ')'
+							return false; //Invalid ID
+						}
+					}
+				} 
+		}
+		return true; //Valid Name
+	}
+	public static boolean isValidLessonsPerWeek(String lessonsPerWeek) { //validation for LessonsPerWeek
+		//Presence check
+		if(lessonsPerWeek == null || lessonsPerWeek.length() == 0) { // check if it is null
+			return false; //invalid LessonsPerWeek
+		}
+		//Length check
+		if(lessonsPerWeek.length() == 0) { //check if it's length is 0
+			return false; //invalid LessonsPerWeek+
+		}
+		//Format Check (All characters are numbers only)
+		lessonsPerWeek = lessonsPerWeek.trim(); //remove any unnecessary spaces
+		for(int i = 0; i < lessonsPerWeek.length(); i++) { //loop through length of array
+			char k = lessonsPerWeek.charAt(i); //get the character at the index
+			if(searchFor(IdNumbers,k) == false) { //check if the character is not a number
+				return false; // invalid LessonsPerWeek
+			}
+		}
+		//Range check
+		int week = Integer.parseInt(lessonsPerWeek); //get the integer
+		if (week > 30 || week < 0) { //check if week is greater than 30 or less than 0
+			return false; //invalid lessonsPerWeek
+		}
+		return true; //Valid Lessons per week
+	}
 	public static void newDay() { //change all teachers to not have duty on day 
 		for (int i = 0; i < teachers.size(); i++) { // go through all teachers 
 			Teacher teacher = teachers.get(i); // make a copy
@@ -272,10 +360,17 @@ public class top_level {
 						values[b] = ""; //otherwise set the values of value[b] to be empty
 					}
 				}
-			
-				
+				if(isValidID(values[0]) == false) { //check if it is a valid ID.
+					System.out.println("Error. ID " + values[0] + " of teacher " + values[1] + " is invalid. Please fix and re-enter"); //output error message
+					return false; //return false as import is not successful. 
+				}
 				int Id = Integer.parseInt(values[0]); //first element is ID
+				if(isValidName(values[1]) == false) { //check if the name is valid
+					System.out.println("Error. Name " + values[1] + " of teacher with ID" + values[1] + "is invalid. Please fix and re-enter");
+					return false;
+				}
 				String name = values[1];// second element is Name  
+				
 				int lessonsPerWeek = Integer.parseInt(values[2]); //third element is the number of lessons the teacher has
 				boolean homebase = setLesson(values[3]); //fourth element is the teacher's homebase
 				//Setting all the temp lessons to false to avoid NullPointer exception
