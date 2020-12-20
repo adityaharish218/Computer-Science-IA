@@ -54,6 +54,7 @@ public class top_level {
 	}
 
 	public static int searchForDay(String day) {
+		day = day.trim(); //remove any unnecessary spaces;
 		for(int i = 0; i < 5; i ++) { //Going through all days of the week
 			if(day.equalsIgnoreCase(daysOfTheWeek[i])) { //if the day of the week is found
 				return i; //return the index of that
@@ -148,6 +149,45 @@ public class top_level {
 			return false; //invalid lessonsPerWeek
 		}
 		return true; //Valid Lessons per week
+	}
+	
+	public static boolean isValidDutyName(String duty) { //validation for duty name
+		 //Presence Check 
+		if(duty == null ) { //check if it is null
+			return false; //Invalid duty name
+		}
+		duty = duty.trim(); //remove any unnecessary spaces
+		
+		if(duty.length() <= 1) { //check if it is less than or equal to 1
+			return false; //Invalid duty name
+		}
+		//Format check (Alphabets + numbers)
+		boolean allNumbers = true; //assume the duty is all numbers
+		for(int i = 0; i < duty.length(); i++) {
+			char k = duty.charAt(i); //get the character at the index
+			if(searchFor(numbers,k) == false) { //try to find the character in the numbers array and if it can't it means that it is not a number
+				allNumbers = false; //duty name is not all numbers
+				break; //break out of loop
+			}
+		} 
+		if(allNumbers) { //check if it's still all numbers
+			return false; //Invalid duty name
+		}
+		return true; //Valid duty name
+	}
+	
+	public static boolean validDayOfTheWeek(String day) { //checking for valid day of the week
+		day = day.trim(); //remove any unneccessary spaces
+		return searchForDay(day) != -1; //use the searchForDay method. This returns an index. If it returns -1, it means day is not a day of the week and thus it will return false
+	}
+	
+	public static boolean validTimes(Time startTime, Time endTime) {
+		return startTime.compareTo(endTime) < 0; //use the CompareTo method in the time class. This returns a negative value if the another time is greater than this time. 
+	}
+	
+	public static boolean validSubjectName(String sName) {
+		sName = sName.trim(); //remove any unnecessary spaces
+		return isValidName(sName); //Subject name has the same validation as name. 
 	}
 	public static void newDay() { //change all teachers to not have duty on day 
 		for (int i = 0; i < teachers.size(); i++) { // go through all teachers 
@@ -490,6 +530,7 @@ public class top_level {
 					i++; //increase i
 					temp = teachers.get(i); //move onto next teacher
 				} 
+					boolean SubjectFound = false; //assume subject has not yet been found 
 					Subject [] tempSubjects = new Subject[Subjects.length]; //create a new array the lenght of the subjects array
 					for(int j = 0; j < tempSubjects.length; j++) { //loop through all of the teachers subjects
 						String sName = Subjects[j]; //get the name of the teacher's subject
@@ -498,9 +539,15 @@ public class top_level {
 							String sNameInList = SubjectsWithDays.get(k).getName(); //get the name of the subject in the list
 							if(sName.equals(sNameInList)) { //check if names math
 								tempSubjects[j] = SubjectsWithDays.get(k); //if they do then set that to the tempSubjects array
+								SubjectFound = true; //subject has been found
 								break; //break out of the loop
 							}
 						}
+						if(!SubjectFound) { //if subject is not found
+							System.out.println("Error, Teacher : " + teachers.get(i).getName() + " with subject " + sName + " not found. Please fix and re enter"); //output error message
+							return false; //return false as subject was not found
+						}
+					SubjectFound = false; //set back to false as moving on to next subject. 
 					}
 					temp.setSubject(tempSubjects); //set the teacher subjects to be this
 				
@@ -534,6 +581,14 @@ public class top_level {
 			while(br.ready()) { //loop while it is ready 
 				line = br.readLine(); //read the line 
 				String [] values = line.split(","); //split and store into array 
+				if(validSubjectName(values[0]) == false) { //check if the name is not valid
+					System.out.println("Error, Subject name " + values[0] + " is not a valid name. Please fix and re-enter"); //output error message
+					return false; //import not successful. 
+				}
+				if(validDayOfTheWeek(values[1]) == false) { //check if the day of the week is not valid
+					System.out.println("Error, Subject name " + values[1] + " is not a valid day of the week. Please fix and re-enter"); //output error message
+					return false; //import not successful.
+				}
 				Subject s = new Subject(values[0],values[1]); //first value is the name and second is meetingday
 				SubjectsWithDays.add(s); //store into the array list
 			}
@@ -561,6 +616,7 @@ public class top_level {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new bufferedReader
 			br.readLine(); //read the first line as it is not important (It is monday but that is already stored)
+			boolean [] allDaysofTheWeek = {true,false,false,false,false}; //an array to ensure that all days of the week have been covered. Monday is true 
 			while(br.ready()) { //while the bufferedReader is ready
 			line = br.readLine(); //read the line and store into the string line
 			line = line.trim(); //remove all uncessary spaces 
@@ -572,10 +628,12 @@ public class top_level {
 			
 			if(searchForDay(line.trim()) > -1 ) { //use search for day on line, this returns an index and the default is -1, if it is not -1 that means that this is a day of the week and check if it is not null or empty ("")
 				dayOfTheWeek = line; //day of the week is now line
+				allDaysofTheWeek[searchForDay(line)] = true; //set the boolean to true as that particular day of the week has been found
 			}
 			else if (isInteger(line.trim()) && setLesson(line)) { //check if line is likely to be a time which means that all it's characters are in the numbers array. Also make sure that it's length is greater than 0
 				String [] values = line.split("-"); //split the values in terms of "-", the time is like "11:35 - 12:00". So by splitting it in terms of -, it will give me two values
 				String [] forStartTime = values[0].split(":"); //now for the start time which is the first value stored in values array, split it by the ":". So if the value was like 11:35, this will give me an array with the values of 11 and 35
+				
 				int starHour = Integer.parseInt(forStartTime[0]); //get the integer in the first value which will be the hour. Trim to remove the spaces
 				int starMin = Integer.parseInt(forStartTime[1].trim()); //get the integer in the second value which will be the minute. Trim to remove the spaces 
 				startTime.setTime(starHour, starMin);
@@ -583,17 +641,22 @@ public class top_level {
 				String [] forEndTime = values[1].split(":");
 				int endHour = Integer.parseInt(forEndTime[0].trim());
 				int endMin = Integer.parseInt(forEndTime[1].trim());
+				if(validTimes(startTime, endTime) == false) { //check if times are not valid
+					System.out.println("Error," + startTime.toString() + " and " + endTime.toString() + " are not valid. Please ensure that end time is later than start time. Please fix and re-enter");
+					return false; //import unsuccessful. 
+				}
 				endTime.setTime(endHour, endMin);	
-				
-				
-				
 			}
 			else if(setLesson(line)) { //Check if the length of line is greater than 0;  The duties between days are separated by an empty row which means that it is not a duty Name and it's length is 0
+				if(isValidDutyName(line) == false) { //check if it is not a valid name
+					System.out.println("Error, Duty name " + line + " is not valid. Please fix and re-enter"); //output error message
+					return false; //import not successful
+				}
 				String dutyName = line; // if it isn't the other two, then it is the name of the duty. Store that as a string
 				Duty temp = new Duty(dutyName, startTime, endTime, dayOfTheWeek); //create a new duty with these parameters
 				temp.setStartTime(startTime);
 				temp.setEndTime(endTime);
-				duties.add(temp);
+				duties.add(temp); //add it to the duties array list. 
 				//printing and testing 
 				
 					System.out.println("Duty no " + (index + 1));
@@ -603,11 +666,15 @@ public class top_level {
 					System.out.println("End time " + duties.get(index).getEndTime().toString());
 					System.out.println();
 				
-				
 				index++;
 			}
 			}
-			
+			for(int i = 0; i < allDaysofTheWeek.length; i++) { //loop through all days of the week
+				if(allDaysofTheWeek[i] == false) { //if you find one false which means one day has not been covered
+					System.out.println("Error, " + daysOfTheWeek[i] + " not found. Please fix and re-enter");
+					return false; //import not successful
+				}
+			}
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
