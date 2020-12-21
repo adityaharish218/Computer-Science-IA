@@ -628,7 +628,7 @@ public class top_level {
 				line = ""; //change it to empty string (Avoid null pointer exception) 
 			}
 			
-			// System.out.println(">>> " + searchForDay(line) + " " + isInteger(line) + line);
+			// System.out.println(">>>" + searchForDay(line) + " " + isInteger(line) + line);
 			
 			if(searchForDay(line.trim()) > -1 ) { //use search for day on line, this returns an index and the default is -1, if it is not -1 that means that this is a day of the week and check if it is not null or empty ("")
 				dayOfTheWeek = line; //day of the week is now line
