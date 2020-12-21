@@ -21,6 +21,7 @@ public class top_level {
 	public static ArrayList<AssignedDuty> assignedDuties = new ArrayList<AssignedDuty>(); // list of duties with teachers assigned
 	public static ArrayList<Integer> adminIds = new ArrayList<Integer>(); //list of adminIds
 	public static ArrayList<Subject> SubjectsWithDays = new ArrayList<Subject>(); 
+	public static ArrayList<FixTime> fixTimes = new ArrayList<FixTime>();
 	public static final String[] daysOfTheWeek = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};	
 	public static Duty prevduty; //create a duty
 	public static int noOfAdmins = 0; // the number of admins 
@@ -612,6 +613,7 @@ public class top_level {
 		Time startTime = new Time(0,0); //create a new start time
 		Time endTime = new Time(0,0); //create a new end time 
 		int index = 0;
+		int counter = 0;
 		System.out.println("In arrayList immediately after I've added the Duty ");
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new bufferedReader
@@ -645,7 +647,9 @@ public class top_level {
 					System.out.println("Error," + startTime.toString() + " and " + endTime.toString() + " are not valid. Please ensure that end time is later than start time. Please fix and re-enter");
 					return false; //import unsuccessful. 
 				}
-				endTime.setTime(endHour, endMin);	
+				endTime.setTime(endHour, endMin);
+				FixTime temp = new FixTime(dayOfTheWeek,startTime,endTime,counter); //create a new FixTime object
+				fixTimes.add(temp); //add it to the ArrayList
 			}
 			else if(setLesson(line)) { //Check if the length of line is greater than 0;  The duties between days are separated by an empty row which means that it is not a duty Name and it's length is 0
 				if(isValidDutyName(line) == false) { //check if it is not a valid name
@@ -657,6 +661,7 @@ public class top_level {
 				temp.setStartTime(startTime);
 				temp.setEndTime(endTime);
 				duties.add(temp); //add it to the duties array list. 
+				counter++; //increase the counter for number of duties 
 				//printing and testing 
 				
 					System.out.println("Duty no " + (index + 1));
@@ -689,6 +694,19 @@ public class top_level {
 		}
 		
 		return true; //import successful
+	}
+	
+	public static void fixTimes() {
+		int startIndex = 0; //starting index
+		for(int i = 0; i < fixTimes.size(); i++) { //loop through all fixtimes arrayList
+			int endIndex = fixTimes.get(i).getUpTo(); //get the last index of which the duties times need to be changed
+			for(int j = startIndex; i < endIndex; i++) { //loop from start index to end index indicating the number of duties 
+				duties.get(j).setStartTime(fixTimes.get(i).getStartTime()); //set the duties start time to that of the fixtimes start time at the index
+				duties.get(j).setEndTime(fixTimes.get(i).getEndTime()); //set the duties end time to that of the fixTimes end time at the index
+			}
+			startIndex = endIndex; 
+		}
+		
 	}
 	
 	public static boolean generateCSV() {
