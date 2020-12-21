@@ -8,10 +8,18 @@ public class Teacher {
 	private int dutiesToBeAssigned; // the number of duties that should be assigned to the teacher
 	private int dutiesAssigned;// the number of duties currently done by the teacher
 	private int points; // the number of points the teacher has. Based on conditions
-	private Lesson[] lessons; // contains lessons teachers have on the day
-	private Subject[] subject; //contains the number of subjects the teacher has
+	private Lesson[] lessons = new Lesson[1]; // contains lessons teachers have on the day
+	private Subject[] subject = new Subject[1]; //contains the number of subjects the teacher has
 	private boolean assignedToday; // if the teacher has been assigned today
 	private boolean homebase; // whether the teacher has a homebase or not 
+	private boolean assignedAfterSchool = false; //whether a teacher has already been assigned an after school duty or not
+	
+	public boolean isAssignedAfterSchool() {
+		return assignedAfterSchool;
+	}
+	public void setAssignedAfterSchool(boolean assignedAfterSchool) {
+		this.assignedAfterSchool = assignedAfterSchool;
+	}
 	//Setters and Getters 
 	public String getName() {
 		return name;

@@ -31,18 +31,17 @@ public class top_level {
 	public static String line = "";
 	public static final char[] numbers = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '-', ':', ' ', '0'}; //array for checking of time
 	public static final char[] IdNumbers = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'}; //array for validation of ID
-	public static final char[] allowedChars = {'(', ')', ' ', '.', '/', ','};
+	public static final char[] allowedChars = {'(', ')', ' ', '.', '/', ',', '-'};
 
 	public static void main(String[] args) {
-//		boolean b = importTeachers();
-//		boolean c = importSubjectMeetingDays(); 
-//		boolean d = importSubjects();
-//		boolean e = importAdmins();
-//		boolean f = importPeriodSix();
-		boolean g = importDuties();  //I've set it so that it doesn't prompt for user input as the file is stored locally on my Laptop. Please delete if you wish to test
-		fixTimes();
-//		assignTeachers();
-//		generateCSV();
+		boolean b = importTeachers();
+		boolean c = importSubjectMeetingDays(); 
+		boolean d = importSubjects();
+		boolean e = importAdmins();
+		boolean f = importPeriodSix();
+		boolean g = importDutiesTakeTwo();  //I've set it so that it doesn't prompt for user input as the file is stored locally on my Laptop. Please delete if you wish to test
+		assignTeachers();
+		generateCSV();
 		System.out.println("After in the array and printing through main method");
 		for(int index = 0; index < duties.size(); index++) {
 			System.out.println("Duty no " + (index + 1));
@@ -239,7 +238,8 @@ public class top_level {
 		prevduty = duties.get(0); //get the first duty
 		for (int i = 0; i < duties.size(); i++) { // going through all duties
 			Duty assigned = duties.get(i); // accessing duty
-			if(!(prevduty.getDayOfTheWeek().equalsIgnoreCase(assigned.getDayOfTheWeek()))){ //check if this new duty's day of the week is the same as the previous one
+			if(prevduty.getStartTime().getHours() != assigned.getStartTime().getHours()){ //check if this new duty's start time is the same as the old one
+				
 				newDay(); //if it is not, that means it is a new day and so set it such that all teachers can be assigned
 			}
 			Time dutyStartTime = assigned.getStartTime();// get the start time of the duty
@@ -270,7 +270,7 @@ public class top_level {
 					}
 
 					if(teacher.getDutiesAssigned() == teacher.getDutiesToBeAssigned()) { //check if the teacher can have more duties
-						canAssign = false; //Teacher cannot be assigned duty if the duties assigned are greater are greater
+						canAssign = false; //Teacher cannot be assigned duty as they have already been assigned the max 
 
 					}
 
@@ -281,7 +281,12 @@ public class top_level {
 					String dayOfTheWeek = assigned.getDayOfTheWeek(); // accessing the duty's day of the week
 					for (int k = 0; k < teacher.getSubject().length; k++) { // going through all of the teachers lessons
 						Subject[] teacherSubjects = teacher.getSubject(); // accessing teachers subjects
-						if (dayOfTheWeek.equals(teacherSubjects[k].getMeetingDay())) { // check if the subject
+						if(teacherSubjects[k] == null) { //check if it is equal to null
+							canAssign = false; //teacher cannot be assigned as they are likely admin which means they cannot be assigned in lunch
+							break; //break out of loop
+						}
+						
+						if (dayOfTheWeek.equals(teacherSubjects[k].getMeetingDay())) { // check if the subject's meeting day is the same as the duty's day
 							canAssign = false; // teacher has a subject so cannot assign them a lunch duty
 							break; // break out of loop as teacher cannot be allocated this duty on this day
 						}
@@ -313,6 +318,10 @@ public class top_level {
 						canAssign = false; //Teacher cannot be assigned duty if the duties assigned are greater are greater
 
 					}
+					
+					if(teacher.isAssignedAfterSchool()) { //check if the teacher has already been assigned an afterSchool duty
+						canAssign = false;
+					}
 
 				}
 				if(canAssign && !(teacher.getAssignedToday())) { //check if the teacher can be assigned
@@ -320,6 +329,9 @@ public class top_level {
 					assignedDuties.add(a); //add this duty along with assigned teacher
 					teacher.setDutiesAssigned(teacher.getDutiesAssigned() + 1); //increase this teacher's number of duties assigned by 1
 					teacher.setAssignedToday(true); // the teacher has been assigned a duty today so cannot be assigned again
+					if(dutyStartTime.getHours() >= 14) { //check if the duty is after school
+						teacher.setAssignedAfterSchool(true); //the teacher has already been assigned an afterschool duty
+					}
 					teachers.set(j,teacher); // set this teacher into the teachers arraylist
 					if(teacher.isAdmin()) { // check if the teacher being assigned is admin
 						dutiesAssignedToAdmins = dutiesAssignedToAdmins + 1; //if they are, increase it by one
@@ -408,7 +420,7 @@ public class top_level {
 				}
 				int Id = Integer.parseInt(values[0]); //first element is ID
 				if(isValidName(values[1]) == false) { //check if the name is valid
-					System.out.println("Error. Name " + values[1] + " of teacher with ID" + values[1] + "is invalid. Please fix and re-enter");
+					System.out.println("Error. Name " + values[1] + " of teacher with ID " + values[0] + " is invalid. Please fix and re-enter");
 					return false;
 				}
 				String name = values[1];// second element is Name  
@@ -591,7 +603,7 @@ public class top_level {
 					System.out.println("Error, Subject name " + values[1] + " is not a valid day of the week. Please fix and re-enter"); //output error message
 					return false; //import not successful.
 				}
-				Subject s = new Subject(values[0],values[1]); //first value is the name and second is meetingday
+				Subject s = new Subject(values[0].trim(),values[1]); //first value is the name and second is meetingday
 				SubjectsWithDays.add(s); //store into the array list
 			}
 			
@@ -716,6 +728,46 @@ public class top_level {
 			prevprint = fixTimes.get(k).getUpTo();
 		}
 		
+	}
+	
+	public static boolean importDutiesTakeTwo() {
+		System.out.println("Enter path for list of duties");
+		String path = in.next();
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new buffered reader
+			br.readLine(); //read the first line as it is not important
+			while(br.ready()) { //while the buffered reader is ready 
+				line = br.readLine(); //read the line
+				String [] values = line.split(","); //split the line by commas and store it into a new array
+				String name = values[0]; //first element is the name of the duty
+				String timeInString = values[1]; //second element is the times 
+				String [] times = timeInString.split("-"); //split the time in terms of "-", there are two times one being the starting time and the second being the ending time
+				String [] forStartTime = times[0].split(":"); //now for the start time which is the first value stored in values array, split it by the ":". So if the value was like 11:35, this will give me an array with the values of 11 and 35
+				//trim to get rid of any unnecessary spaces 
+				int startHours = Integer.parseInt(forStartTime[0].trim()); //first element is the hours
+				int starMin = Integer.parseInt(forStartTime[1].trim()); //second element is the minutes
+				Time startTime = new Time(startHours, starMin); //create a new time with those parameters
+				//repeat process for endTime
+				String[] forEndTime = times[1].split(":");
+				int endHours = Integer.parseInt(forEndTime[0].trim()); //first element is the hours
+				int endMin = Integer.parseInt(forEndTime[1].trim()); //second element is the minutes
+				Time endTime = new Time(endHours, endMin); 
+				for(int i = 0; i < values.length - 2; i++) { //loop through the length of the duties array - the first two elements
+					if(values[i + 2].length() > 0 && searchForDay(values[i+2]) != 1) { //check if it it's length is longer than 0 and it is a day of the week
+					String dayofTheWeek = values[i + 2]; //get the day of the week
+					Duty temp = new Duty(name,startTime,endTime,dayofTheWeek); //create a new duty
+					duties.add(temp); //add duty into array list
+					}
+				}
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		return true; //import successful 
 	}
 	
 	public static boolean generateCSV() {
