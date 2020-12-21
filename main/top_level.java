@@ -40,6 +40,7 @@ public class top_level {
 //		boolean e = importAdmins();
 //		boolean f = importPeriodSix();
 		boolean g = importDuties();  //I've set it so that it doesn't prompt for user input as the file is stored locally on my Laptop. Please delete if you wish to test
+		fixTimes();
 //		assignTeachers();
 //		generateCSV();
 		System.out.println("After in the array and printing through main method");
@@ -613,6 +614,7 @@ public class top_level {
 		Time startTime = new Time(0,0); //create a new start time
 		Time endTime = new Time(0,0); //create a new end time 
 		int index = 0;
+		int indexforfixTimes = 0;
 		int counter = 0;
 		System.out.println("In arrayList immediately after I've added the Duty ");
 		try {
@@ -643,13 +645,15 @@ public class top_level {
 				String [] forEndTime = values[1].split(":");
 				int endHour = Integer.parseInt(forEndTime[0].trim());
 				int endMin = Integer.parseInt(forEndTime[1].trim());
+				endTime.setTime(endHour, endMin);
 				if(validTimes(startTime, endTime) == false) { //check if times are not valid
 					System.out.println("Error," + startTime.toString() + " and " + endTime.toString() + " are not valid. Please ensure that end time is later than start time. Please fix and re-enter");
 					return false; //import unsuccessful. 
 				}
-				endTime.setTime(endHour, endMin);
 				FixTime temp = new FixTime(dayOfTheWeek,startTime,endTime,counter); //create a new FixTime object
 				fixTimes.add(temp); //add it to the ArrayList
+				fixTimes.set(indexforfixTimes,temp);
+				indexforfixTimes = indexforfixTimes + 1;
 			}
 			else if(setLesson(line)) { //Check if the length of line is greater than 0;  The duties between days are separated by an empty row which means that it is not a duty Name and it's length is 0
 				if(isValidDutyName(line) == false) { //check if it is not a valid name
@@ -700,11 +704,16 @@ public class top_level {
 		int startIndex = 0; //starting index
 		for(int i = 0; i < fixTimes.size(); i++) { //loop through all fixtimes arrayList
 			int endIndex = fixTimes.get(i).getUpTo(); //get the last index of which the duties times need to be changed
-			for(int j = startIndex; i < endIndex; i++) { //loop from start index to end index indicating the number of duties 
+			for(int j = startIndex; j < endIndex; j++) { //loop from start index to end index indicating the number of duties 
 				duties.get(j).setStartTime(fixTimes.get(i).getStartTime()); //set the duties start time to that of the fixtimes start time at the index
 				duties.get(j).setEndTime(fixTimes.get(i).getEndTime()); //set the duties end time to that of the fixTimes end time at the index
 			}
 			startIndex = endIndex; 
+		}
+		int prevprint = 0;
+		for(int k = 0; k < fixTimes.size(); k++) {
+			System.out.println("For duty no " + (prevprint + 1) + " to duty no " + fixTimes.get(k).getUpTo() + ", the start time is " + fixTimes.get(k).getStartTime().toString() + " and the end time is " + fixTimes.get(k).getEndTime().toString());
+			prevprint = fixTimes.get(k).getUpTo();
 		}
 		
 	}
