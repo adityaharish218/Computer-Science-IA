@@ -753,7 +753,7 @@ public class top_level {
 				int endMin = Integer.parseInt(forEndTime[1].trim()); //second element is the minutes
 				Time endTime = new Time(endHours, endMin); 
 				for(int i = 0; i < values.length - 2; i++) { //loop through the length of the duties array - the first two elements
-					if(values[i + 2].length() > 0 && searchForDay(values[i+2]) != 1) { //check if it it's length is longer than 0 and it is a day of the week
+					if(values[i + 2].length() > 0 && searchForDay(values[i+2]) != -1) { //check if it it's length is longer than 0 and it is a day of the week
 					String dayofTheWeek = values[i + 2]; //get the day of the week
 					Duty temp = new Duty(name,startTime,endTime,dayofTheWeek); //create a new duty
 					duties.add(temp); //add duty into array list
