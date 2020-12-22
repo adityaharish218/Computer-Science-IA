@@ -190,13 +190,6 @@ public class top_level {
 		sName = sName.trim(); //remove any unnecessary spaces
 		return isValidName(sName); //Subject name has the same validation as name. 
 	}
-	public static void newDay() { //change all teachers to not have duty on day 
-		for (int i = 0; i < teachers.size(); i++) { // go through all teachers 
-			Teacher teacher = teachers.get(i); // make a copy
-			teacher.setAssignedToday(false); //set the copy to false
-			teachers.set(i, teacher); //put the copy in place of the real one
-		}
-	}
 	
 	public static boolean searchNumbers(char k) { //method to find if a certain character is a integer or - (Used for time) 
 		 
@@ -238,15 +231,13 @@ public class top_level {
 		prevduty = duties.get(0); //get the first duty
 		for (int i = 0; i < duties.size(); i++) { // going through all duties
 			Duty assigned = duties.get(i); // accessing duty
-			if(prevduty.getStartTime().getHours() != assigned.getStartTime().getHours()){ //check if this new duty's start time is the same as the old one
-				
-				newDay(); //if it is not, that means it is a new day and so set it such that all teachers can be assigned
-			}
 			Time dutyStartTime = assigned.getStartTime();// get the start time of the duty
 			for (int j = 0; j < teachers.size(); j++) { // going through all teachers
 				boolean canAssign = true; //Assume teacher can be assigned duty
 				Teacher teacher = teachers.get(j); // accessing teacher
-
+				if(teacher.assignedDays[searchForDay(assigned.getDayOfTheWeek())]) { //check if teacher has already been assigned a duty on that day
+					canAssign = false; //teacher cannot be assigned duty. 
+				}
 				if (dutyStartTime.getHours() == 8) { // Check if the duty begins at before school, Begins at 8:00
 					if(!(teacher.isAdmin()) && dutiesAssignedToAdmins < noOfAdmins) { //check if teacher is admin or not, my client usually gives admin the early morning duties. Also check if there are any admins still left to be assigned duties. 
 						canAssign = false; // cannot assign duty because it needs to be admin
@@ -324,11 +315,11 @@ public class top_level {
 					}
 
 				}
-				if(canAssign && !(teacher.getAssignedToday())) { //check if the teacher can be assigned
+				if(canAssign) { //check if the teacher can be assigned
 					AssignedDuty a = new AssignedDuty(assigned,teacher); //create a new assigned duty with the teacher
 					assignedDuties.add(a); //add this duty along with assigned teacher
 					teacher.setDutiesAssigned(teacher.getDutiesAssigned() + 1); //increase this teacher's number of duties assigned by 1
-					teacher.setAssignedToday(true); // the teacher has been assigned a duty today so cannot be assigned again
+					teacher.assignedDays[searchForDay(assigned.getDayOfTheWeek())] = true; //change it such that teacher has been assigned today 
 					if(dutyStartTime.getHours() >= 14) { //check if the duty is after school
 						teacher.setAssignedAfterSchool(true); //the teacher has already been assigned an afterschool duty
 					}
