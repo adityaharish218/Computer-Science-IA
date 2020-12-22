@@ -6,6 +6,13 @@ public class Duty {
 	private Time endTime; //End time of duty
 	private String dayOfTheWeek; //day of the week the duty is
 	private int pointsToDeduct; //points to deduct from teacher if duty is assigned
+	private boolean hasBeenAssigned = false; //if duty has been assigned or not
+	public boolean isHasBeenAssigned() {
+		return hasBeenAssigned;
+	}
+	public void setHasBeenAssigned(boolean hasBeenAssigned) {
+		this.hasBeenAssigned = hasBeenAssigned;
+	}
 	//setters and getters
 	public String getName() {
 		return name;

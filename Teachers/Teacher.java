@@ -56,7 +56,10 @@ public class Teacher {
 			this.dutiesToBeAssigned = 1;
 			return;
 		}
-		
+		if(this.lessonsPerWeek < 10) { //if they work part time 
+			this.dutiesToBeAssigned = 1; //they are assigned one duty
+			return;
+		}
 		this.dutiesToBeAssigned = 3; //default to 3 duties
 		
 	}

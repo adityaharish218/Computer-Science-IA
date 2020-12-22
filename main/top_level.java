@@ -22,8 +22,9 @@ public class top_level {
 	public static ArrayList<Integer> adminIds = new ArrayList<Integer>(); //list of adminIds
 	public static ArrayList<Subject> SubjectsWithDays = new ArrayList<Subject>(); 
 	public static ArrayList<FixTime> fixTimes = new ArrayList<FixTime>();
+	public static ArrayList<Duty> dutiesYetToBeAssigned = new ArrayList<Duty>(); //arraylist for duties that still have to be assigned
+	public static ArrayList<Teacher> teachersStillCanBeAssigned = new ArrayList<Teacher>(); //arraylist for teachers that can still be assigned duties
 	public static final String[] daysOfTheWeek = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};	
-	public static Duty prevduty; //create a duty
 	public static int noOfAdmins = 0; // the number of admins 
 	public static int dutiesAssignedToAdmins = 0; // the number of duties that have been assigned to admins
 	public static Lesson allFalse = new Lesson(false,false,false,false,false,false,false); //Creating an lesson with all lessons being false
@@ -39,8 +40,25 @@ public class top_level {
 		boolean d = importSubjects();
 		boolean e = importAdmins();
 		boolean f = importPeriodSix();
-		boolean g = importDutiesTakeTwo();  //I've set it so that it doesn't prompt for user input as the file is stored locally on my Laptop. Please delete if you wish to test
+		boolean g = importDutiesTakeTwo(); 
 		assignTeachers();
+		populateDutiesYetToBeAssigned();
+		boolean i = assignDutiesYetToBeAssigned();
+		int count = 0;
+		for(int k = 0; k < dutiesYetToBeAssigned.size(); k++) {
+			System.out.println(dutiesYetToBeAssigned.get(k).toString());
+			count++;
+		}
+		System.out.println(count);
+		i = assignDutiesYetToBeAssigned();
+		System.out.println("");
+		System.out.println("Second time");
+		count = 0;
+		for(int k = 0; k < dutiesYetToBeAssigned.size(); k++) {
+			System.out.println(dutiesYetToBeAssigned.get(k).toString());
+			count++;
+		}
+		System.out.println(count);
 		generateCSV();
 		System.out.println("After in the array and printing through main method");
 		for(int index = 0; index < duties.size(); index++) {
@@ -228,7 +246,6 @@ public class top_level {
 	}
 
 	public static void assignTeachers() {
-		prevduty = duties.get(0); //get the first duty
 		for (int i = 0; i < duties.size(); i++) { // going through all duties
 			Duty assigned = duties.get(i); // accessing duty
 			Time dutyStartTime = assigned.getStartTime();// get the start time of the duty
@@ -237,6 +254,9 @@ public class top_level {
 				Teacher teacher = teachers.get(j); // accessing teacher
 				if(teacher.assignedDays[searchForDay(assigned.getDayOfTheWeek())]) { //check if teacher has already been assigned a duty on that day
 					canAssign = false; //teacher cannot be assigned duty. 
+				}
+				if(assigned.isHasBeenAssigned()) { //check if duty has already been assigned 
+					canAssign = false; //cannot assign as duty has already been assigned. 
 				}
 				if (dutyStartTime.getHours() == 8) { // Check if the duty begins at before school, Begins at 8:00
 					if(!(teacher.isAdmin()) && dutiesAssignedToAdmins < noOfAdmins) { //check if teacher is admin or not, my client usually gives admin the early morning duties. Also check if there are any admins still left to be assigned duties. 
@@ -319,21 +339,164 @@ public class top_level {
 					AssignedDuty a = new AssignedDuty(assigned,teacher); //create a new assigned duty with the teacher
 					assignedDuties.add(a); //add this duty along with assigned teacher
 					teacher.setDutiesAssigned(teacher.getDutiesAssigned() + 1); //increase this teacher's number of duties assigned by 1
-					teacher.assignedDays[searchForDay(assigned.getDayOfTheWeek())] = true; //change it such that teacher has been assigned today 
+					teachers.get(j).setDutiesAssigned(teachers.get(j).getDutiesAssigned() + 1); //increase the teachers number of duties by 1
+					teachers.get(j).assignedDays[searchForDay(assigned.getDayOfTheWeek())] = true; //change it such that teacher has been assigned today 
 					if(dutyStartTime.getHours() >= 14) { //check if the duty is after school
-						teacher.setAssignedAfterSchool(true); //the teacher has already been assigned an afterschool duty
+						teachers.get(j).setAssignedAfterSchool(true); //the teacher has already been assigned an afterschool duty
 					}
-					teachers.set(j,teacher); // set this teacher into the teachers arraylist
+					
 					if(teacher.isAdmin()) { // check if the teacher being assigned is admin
 						dutiesAssignedToAdmins = dutiesAssignedToAdmins + 1; //if they are, increase it by one
 					}
+					duties.get(i).setHasBeenAssigned(true); //duty has been assigned. 
 					break; //break out of loop as teacher has been assigned 
-
 				}
 			}
-			prevduty = assigned; //make this duty the previous duty
 		}
+	
+		
 	}
+	
+	public static void populateDutiesYetToBeAssigned() {
+		
+		for(int i = 0; i < duties.size(); i++) { //loop through the whole duties array
+			if(duties.get(i).isHasBeenAssigned() == false) { //check if duty has been assigned
+				dutiesYetToBeAssigned.add(duties.get(i)); //add the duty to the list
+			}
+		}
+		for(int i = 0; i < teachers.size(); i++) {
+			if(teachers.get(i).getDutiesToBeAssigned() > teachers.get(i).getDutiesAssigned()) { //check if the teacher can still be assigned duties
+				teachersStillCanBeAssigned.add(teachers.get(i)); // add the teacher to the list
+			}
+		}
+		
+	}
+	
+	public static boolean assignDutiesYetToBeAssigned() {
+		for (int i = 0; i < dutiesYetToBeAssigned.size(); i++) { // going through all duties
+			Duty assigned = dutiesYetToBeAssigned.get(i); // accessing duty
+			Time dutyStartTime = assigned.getStartTime();// get the start time of the duty
+			for (int j = 0; j < teachersStillCanBeAssigned.size(); j++) { // going through all teachers
+				boolean canAssign = true; //Assume teacher can be assigned duty
+				Teacher teacher = teachersStillCanBeAssigned.get(j); // accessing teacher
+				if(teacher.assignedDays[searchForDay(assigned.getDayOfTheWeek())]) { //check if teacher has already been assigned a duty on that day
+					canAssign = false; //teacher cannot be assigned duty. 
+				}
+				if(assigned.isHasBeenAssigned()) { //check if duty has already been assigned 
+					canAssign = false; //cannot assign as duty has already been assigned. 
+				}
+				if (dutyStartTime.getHours() == 8) { // Check if the duty begins at before school, Begins at 8:00
+					if(teacher.isHomebase() == true) { //Check if teacher has a homebase or not
+						canAssign = false; //Set can assign to false as the teacher cannot be assigned the duty
+					}
+
+					if(teacher.getDutiesAssigned() == teacher.getDutiesToBeAssigned()) { //check if the teacher can have more duties
+						canAssign = false; //Teacher cannot be assigned duty if the duties assigned are greater are greater
+
+					}
+
+				}
+				if (dutyStartTime.getHours() == 11) { // Check if the duty begins at break, break begins at 11 hence hours = 11
+					Lesson [] teacherLessons = teacher.getLessons(); //access teacher lessons
+					int index = searchForDay(assigned.getDayOfTheWeek());// access the day of the week as index
+					if(teacherLessons[index].two == true || teacherLessons[index].three == true) { //Check if teacher has lesson on period 1
+						canAssign = false; //Set can assign to false as the teacher cannot be assigned the duty
+
+					}
+
+					if(teacher.getDutiesAssigned() == teacher.getDutiesToBeAssigned()) { //check if the teacher can have more duties
+						canAssign = false; //Teacher cannot be assigned duty as they have already been assigned the max 
+
+					}
+
+				}
+
+
+				if (dutyStartTime.getHours() == 13) { // Check if the duty begins at lunch time, Lunch begins at 1:25 pm so 13 hours
+					String dayOfTheWeek = assigned.getDayOfTheWeek(); // accessing the duty's day of the week
+					for (int k = 0; k < teacher.getSubject().length; k++) { // going through all of the teachers lessons
+						Subject[] teacherSubjects = teacher.getSubject(); // accessing teachers subjects
+						if(teacherSubjects[k] == null) { //check if it is equal to null
+							canAssign = false; //teacher cannot be assigned as they are likely admin which means they cannot be assigned in lunch
+							break; //break out of loop
+						}
+						
+						if (dayOfTheWeek.equals(teacherSubjects[k].getMeetingDay())) { // check if the subject's meeting day is the same as the duty's day
+							canAssign = false; // teacher has a subject so cannot assign them a lunch duty
+							break; // break out of loop as teacher cannot be allocated this duty on this day
+						}
+					}
+					Lesson [] teacherLessons = teacher.getLessons(); //access teacher lessons
+					int index = searchForDay(assigned.getDayOfTheWeek());// access the day of the week as index
+					if(teacherLessons[index].four == true || teacherLessons[index].five == true || teacherLessons[index].lunch == true) { //Check if teacher has lesson on period 4, lunch or 5
+						canAssign = false; //Set can assign to false as the teacher cannot be assigned the duty
+
+					}
+
+					if(teacher.getDutiesAssigned() == teacher.getDutiesToBeAssigned()) { //check if the teacher can have more duties
+						canAssign = false; //Teacher cannot be assigned duty if they are greater
+
+					}
+
+
+				}
+				if (dutyStartTime.getHours() >= 14) { // Check if the duty begins after school. The after school duty is varied between 15:30 and 17:00 hence check if the hour is greater than 14
+
+					Lesson [] teacherLessons = teacher.getLessons(); //access teacher lessons
+					int index = searchForDay(assigned.getDayOfTheWeek());// access the day of the week as index
+					if(teacherLessons[index].six == true) { //Check if teacher has lesson on period 6
+						canAssign = false; //Set can assign to false as the teacher cannot be assigned the duty
+
+					}
+
+					if(teacher.getDutiesAssigned() == teacher.getDutiesToBeAssigned()) { //check if the teacher can have more duties
+						canAssign = false; //Teacher cannot be assigned duty if the duties assigned are greater are greater
+
+					}
+					
+					if(teacher.isAssignedAfterSchool()) { //check if the teacher has already been assigned an afterSchool duty
+						canAssign = false;
+					}
+
+				}
+				if(canAssign) { //check if the teacher can be assigned
+					AssignedDuty a = new AssignedDuty(assigned,teacher); //create a new assigned duty with the teacher
+					assignedDuties.add(a); //add this duty along with assigned teacher
+					teachersStillCanBeAssigned.get(j).setDutiesAssigned(teachers.get(j).getDutiesAssigned() + 1); //increase the teachers number of duties by 1
+					teachersStillCanBeAssigned.get(j).assignedDays[searchForDay(assigned.getDayOfTheWeek())] = true; //change it such that teacher has been assigned today 
+					if(dutyStartTime.getHours() >= 14) { //check if the duty is after school
+						teachersStillCanBeAssigned.get(j).setAssignedAfterSchool(true); //the teacher has already been assigned an afterschool duty
+					}
+					dutiesYetToBeAssigned.get(i).setHasBeenAssigned(true); //duty has been assigned. 
+					break; //break out of loop as teacher has been assigned 
+				}
+			}
+		}
+		
+		ArrayList<Integer> indexForDuties = new ArrayList<Integer>(); //arrayList used to remove duties that have already been assigned
+		ArrayList<Integer> indexForTeachers = new ArrayList<Integer>(); //arrayList used to remove who still cannot be assigned
+		for(int i = 0 ; i < dutiesYetToBeAssigned.size(); i++) { //loop through whole array
+			if(dutiesYetToBeAssigned.get(i).isHasBeenAssigned()) { //check if duty has been assigned already as we need to remove it
+				indexForDuties.add(i); //add the index
+			}
+		}
+		for(int i = 0; i < indexForDuties.size(); i++) { //loop through all indexes
+			dutiesYetToBeAssigned.remove(i); //remove it from the index
+		}
+		//repeating the process for teachers
+		for(int i = 0 ; i < teachersStillCanBeAssigned.size(); i++) { //loop through whole array
+			if(teachersStillCanBeAssigned.get(i).getDutiesToBeAssigned() == teachersStillCanBeAssigned.get(i).getDutiesAssigned()) { //Check if the teacher has already reached max amount of duties assigned
+			}
+		}
+		for(int i = 0; i < indexForTeachers.size(); i++) { //loop through all indexes
+			teachersStillCanBeAssigned.remove(i); //remove it from the index
+		}
+		if(dutiesYetToBeAssigned.size() >= 1 && teachersStillCanBeAssigned.size() >= 1) { //check if there are still duties to be assigned and if there are still teachers that need assigning
+			return false; //all duties have not yet been assigned
+		}
+		return true; //all duties have been assigned
+	}
+	
 	public static boolean importPeriodSix() { //import teachers who have period six
 //		System.out.println("Enter file path for list of teachers with period 6"); //output message 
 //		String path = in.next(); //read the path
