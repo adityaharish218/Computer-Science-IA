@@ -148,4 +148,9 @@ public class Teacher {
 		this.lessons = lessons;
 	}
 	
+	public String toStringWithNumberOfDutiesToBeSet() {
+		String k = this.toString();
+		k = k + " No of Duties to be set " + this.getDutiesToBeAssigned();
+		return k;
+	}
 }

@@ -41,35 +41,20 @@ public class top_level {
 		boolean e = importAdmins();
 		boolean f = importPeriodSix();
 		boolean g = importDutiesTakeTwo(); 
-		assignTeachers();
-		populateDutiesYetToBeAssigned();
-		boolean i = assignDutiesYetToBeAssigned();
-		int count = 0;
-		for(int k = 0; k < dutiesYetToBeAssigned.size(); k++) {
-			System.out.println(dutiesYetToBeAssigned.get(k).toString());
-			count++;
+		
+		for(int i = 0; i < teachers.size(); i++) {
+			System.out.println(teachers.get(i).toStringWithNumberOfDutiesToBeSet());
 		}
-		System.out.println(count);
-		i = assignDutiesYetToBeAssigned();
-		System.out.println("");
-		System.out.println("Second time");
-		count = 0;
-		for(int k = 0; k < dutiesYetToBeAssigned.size(); k++) {
-			System.out.println(dutiesYetToBeAssigned.get(k).toString());
-			count++;
-		}
-		System.out.println(count);
-		generateCSV();
-		System.out.println("After in the array and printing through main method");
-		for(int index = 0; index < duties.size(); index++) {
-			System.out.println("Duty no " + (index + 1));
-			System.out.println("Day of the week " + duties.get(index).getDayOfTheWeek());
-			System.out.println("Name " + duties.get(index).getName());
-			System.out.println("Start time " + duties.get(index).getStartTime().toString());
-			System.out.println("End time " + duties.get(index).getEndTime().toString());
-			System.out.println();
+	
+		for(int k = 0; k < duties.size(); k++) {
+			System.out.println(duties.get(k).getPossibleTeachers().size());
 		}
 		
+		System.out.println(teachers.size());
+		
+		assignTeachers();
+		generateCSV();
+		in.close();
 	}
 
 	public static int searchForDay(String day) {
@@ -258,10 +243,15 @@ public class top_level {
 				if(assigned.isHasBeenAssigned()) { //check if duty has already been assigned 
 					canAssign = false; //cannot assign as duty has already been assigned. 
 				}
+				if(teacher.getDutiesAssigned() == teacher.getDutiesToBeAssigned()) { //check if the teacher can have more duties
+					canAssign = false; //Teacher cannot be assigned duty if the duties assigned are greater are greater
+				}
+				
+				if(teacher.isAssignedAfterSchool()) { //check if the teacher has already been assigned an afterSchool duty
+					canAssign = false;
+				}
 				if (dutyStartTime.getHours() == 8) { // Check if the duty begins at before school, Begins at 8:00
-					if(!(teacher.isAdmin()) && dutiesAssignedToAdmins < noOfAdmins) { //check if teacher is admin or not, my client usually gives admin the early morning duties. Also check if there are any admins still left to be assigned duties. 
-						canAssign = false; // cannot assign duty because it needs to be admin
-					}
+					
 					if(teacher.isHomebase() == true) { //Check if teacher has a homebase or not
 						canAssign = false; //Set can assign to false as the teacher cannot be assigned the duty
 					}
@@ -325,20 +315,13 @@ public class top_level {
 
 					}
 
-					if(teacher.getDutiesAssigned() == teacher.getDutiesToBeAssigned()) { //check if the teacher can have more duties
-						canAssign = false; //Teacher cannot be assigned duty if the duties assigned are greater are greater
-
-					}
 					
-					if(teacher.isAssignedAfterSchool()) { //check if the teacher has already been assigned an afterSchool duty
-						canAssign = false;
-					}
 
 				}
+			
 				if(canAssign) { //check if the teacher can be assigned
 					AssignedDuty a = new AssignedDuty(assigned,teacher); //create a new assigned duty with the teacher
 					assignedDuties.add(a); //add this duty along with assigned teacher
-					teacher.setDutiesAssigned(teacher.getDutiesAssigned() + 1); //increase this teacher's number of duties assigned by 1
 					teachers.get(j).setDutiesAssigned(teachers.get(j).getDutiesAssigned() + 1); //increase the teachers number of duties by 1
 					teachers.get(j).assignedDays[searchForDay(assigned.getDayOfTheWeek())] = true; //change it such that teacher has been assigned today 
 					if(dutyStartTime.getHours() >= 14) { //check if the duty is after school
@@ -357,43 +340,23 @@ public class top_level {
 		
 	}
 	
-	public static void populateDutiesYetToBeAssigned() {
-		
-		for(int i = 0; i < duties.size(); i++) { //loop through the whole duties array
-			if(duties.get(i).isHasBeenAssigned() == false) { //check if duty has been assigned
-				dutiesYetToBeAssigned.add(duties.get(i)); //add the duty to the list
-			}
-		}
-		for(int i = 0; i < teachers.size(); i++) {
-			if(teachers.get(i).getDutiesToBeAssigned() > teachers.get(i).getDutiesAssigned()) { //check if the teacher can still be assigned duties
-				teachersStillCanBeAssigned.add(teachers.get(i)); // add the teacher to the list
-			}
-		}
-		
-	}
-	
-	public static boolean assignDutiesYetToBeAssigned() {
-		for (int i = 0; i < dutiesYetToBeAssigned.size(); i++) { // going through all duties
-			Duty assigned = dutiesYetToBeAssigned.get(i); // accessing duty
+	public static void assignPossibleTeachers() {
+		for (int i = 0; i < duties.size(); i++) { // going through all duties
+			Duty assigned = duties.get(i); // accessing duty
 			Time dutyStartTime = assigned.getStartTime();// get the start time of the duty
-			for (int j = 0; j < teachersStillCanBeAssigned.size(); j++) { // going through all teachers
+			ArrayList<Teacher> possibleTeachers = new ArrayList<Teacher>(); //create a new array used to find probable teachers for the duty
+			for (int j = 0; j < teachers.size(); j++) { // going through all teachers
 				boolean canAssign = true; //Assume teacher can be assigned duty
-				Teacher teacher = teachersStillCanBeAssigned.get(j); // accessing teacher
-				if(teacher.assignedDays[searchForDay(assigned.getDayOfTheWeek())]) { //check if teacher has already been assigned a duty on that day
-					canAssign = false; //teacher cannot be assigned duty. 
-				}
-				if(assigned.isHasBeenAssigned()) { //check if duty has already been assigned 
-					canAssign = false; //cannot assign as duty has already been assigned. 
-				}
+				Teacher teacher = teachers.get(j); // accessing teacher
+			
 				if (dutyStartTime.getHours() == 8) { // Check if the duty begins at before school, Begins at 8:00
+					if(teacher.isAdmin() == false && dutiesAssignedToAdmins < noOfAdmins) { //check if teacher is admin or not, my client usually gives admin the early morning duties. Also check if there are any admins still left to be assigned duties. 
+						canAssign = false; // cannot assign duty because it needs to be admin
+					}
 					if(teacher.isHomebase() == true) { //Check if teacher has a homebase or not
 						canAssign = false; //Set can assign to false as the teacher cannot be assigned the duty
 					}
 
-					if(teacher.getDutiesAssigned() == teacher.getDutiesToBeAssigned()) { //check if the teacher can have more duties
-						canAssign = false; //Teacher cannot be assigned duty if the duties assigned are greater are greater
-
-					}
 
 				}
 				if (dutyStartTime.getHours() == 11) { // Check if the duty begins at break, break begins at 11 hence hours = 11
@@ -401,14 +364,7 @@ public class top_level {
 					int index = searchForDay(assigned.getDayOfTheWeek());// access the day of the week as index
 					if(teacherLessons[index].two == true || teacherLessons[index].three == true) { //Check if teacher has lesson on period 1
 						canAssign = false; //Set can assign to false as the teacher cannot be assigned the duty
-
 					}
-
-					if(teacher.getDutiesAssigned() == teacher.getDutiesToBeAssigned()) { //check if the teacher can have more duties
-						canAssign = false; //Teacher cannot be assigned duty as they have already been assigned the max 
-
-					}
-
 				}
 
 
@@ -432,13 +388,6 @@ public class top_level {
 						canAssign = false; //Set can assign to false as the teacher cannot be assigned the duty
 
 					}
-
-					if(teacher.getDutiesAssigned() == teacher.getDutiesToBeAssigned()) { //check if the teacher can have more duties
-						canAssign = false; //Teacher cannot be assigned duty if they are greater
-
-					}
-
-
 				}
 				if (dutyStartTime.getHours() >= 14) { // Check if the duty begins after school. The after school duty is varied between 15:30 and 17:00 hence check if the hour is greater than 14
 
@@ -449,59 +398,52 @@ public class top_level {
 
 					}
 
-					if(teacher.getDutiesAssigned() == teacher.getDutiesToBeAssigned()) { //check if the teacher can have more duties
-						canAssign = false; //Teacher cannot be assigned duty if the duties assigned are greater are greater
-
-					}
 					
-					if(teacher.isAssignedAfterSchool()) { //check if the teacher has already been assigned an afterSchool duty
-						canAssign = false;
-					}
 
 				}
 				if(canAssign) { //check if the teacher can be assigned
-					AssignedDuty a = new AssignedDuty(assigned,teacher); //create a new assigned duty with the teacher
-					assignedDuties.add(a); //add this duty along with assigned teacher
-					teachersStillCanBeAssigned.get(j).setDutiesAssigned(teachers.get(j).getDutiesAssigned() + 1); //increase the teachers number of duties by 1
-					teachersStillCanBeAssigned.get(j).assignedDays[searchForDay(assigned.getDayOfTheWeek())] = true; //change it such that teacher has been assigned today 
-					if(dutyStartTime.getHours() >= 14) { //check if the duty is after school
-						teachersStillCanBeAssigned.get(j).setAssignedAfterSchool(true); //the teacher has already been assigned an afterschool duty
-					}
-					dutiesYetToBeAssigned.get(i).setHasBeenAssigned(true); //duty has been assigned. 
-					break; //break out of loop as teacher has been assigned 
+					possibleTeachers.add(teachers.get(j)); //add this teacher to the duty's possible teachers
 				}
 			}
+			duties.get(i).setPossibleTeachers(possibleTeachers); //set the duties possible teachers
 		}
-		
-		ArrayList<Integer> indexForDuties = new ArrayList<Integer>(); //arrayList used to remove duties that have already been assigned
-		ArrayList<Integer> indexForTeachers = new ArrayList<Integer>(); //arrayList used to remove who still cannot be assigned
-		for(int i = 0 ; i < dutiesYetToBeAssigned.size(); i++) { //loop through whole array
-			if(dutiesYetToBeAssigned.get(i).isHasBeenAssigned()) { //check if duty has been assigned already as we need to remove it
-				indexForDuties.add(i); //add the index
+	}
+	
+	public static void sortByPossibleTeachers() { //method to sort duties based on the number of possible teachers who can do the duty
+		int i = 0;  //counter variable
+		while(i < duties.size()) { //loop through whole array
+			int temp = duties.get(i).getPossibleTeachers().size(); //get the number of possible teacher the duty can have
+			int j = i - 1; //second variable 
+			while(j >= 0 && duties.get(j).getPossibleTeachers().size() > temp) { //loop until the value of j > 0 and the size of possible teachers at j > temp
+				duties.set(j + 1 , duties.get(j)); //set the index after to the index before
+				j = j - 1; //decrease j
+			}
+			duties.set(j + 1, duties.get(i)); //set the next index's duty to this one
+			i = i + 1; //increase i
+		} 
+	}
+	
+	public static void assignTheTeacher() { //assign the teacher
+		for(int i = 0; i < duties.size(); i++) { //loop through the whole teachers array
+			for(int j = 0; j < duties.get(i).getPossibleTeachers().size(); j++) { //loop through the duty's possible teacher
+				boolean canAssign = true; //assume teacher can be assigned the duty
 			}
 		}
-		for(int i = 0; i < indexForDuties.size(); i++) { //loop through all indexes
-			dutiesYetToBeAssigned.remove(i); //remove it from the index
+	}
+	
+	public static int findTeacherByID(int id) { //method to find teacher by ID. I do not need to worry about validation as the data has already been validated
+		int i = 0; //counter variable
+		while(teachers.get(i).getId() != id) { //while the teacher's ID does not equal the id we need to find 
+			i++; //increase I 
 		}
-		//repeating the process for teachers
-		for(int i = 0 ; i < teachersStillCanBeAssigned.size(); i++) { //loop through whole array
-			if(teachersStillCanBeAssigned.get(i).getDutiesToBeAssigned() == teachersStillCanBeAssigned.get(i).getDutiesAssigned()) { //Check if the teacher has already reached max amount of duties assigned
-			}
-		}
-		for(int i = 0; i < indexForTeachers.size(); i++) { //loop through all indexes
-			teachersStillCanBeAssigned.remove(i); //remove it from the index
-		}
-		if(dutiesYetToBeAssigned.size() >= 1 && teachersStillCanBeAssigned.size() >= 1) { //check if there are still duties to be assigned and if there are still teachers that need assigning
-			return false; //all duties have not yet been assigned
-		}
-		return true; //all duties have been assigned
+		return i; //return i as teacher has been found
 	}
 	
 	public static boolean importPeriodSix() { //import teachers who have period six
-	System.out.println("Enter file path for list of teachers with period 6"); //output message 
-		String path = in.next(); //read the path
-		//System.out.println("Importing period six");
-		//String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/Period_6.csv";
+	//System.out.println("Enter file path for list of teachers with period 6"); //output message 
+	//	String path = in.next(); //read the path
+		System.out.println("Importing period six");
+		String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/Period_6.csv";
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new bufferedReader
 			br.readLine(); //read the first Line as it is not important
@@ -548,11 +490,11 @@ public class top_level {
 		return true;
 	}
 	public static boolean importTeachers() { //returns a boolean, if true, then the teachers have been imported properly, if false means there is error
-	System.out.println("Enter file path for teachers (Option + Right Click then select 'Copy as Pathname' "); // Ask user to input the filepath
+	//System.out.println("Enter file path for teachers (Option + Right Click then select 'Copy as Pathname' "); // Ask user to input the filepath
 //	 
-		String path = in.next(); //create a new string called path which stores the filepath
-//		System.out.println("Importing Teachers");
-//		String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/HS_TT_summary_23Oct20.csv";
+		//String path = in.next(); //create a new string called path which stores the filepath
+	System.out.println("Importing Teachers");
+		String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/HS_TT_summary_23Oct20.csv";
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new buffered reader which reads the path
 			int i = 0; //counter variable
@@ -627,8 +569,8 @@ public class top_level {
 		return true; //Import successful
 	}
 	public static boolean importAdmins() { //importing all the admins 
-		System.out.println("Enter file path for List of Admins");
-//		String path = in.next();
+//		System.out.println("Enter file path for List of Admins");
+//	String path = in.next();
 		System.out.println("Importing admins");
 		String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/Teachers_Admin_List.csv";
 		try {
@@ -673,11 +615,11 @@ public class top_level {
 	}
 	public static boolean importSubjects() { //import the teacher subjects 
 	
-		System.out.println("Enter file path for teaching departments"); // ask user to input path name
-		String path = in.next(); //store path name 
+		//System.out.println("Enter file path for teaching departments"); // ask user to input path name
+		//String path = in.next(); //store path name 
 
-//		System.out.println("Importing Subjects");
-//		String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/HS_Tchng_Depts.csv";
+		System.out.println("Importing Subjects");
+		String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/HS_Tchng_Depts.csv";
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(path));
 			br.readLine(); //read the first line as it is not important
@@ -737,10 +679,10 @@ public class top_level {
 	}
 	
 	public static boolean importSubjectMeetingDays() { //method to import subjects with meeting days
-			System.out.println("Enter file path for list of subjects and meeting days"); 
-			String path = in.next(); //read the filepath
-		//System.out.println("Import Subjects with Meeting days");
-		//String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/Subject_Area_Meeting_Days.csv";
+		//	System.out.println("Enter file path for list of subjects and meeting days"); 
+		//	String path = in.next(); //read the filepath
+		System.out.println("Import Subjects with Meeting days");
+		String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/Subject_Area_Meeting_Days.csv";
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new buffered reader 
 			br.readLine(); //read first line as it is not important
@@ -773,8 +715,8 @@ public class top_level {
 	
 	public static boolean importDuties() {
 		System.out.println("Enter file path for duties"); //Prompt output of file path 
-		String path = in.next(); //store path
-//		String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/HS_Duties_2020-1.csv";
+	//	String path = in.next(); //store path
+		String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/HS_Duties_2020-1.csv";
 	String dayOfTheWeek = "Monday"; //create a day of the week and set it to monday which is the first duty
 		Time startTime = new Time(0,0); //create a new start time
 		Time endTime = new Time(0,0); //create a new end time 

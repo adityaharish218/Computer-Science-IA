@@ -1,5 +1,9 @@
 package duties;
 
+import java.util.ArrayList;
+
+import Teachers.Teacher;
+
 public class Duty {
 	private String name; //name of duty
 	private Time startTime; //Start time of duty
@@ -7,6 +11,13 @@ public class Duty {
 	private String dayOfTheWeek; //day of the week the duty is
 	private int pointsToDeduct; //points to deduct from teacher if duty is assigned
 	private boolean hasBeenAssigned = false; //if duty has been assigned or not
+	private ArrayList<Teacher> possibleTeachers = new ArrayList<Teacher>(); //possible teachers who can do this duty
+	public ArrayList<Teacher> getPossibleTeachers() {
+		return possibleTeachers;
+	}
+	public void setPossibleTeachers(ArrayList<Teacher> possibleTeachers) {
+		this.possibleTeachers = possibleTeachers;
+	}
 	public boolean isHasBeenAssigned() {
 		return hasBeenAssigned;
 	}
