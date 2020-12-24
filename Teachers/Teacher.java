@@ -13,13 +13,22 @@ public class Teacher {
 	private boolean homebase; // whether the teacher has a homebase or not 
 	private boolean assignedAfterSchool = false; //whether a teacher has already been assigned an after school duty or not
 	public boolean [] assignedDays = {false, false, false, false, false}; //what days the teacher has been assigned duties. Initially all false as teacher has not been assigned any duties
+	private int howManyDutiescanBeAssigned = 0; // how many different duties the teacher can perform.
+	
+	//Setters and Getters 
+	public int getHowManyDutiescanBeAssigned() {
+		return howManyDutiescanBeAssigned;
+	}
+	public void setHowManyDutiescanBeAssigned(int howManyDutiescanBeAssigned) {
+		this.howManyDutiescanBeAssigned = howManyDutiescanBeAssigned;
+	}
 	public boolean isAssignedAfterSchool() {
 		return assignedAfterSchool;
 	}
 	public void setAssignedAfterSchool(boolean assignedAfterSchool) {
 		this.assignedAfterSchool = assignedAfterSchool;
 	}
-	//Setters and Getters 
+	
 	public String getName() {
 		return name;
 	}
@@ -114,18 +123,13 @@ public class Teacher {
 		return k;
 	}
 	
-	public String toStringWithAll(){
-		String k = this.toString();
-		Lesson [] temp = this.getLessons();
-		for (int i = 0; i < this.getLessons().length; i++) {
-			k = k + "Day " + (i + 1) + " " + temp[i].toString() + " ";
-		}
-		for(int i = 0; i < this.getSubject().length; i++) {
-			Subject [] temporary = this.getSubject();
-			k = k + "Subject " + (i + 1) + ": " + temporary[i].toString(); 
-		}
+	public String toStringWithNoOfDuties() { //print out teachers with the number of duties they can do
+		String k = this.toString() + " ";
+		k = k + "No of Duties teacher can do : " + this.getHowManyDutiescanBeAssigned();
 		return k;
 	}
+	
+	
 	
 	public void Clear() {
 		this.name = null;
@@ -153,4 +157,6 @@ public class Teacher {
 		k = k + " No of Duties to be set " + this.getDutiesToBeAssigned();
 		return k;
 	}
+	
+	
 }

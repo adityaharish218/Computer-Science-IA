@@ -7,6 +7,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Scanner;
 
 import Teachers.Lesson;
@@ -41,19 +43,28 @@ public class top_level {
 		boolean e = importAdmins();
 		boolean f = importPeriodSix();
 		boolean g = importDutiesTakeTwo(); 
+		assignPossibleTeachers();
+		sortByPossibleTeachers();
+		sortByPossibleDuties();
 		
+		System.out.println("Teachers by no of different duties they can do ");
 		for(int i = 0; i < teachers.size(); i++) {
-			System.out.println(teachers.get(i).toStringWithNumberOfDutiesToBeSet());
+			System.out.println(teachers.get(i).toStringWithNoOfDuties());
 		}
-	
+		System.out.println("Duties by number of possible teachers ");
 		for(int k = 0; k < duties.size(); k++) {
-			System.out.println(duties.get(k).getPossibleTeachers().size());
+			System.out.println(duties.get(k).toString() + " teachers who can do this duty, " + duties.get(k).getPossibleTeachers().size());
 		}
 		
-		System.out.println(teachers.size());
 		
-		assignTeachers();
+		boolean k = assignTeachers();
+			while(k == false) {
+				k = assignTeachers();
+			}
+		
 		generateCSV();
+		
+		System.out.println(duties.size());
 		in.close();
 	}
 
@@ -230,8 +241,14 @@ public class top_level {
 		}
 	}
 
-	public static void assignTeachers() {
+	public static boolean assignTeachers() {
 		for (int i = 0; i < duties.size(); i++) { // going through all duties
+			while( i < duties.size() && duties.get(i).isHasBeenAssigned() == true ) { //check if the duty has been assigned
+				i = i + 1; //move on to the next duty
+			}
+			if(i == duties.size()) { //check if i = to the size
+				break; //break out of the for loop
+			}
 			Duty assigned = duties.get(i); // accessing duty
 			Time dutyStartTime = assigned.getStartTime();// get the start time of the duty
 			for (int j = 0; j < teachers.size(); j++) { // going through all teachers
@@ -336,7 +353,13 @@ public class top_level {
 				}
 			}
 		}
-	
+		for(int k = 0; k < duties.size(); k++) {
+			if(duties.get(k).isHasBeenAssigned() == false) { // check if a duty has not yet been assigned 
+				
+				return false; //not all duties have been assigned 
+			}
+		}
+	return true; //all duties have been assigned;
 		
 	}
 	
@@ -348,9 +371,11 @@ public class top_level {
 			for (int j = 0; j < teachers.size(); j++) { // going through all teachers
 				boolean canAssign = true; //Assume teacher can be assigned duty
 				Teacher teacher = teachers.get(j); // accessing teacher
-			
+				if(teacher.getDutiesToBeAssigned() == 0) { //check if the teacher cannot do any duties
+					canAssign = false; //cannot assign duty because teacher cannot have any duties
+				}
 				if (dutyStartTime.getHours() == 8) { // Check if the duty begins at before school, Begins at 8:00
-					if(teacher.isAdmin() == false && dutiesAssignedToAdmins < noOfAdmins) { //check if teacher is admin or not, my client usually gives admin the early morning duties. Also check if there are any admins still left to be assigned duties. 
+					if(teacher.isAdmin() == false ) { //check if teacher is admin or not, my client usually gives admin the early morning duties. Also check if there are any admins still left to be assigned duties. 
 						canAssign = false; // cannot assign duty because it needs to be admin
 					}
 					if(teacher.isHomebase() == true) { //Check if teacher has a homebase or not
@@ -403,6 +428,7 @@ public class top_level {
 				}
 				if(canAssign) { //check if the teacher can be assigned
 					possibleTeachers.add(teachers.get(j)); //add this teacher to the duty's possible teachers
+					teachers.get(j).setHowManyDutiescanBeAssigned(teachers.get(j).getHowManyDutiescanBeAssigned() + 1); //increase the number of duties this teacher can do by 1
 				}
 			}
 			duties.get(i).setPossibleTeachers(possibleTeachers); //set the duties possible teachers
@@ -410,19 +436,21 @@ public class top_level {
 	}
 	
 	public static void sortByPossibleTeachers() { //method to sort duties based on the number of possible teachers who can do the duty
-		int i = 0;  //counter variable
-		while(i < duties.size()) { //loop through whole array
-			int temp = duties.get(i).getPossibleTeachers().size(); //get the number of possible teacher the duty can have
-			int j = i - 1; //second variable 
-			while(j >= 0 && duties.get(j).getPossibleTeachers().size() > temp) { //loop until the value of j > 0 and the size of possible teachers at j > temp
-				duties.set(j + 1 , duties.get(j)); //set the index after to the index before
-				j = j - 1; //decrease j
+		Collections.sort(duties, new Comparator<Duty>() { //call sorth method from collections class (Learnt from https://www.youtube.com/watch?v=wzWFQTLn8hI)
+			public int compare(Duty d1, Duty d2) { //create a compare method for duties
+				return Integer.valueOf(d1.getPossibleTeachers().size()).compareTo(d2.getPossibleTeachers().size()); //compare the size of the possibleTeachers arraylist for both duties and return the value
 			}
-			duties.set(j + 1, duties.get(i)); //set the next index's duty to this one
-			i = i + 1; //increase i
-		} 
+		});
 	}
 	
+	public static void sortByPossibleDuties() { //method to sort teachers by number of duties they can do
+		Collections.sort(teachers, new Comparator<Teacher>(){ // call sort method from collections class (Learnt from https://www.youtube.com/watch?v=wzWFQTLn8hI) 	
+		
+			public int compare(Teacher t1, Teacher t2) { //create a compare method for two teachers 
+				return Integer.valueOf(t1.getHowManyDutiescanBeAssigned()).compareTo(t2.getHowManyDutiescanBeAssigned()); //compare t1's how many duties can be assigned to t2's and return the value
+			}
+		});
+	}
 	public static void assignTheTeacher() { //assign the teacher
 		for(int i = 0; i < duties.size(); i++) { //loop through the whole teachers array
 			for(int j = 0; j < duties.get(i).getPossibleTeachers().size(); j++) { //loop through the duty's possible teacher
