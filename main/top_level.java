@@ -57,14 +57,13 @@ public class top_level {
 		}
 		
 		
-		boolean k = assignTeachers();
-			while(k == false) {
-				k = assignTeachers();
-			}
+		boolean k = assignTheTeacher();
 		
-		generateCSV();
+		System.out.println(duties.size() == assignedDuties.size());
 		
-		System.out.println(duties.size());
+		
+		
+		
 		in.close();
 	}
 
@@ -264,9 +263,7 @@ public class top_level {
 					canAssign = false; //Teacher cannot be assigned duty if the duties assigned are greater are greater
 				}
 				
-				if(teacher.isAssignedAfterSchool()) { //check if the teacher has already been assigned an afterSchool duty
-					canAssign = false;
-				}
+				
 				if (dutyStartTime.getHours() == 8) { // Check if the duty begins at before school, Begins at 8:00
 					
 					if(teacher.isHomebase() == true) { //Check if teacher has a homebase or not
@@ -329,10 +326,10 @@ public class top_level {
 					int index = searchForDay(assigned.getDayOfTheWeek());// access the day of the week as index
 					if(teacherLessons[index].six == true) { //Check if teacher has lesson on period 6
 						canAssign = false; //Set can assign to false as the teacher cannot be assigned the duty
-
 					}
-
-					
+					if(teacher.isAssignedAfterSchool()) { //check if the teacher has already been assigned an afterSchool duty
+						canAssign = false;
+					}
 
 				}
 			
@@ -375,9 +372,7 @@ public class top_level {
 					canAssign = false; //cannot assign duty because teacher cannot have any duties
 				}
 				if (dutyStartTime.getHours() == 8) { // Check if the duty begins at before school, Begins at 8:00
-					if(teacher.isAdmin() == false ) { //check if teacher is admin or not, my client usually gives admin the early morning duties. Also check if there are any admins still left to be assigned duties. 
-						canAssign = false; // cannot assign duty because it needs to be admin
-					}
+					
 					if(teacher.isHomebase() == true) { //Check if teacher has a homebase or not
 						canAssign = false; //Set can assign to false as the teacher cannot be assigned the duty
 					}
@@ -451,12 +446,64 @@ public class top_level {
 			}
 		});
 	}
-	public static void assignTheTeacher() { //assign the teacher
+	public static boolean assignTheTeacher() { //assign the teacher
 		for(int i = 0; i < duties.size(); i++) { //loop through the whole teachers array
-			for(int j = 0; j < duties.get(i).getPossibleTeachers().size(); j++) { //loop through the duty's possible teacher
+			while(i < duties.size() && duties.get(i).isHasBeenAssigned()) { //check if the duty has been assigned and that i < duties.size() (Avoid index out of bounds exception) 
+				i = i + 1; //increase i and move on to the next duty
+			}
+			if(i == duties.size()) {
+				break; //break out as all duties have been assigned true 
+			}
+			for(int j = 0; j < duties.get(i).getPossibleTeachers().size(); j++) { //loop through the duty's possible teachers
 				boolean canAssign = true; //assume teacher can be assigned the duty
+				int index = findTeacherByID(duties.get(i).getPossibleTeachers().get(j).getId()); //find the teacher in the teachers array List
+				if(teachers.get(index).getDutiesToBeAssigned() == teachers.get(index).getDutiesAssigned()) { //check if the number of duties already assigned to teacher is equal to the number of duties to be assigned to the teacher
+					canAssign = false; //teacher cannot be assigned the duty;
+				}
+				//if(teachers.get(index).assignedDays[searchForDay(duties.get(i).getDayOfTheWeek())]) { //check if teacher has already been assigned a duty on that day
+				//	canAssign = false; //teacher cannot be assigned duty. 
+			//	}
+				if(duties.get(i).getStartTime().getHours() == 8) { //check if the duty is in the morning
+					if(teachers.get(index).isAdmin() == false && dutiesAssignedToAdmins < noOfAdmins ) { //check if teacher is admin or not, my client usually gives admin the early morning duties. Also check if there are any admins still left to be assigned duties. 
+						canAssign = false; // cannot assign duty because it needs to be admin if admins are still left
+					}
+				}
+				if(duties.get(i).getStartTime().getHours() >= 14) { //check if the duty begins after school
+					if(teachers.get(index).isAssignedAfterSchool()) { //check if the teacher has already been assigned a duty
+						canAssign = false;
+					}
+				}
+				if(duties.get(i).isHasBeenAssigned()) { //check if the duty has been assigned 
+					canAssign = false;
+				}
+				
+				if(canAssign) { //if the duty can be assigned
+					AssignedDuty a = new AssignedDuty(duties.get(i),teachers.get(index)); //create a new assigned duty with the teacher
+					assignedDuties.add(a); //add this duty along with assigned teacher
+					teachers.get(index).setDutiesAssigned(teachers.get(index).getDutiesAssigned() + 1); //increase the teachers number of duties by 1
+					teachers.get(index).assignedDays[searchForDay(duties.get(i).getDayOfTheWeek())] = true; //change it such that teacher has been assigned today 
+					if(duties.get(i).getStartTime().getHours() >= 14) { //check if the duty is after school
+						teachers.get(index).setAssignedAfterSchool(true); //the teacher has already been assigned an afterschool duty
+					}
+					
+					if(teachers.get(index).isAdmin()) { // check if the teacher being assigned is admin
+						dutiesAssignedToAdmins = dutiesAssignedToAdmins + 1; //if they are, increase it by one
+					}
+					duties.get(i).getPossibleTeachers().set(j, teachers.get(index)); //replace the teacher in the duties possible array with the teacher from the teachers arrayList with the updated informatoin
+					duties.get(i).setHasBeenAssigned(true); //duty has been assigned. 
+					break; //break out of loop as teacher has been assigned 
+				}
 			}
 		}
+		int c = 0;
+		for(int i = 0; i < duties.size(); i++) { //loop through all duties array
+			if(duties.get(i).isHasBeenAssigned() == false) {
+				System.out.println(duties.get(i));
+				c = c + 1;
+			}
+		}
+		System.out.println(c);
+		return false; //assume all duties have been assigned
 	}
 	
 	public static int findTeacherByID(int id) { //method to find teacher by ID. I do not need to worry about validation as the data has already been validated
