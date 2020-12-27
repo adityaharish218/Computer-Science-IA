@@ -1,5 +1,9 @@
 package Teachers;
 
+import java.util.ArrayList;
+
+import duties.Duty;
+
 public class Teacher {
 	private String name = ""; //name of the teacher\, set it empty to avoid null pointer exception
 	private int lessonsPerWeek; //number of lessons the teacher has per week
@@ -14,7 +18,14 @@ public class Teacher {
 	private boolean assignedAfterSchool = false; //whether a teacher has already been assigned an after school duty or not
 	public boolean [] assignedDays = {false, false, false, false, false}; //what days the teacher has been assigned duties. Initially all false as teacher has not been assigned any duties
 	private int howManyDutiescanBeAssigned = 0; // how many different duties the teacher can perform.
+	private ArrayList<Duty> dutiesTeacherCanDo = new ArrayList<Duty>(); //list of duties that the teacher can do
 	
+	public ArrayList<Duty> getDutiesTeacherCanDo() {
+		return dutiesTeacherCanDo;
+	}
+	public void setDutiesTeacherCanDo(ArrayList<Duty> dutiesTeacherCanDo) {
+		this.dutiesTeacherCanDo = dutiesTeacherCanDo;
+	}
 	//Setters and Getters 
 	public int getHowManyDutiescanBeAssigned() {
 		return howManyDutiescanBeAssigned;
