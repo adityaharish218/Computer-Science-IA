@@ -1083,7 +1083,7 @@ public class top_level {
 			}
 			pw.write(sb.toString()); // Write the string into the file
 			pw.close();
-			System.out.println("Finished");
+			System.out.println("Finished"); //output message
 			in.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
