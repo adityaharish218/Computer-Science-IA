@@ -633,9 +633,9 @@ public class top_level {
 	}
 	public static boolean importPeriodSix() { //import teachers who have period six
 	//System.out.println("Enter file path for list of teachers with period 6"); //output message 
-	//	String path = in.next(); //read the path
+	//String path = in.next(); //read the path
 		System.out.println("Importing period six");
-		String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/Period_6.csv";
+	String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/Period_6.csv";
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new bufferedReader
 			br.readLine(); //read the first Line as it is not important
