@@ -1082,7 +1082,7 @@ public class top_level {
 				sb.append("\r\n"); //move on to the next line after adding each teacher
 			}
 			pw.write(sb.toString()); // Write the string into the file
-			pw.close();
+			pw.close(); //close the pw
 			System.out.println("Finished"); //output message
 			in.close();
 		} catch (FileNotFoundException e) {
