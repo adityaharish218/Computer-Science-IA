@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Scanner;
 
+import Teachers.AssignedTimes;
 import Teachers.Lesson;
 import Teachers.Subject;
 import Teachers.Teacher;
@@ -26,7 +27,9 @@ public class top_level {
 	public static ArrayList<FixTime> fixTimes = new ArrayList<FixTime>();
 	public static ArrayList<Duty> dutiesYetToBeAssigned = new ArrayList<Duty>(); //arraylist for duties that still have to be assigned
 	public static ArrayList<Teacher> teachersStillCanBeAssigned = new ArrayList<Teacher>(); //arraylist for teachers that can still be assigned duties
+	public static ArrayList<AssignedTimes> theTimes = new ArrayList<AssignedTimes>(); //the times of the duties. Used when assigning
 	public static final String[] daysOfTheWeek = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};	
+	public static final boolean[] falseOnAllDays = {false,false,false,false,false}; //array to say that on all days it is false
 	public static int noOfAdmins = 0; // the number of admins 
 	public static int dutiesAssignedToAdmins = 0; // the number of duties that have been assigned to admins
 	public static Lesson allFalse = new Lesson(false,false,false,false,false,false,false); //Creating an lesson with all lessons being false
@@ -51,6 +54,10 @@ public class top_level {
 		System.out.println("Teachers by no of different duties they can do ");
 		for(int i = 0; i < teachers.size(); i++) {
 			System.out.println(teachers.get(i).toStringWithNoOfDuties());
+		}
+		
+		for(int i = 0; i < theTimes.size(); i++) {
+			System.out.println(theTimes.get(i).toString());
 		}
 		
 		
@@ -237,6 +244,13 @@ public class top_level {
 		}
 	}
 
+	public static int findTimes(Time startTime) {
+		int i = 0;
+		while(theTimes.get(i).equals(startTime) == false) {
+			i = i + 1;
+		}
+		return i;
+	}
 	public static boolean assignTeachers() {
 		for (int i = 0; i < duties.size(); i++) { // going through all duties
 			while( i < duties.size() && duties.get(i).isHasBeenAssigned() == true ) { //check if the duty has been assigned
@@ -246,13 +260,11 @@ public class top_level {
 				break; //break out of the for loop
 			}
 			Duty assigned = duties.get(i); // accessing duty
-			Time dutyStartTime = assigned.getStartTime();// get the start time of the duty
+			Time dutyStartTime = assigned.getStartTime();
 			for (int j = 0; j < teachers.size(); j++) { // going through all teachers
 				boolean canAssign = true; //Assume teacher can be assigned duty
 				Teacher teacher = teachers.get(j); // accessing teacher
-				if(teacher.assignedDays[searchForDay(assigned.getDayOfTheWeek())]) { //check if teacher has already been assigned a duty on that day
-					canAssign = false; //teacher cannot be assigned duty. 
-				}
+				
 				if(assigned.isHasBeenAssigned()) { //check if duty has already been assigned 
 					canAssign = false; //cannot assign as duty has already been assigned. 
 				}
@@ -333,8 +345,7 @@ public class top_level {
 				if(canAssign) { //check if the teacher can be assigned
 					AssignedDuty a = new AssignedDuty(assigned,teacher); //create a new assigned duty with the teacher
 					assignedDuties.add(a); //add this duty along with assigned teacher
-					teachers.get(j).setDutiesAssigned(teachers.get(j).getDutiesAssigned() + 1); //increase the teachers number of duties by 1
-					teachers.get(j).assignedDays[searchForDay(assigned.getDayOfTheWeek())] = true; //change it such that teacher has been assigned today 
+					teachers.get(j).setDutiesAssigned(teachers.get(j).getDutiesAssigned() + 1); 
 					if(dutyStartTime.getHours() >= 14) { //check if the duty is after school
 						teachers.get(j).setAssignedAfterSchool(true); //the teacher has already been assigned an afterschool duty
 					}
@@ -448,21 +459,21 @@ public class top_level {
 			while(i < duties.size() && duties.get(i).isHasBeenAssigned()) { //check if the duty has been assigned and that i < duties.size() (Avoid index out of bounds exception) 
 				i = i + 1; //increase i and move on to the next duty
 			}
-			if(i == duties.size()) {
-				break; //break out as all duties have been assigned true 
-			}
+			
 			for(int j = 0; j < duties.get(i).getPossibleTeachers().size(); j++) { //loop through the duty's possible teachers
 				boolean canAssign = true; //assume teacher can be assigned the duty
 				int index = findTeacherByID(duties.get(i).getPossibleTeachers().get(j).getId()); //find the teacher in the teachers array List
 				if(teachers.get(index).getDutiesToBeAssigned() == teachers.get(index).getDutiesAssigned()) { //check if the number of duties already assigned to teacher is equal to the number of duties to be assigned to the teacher
 					canAssign = false; //teacher cannot be assigned the duty;
 				}
-				if(teachers.get(index).assignedDays[searchForDay(duties.get(i).getDayOfTheWeek())]) { //check if teacher has already been assigned a duty on that day
-					canAssign = false; //teacher cannot be assigned duty. 
+				int indexOfTime = findTimes(duties.get(i).getStartTime()); // get the time as an index in the theTimes array
+				if(teachers.get(index).getAssignedTimes().get(indexOfTime).assignedOnThisTime[searchForDay(duties.get(i).getDayOfTheWeek())] == true) { //check if a teacher has already been assigned on this time on this day
+					canAssign = false; //cannot assign teacher this time
 				}
+				
 				if(duties.get(i).getStartTime().getHours() == 8) { //check if the duty is in the morning
-					if(teachers.get(index).isAdmin() == false && dutiesAssignedToAdmins < noOfAdmins ) { //check if teacher is admin or not, my client usually gives admin the early morning duties. Also check if there are any admins still left to be assigned duties. 
-						canAssign = false; // cannot assign duty because it needs to be admin if admins are still left
+					if(teachers.get(index).isAdmin() == true && dutiesAssignedToAdmins < noOfAdmins) { //check if the teacher is an admin and that the number of duties assigned to admins is < the number of admins
+						canAssign = false; //cannot assign as admins can still be assigned the duty
 					}
 				}
 				if(duties.get(i).getStartTime().getHours() >= 14) { //check if the duty begins after school
@@ -478,7 +489,6 @@ public class top_level {
 					AssignedDuty a = new AssignedDuty(duties.get(i),teachers.get(index)); //create a new assigned duty with the teacher
 					assignedDuties.add(a); //add this duty along with assigned teacher
 					teachers.get(index).setDutiesAssigned(teachers.get(index).getDutiesAssigned() + 1); //increase the teachers number of duties by 1
-					teachers.get(index).assignedDays[searchForDay(duties.get(i).getDayOfTheWeek())] = true; //change it such that teacher has been assigned today 
 					if(duties.get(i).getStartTime().getHours() >= 14) { //check if the duty is after school
 						teachers.get(index).setAssignedAfterSchool(true); //the teacher has already been assigned an afterschool duty
 					}
@@ -486,8 +496,8 @@ public class top_level {
 					if(teachers.get(index).isAdmin()) { // check if the teacher being assigned is admin
 						dutiesAssignedToAdmins = dutiesAssignedToAdmins + 1; //if they are, increase it by one
 					}
-					duties.get(i).getPossibleTeachers().set(j, teachers.get(index)); //replace the teacher in the duties possible array with the teacher from the teachers arrayList with the updated informatoin
 					duties.get(i).setHasBeenAssigned(true); //duty has been assigned. 
+					teachers.get(index).getAssignedTimes().get(indexOfTime).assignedOnThisTime[searchForDay(duties.get(i).getDayOfTheWeek())] = true; //change it so that the teacher has been assigned on this time on this day
 					break; //break out of loop as teacher has been assigned 
 				}
 			}
@@ -586,9 +596,7 @@ public class top_level {
 					System.out.println(">>> ");
 					boolean canAssign = true;
 					int index = searchForDutyByName(pDuty.get(k).getName()); //get the index of the main duties array
-					if(teachers.get(i).assignedDays[searchForDay(duties.get(index).getDayOfTheWeek())]) { //check if teacher has already been assigned a duty on that day
-						canAssign = false; //teacher cannot be assigned duty. 
-					}
+					
 					if(duties.get(index).getStartTime().getHours() == 8) { //check if the duty is in the morning
 						if(teachers.get(i).isAdmin() == false && dutiesAssignedToAdmins < noOfAdmins ) { //check if teacher is admin or not, my client usually gives admin the early morning duties. Also check if there are any admins still left to be assigned duties. 
 							canAssign = false; // cannot assign duty because it needs to be admin if admins are still left
@@ -607,7 +615,6 @@ public class top_level {
 						assignedDuties.add(a); //add it to the ArrayList
 						System.out.println(">>> " + assignedDuties.size());
 						teachers.get(i).setDutiesAssigned(teachers.get(i).getDutiesAssigned() + 1); //increase the teachers number of duties by 1
-						teachers.get(i).assignedDays[searchForDay(duties.get(index).getDayOfTheWeek())] = true; //change it such that teacher has been assigned today 
 						if(duties.get(index).getStartTime().getHours() >= 14) { //check if the duty is after school
 							teachers.get(i).setAssignedAfterSchool(true); //the teacher has already been assigned an afterschool duty
 						}
@@ -905,121 +912,10 @@ public class top_level {
 		return true; //import successful 
 	}
 	
-	public static boolean importDuties() {
-		System.out.println("Enter file path for duties"); //Prompt output of file path 
-	//	String path = in.next(); //store path
-		String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/HS_Duties_2020-1.csv";
-	String dayOfTheWeek = "Monday"; //create a day of the week and set it to monday which is the first duty
-		Time startTime = new Time(0,0); //create a new start time
-		Time endTime = new Time(0,0); //create a new end time 
-		int index = 0;
-		int indexforfixTimes = 0;
-		int counter = 0;
-		System.out.println("In arrayList immediately after I've added the Duty ");
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new bufferedReader
-			br.readLine(); //read the first line as it is not important (It is monday but that is already stored)
-			boolean [] allDaysofTheWeek = {true,false,false,false,false}; //an array to ensure that all days of the week have been covered. Monday is true 
-			while(br.ready()) { //while the bufferedReader is ready
-			line = br.readLine(); //read the line and store into the string line
-			line = line.trim(); //remove all uncessary spaces 
-			if(line == null) { //check if it's null
-				line = ""; //change it to empty string (Avoid null pointer exception) 
-			}
-			
-			// System.out.println(">>>" + searchForDay(line) + " " + isInteger(line) + line);
-			
-			if(searchForDay(line.trim()) > -1 ) { //use search for day on line, this returns an index and the default is -1, if it is not -1 that means that this is a day of the week and check if it is not null or empty ("")
-				dayOfTheWeek = line; //day of the week is now line
-				allDaysofTheWeek[searchForDay(line)] = true; //set the boolean to true as that particular day of the week has been found
-			}
-			else if (isInteger(line.trim()) && setLesson(line)) { //check if line is likely to be a time which means that all it's characters are in the numbers array. Also make sure that it's length is greater than 0
-				String [] values = line.split("-"); //split the values in terms of "-", the time is like "11:35 - 12:00". So by splitting it in terms of -, it will give me two values
-				String [] forStartTime = values[0].split(":"); //now for the start time which is the first value stored in values array, split it by the ":". So if the value was like 11:35, this will give me an array with the values of 11 and 35
-				
-				int starHour = Integer.parseInt(forStartTime[0]); //get the integer in the first value which will be the hour. Trim to remove the spaces
-				int starMin = Integer.parseInt(forStartTime[1].trim()); //get the integer in the second value which will be the minute. Trim to remove the spaces 
-				startTime.setTime(starHour, starMin);
-				//repeat the process for the ending time 
-				String [] forEndTime = values[1].split(":");
-				int endHour = Integer.parseInt(forEndTime[0].trim());
-				int endMin = Integer.parseInt(forEndTime[1].trim());
-				endTime.setTime(endHour, endMin);
-				if(validTimes(startTime, endTime) == false) { //check if times are not valid
-					System.out.println("Error," + startTime.toString() + " and " + endTime.toString() + " are not valid. Please ensure that end time is later than start time. Please fix and re-enter");
-					return false; //import unsuccessful. 
-				}
-				FixTime temp = new FixTime(dayOfTheWeek,startTime,endTime,counter); //create a new FixTime object
-				fixTimes.add(temp); //add it to the ArrayList
-				fixTimes.set(indexforfixTimes,temp);
-				indexforfixTimes = indexforfixTimes + 1;
-			}
-			else if(setLesson(line)) { //Check if the length of line is greater than 0;  The duties between days are separated by an empty row which means that it is not a duty Name and it's length is 0
-				if(isValidDutyName(line) == false) { //check if it is not a valid name
-					System.out.println("Error, Duty name " + line + " is not valid. Please fix and re-enter"); //output error message
-					return false; //import not successful
-				}
-				String dutyName = line; // if it isn't the other two, then it is the name of the duty. Store that as a string
-				Duty temp = new Duty(dutyName, startTime, endTime, dayOfTheWeek); //create a new duty with these parameters
-				temp.setStartTime(startTime);
-				temp.setEndTime(endTime);
-				duties.add(temp); //add it to the duties array list. 
-				counter++; //increase the counter for number of duties 
-				//printing and testing 
-				
-					System.out.println("Duty no " + (index + 1));
-					System.out.println("Day of the week " + duties.get(index).getDayOfTheWeek());
-					System.out.println("Name " + duties.get(index).getName());
-					System.out.println("Start time " + duties.get(index).getStartTime().toString());
-					System.out.println("End time " + duties.get(index).getEndTime().toString());
-					System.out.println();
-				
-				index++;
-			}
-			}
-			for(int i = 0; i < allDaysofTheWeek.length; i++) { //loop through all days of the week
-				if(allDaysofTheWeek[i] == false) { //if you find one false which means one day has not been covered
-					System.out.println("Error, " + daysOfTheWeek[i] + " not found. Please fix and re-enter");
-					return false; //import not successful
-				}
-			}
-			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
-			System.out.println("Error, file not found");
-			return false;
-		} 
-		catch (IOException e) {
-			
-			//e.printStackTrace();
-			return false;
-		}
-		
-		return true; //import successful
-	}
-	
-	public static void fixTimes() {
-		int startIndex = 0; //starting index
-		for(int i = 0; i < fixTimes.size(); i++) { //loop through all fixtimes arrayList
-			int endIndex = fixTimes.get(i).getUpTo(); //get the last index of which the duties times need to be changed
-			for(int j = startIndex; j < endIndex; j++) { //loop from start index to end index indicating the number of duties 
-				duties.get(j).setStartTime(fixTimes.get(i).getStartTime()); //set the duties start time to that of the fixtimes start time at the index
-				duties.get(j).setEndTime(fixTimes.get(i).getEndTime()); //set the duties end time to that of the fixTimes end time at the index
-			}
-			startIndex = endIndex; 
-		}
-		int prevprint = 0;
-		for(int k = 0; k < fixTimes.size(); k++) {
-			System.out.println("For duty no " + (prevprint + 1) + " to duty no " + fixTimes.get(k).getUpTo() + ", the start time is " + fixTimes.get(k).getStartTime().toString() + " and the end time is " + fixTimes.get(k).getEndTime().toString());
-			prevprint = fixTimes.get(k).getUpTo();
-		}
-		
-	}
-	
 	public static boolean importDutiesTakeTwo() {
 		System.out.println("Enter path for list of duties");
 		String path = in.next();
+		Time oldStartTime = new Time(0,0); //create a new oldStart Time with 0 0 
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new buffered reader
 			br.readLine(); //read the first line as it is not important
@@ -1027,6 +923,9 @@ public class top_level {
 				line = br.readLine(); //read the line
 				String [] values = line.split(","); //split the line by commas and store it into a new array
 				String name = values[0]; //first element is the name of the duty
+				if(isValidDutyName(name) == false) { //check if the duty name is not valid 
+					System.out.println("Error. Duty name " + name + " is not valid. Please fix and re enter");
+				}
 				String timeInString = values[1]; //second element is the times 
 				String [] times = timeInString.split("-"); //split the time in terms of "-", there are two times one being the starting time and the second being the ending time
 				String [] forStartTime = times[0].split(":"); //now for the start time which is the first value stored in values array, split it by the ":". So if the value was like 11:35, this will give me an array with the values of 11 and 35
@@ -1039,6 +938,15 @@ public class top_level {
 				int endHours = Integer.parseInt(forEndTime[0].trim()); //first element is the hours
 				int endMin = Integer.parseInt(forEndTime[1].trim()); //second element is the minutes
 				Time endTime = new Time(endHours, endMin); 
+				if(validTimes(startTime,endTime) == false) { //check if the times are not valid
+					System.out.println("Error, start time " + startTime.toString() + " and end time " + endTime.toString() + " are not valid. Please fix and re enter"); //output message
+					return false; //import not successful
+				}
+				if(oldStartTime.equals(startTime) == false) { //check if new there is a new startTime
+					AssignedTimes a = new AssignedTimes(startTime, falseOnAllDays); //create a new assigned Times with false indicating teacher has not been assigned yet
+					theTimes.add(a); //add this to the public arrayList
+					oldStartTime = startTime; //change the oldStartTime to the startTime
+				}
 				for(int i = 0; i < values.length - 2; i++) { //loop through the length of the duties array - the first two elements
 					if(values[i + 2].length() > 0 && searchForDay(values[i+2]) != -1) { //check if it it's length is longer than 0 and it is a day of the week
 					String dayofTheWeek = values[i + 2]; //get the day of the week
@@ -1054,6 +962,10 @@ public class top_level {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
+		for(int i = 0; i < teachers.size(); i++) { //loop through all teachers
+			teachers.get(i).setAssignedTimes(theTimes); //set the teachers assignedTime to theTimes which has all of the different times
+		}
+		
 		return true; //import successful 
 	}
 	

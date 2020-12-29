@@ -15,9 +15,16 @@ public class Teacher {
 	private Lesson[] lessons = new Lesson[1]; // contains lessons teachers have on the day
 	private Subject[] subject = new Subject[1]; //contains the number of subjects the teacher has
 	private boolean homebase; // whether the teacher has a homebase or not 
-	private boolean assignedAfterSchool = false; //whether a teacher has already been assigned an after school duty or not
-	public boolean [] assignedDays = {false, false, false, false, false}; //what days the teacher has been assigned duties. Initially all false as teacher has not been assigned any duties
+	private boolean assignedAfterSchool = false; //whether a teacher has already been assigned an after school duty or not;
 	private int howManyDutiescanBeAssigned = 0; // how many different duties the teacher can perform.
+	private ArrayList<AssignedTimes> assignedTimes = new ArrayList<AssignedTimes>(); //the times that the teacher has been assigned
+	public ArrayList<AssignedTimes> getAssignedTimes() {
+		return assignedTimes;
+	}
+	public void setAssignedTimes(ArrayList<AssignedTimes> assignedTimes) {
+		this.assignedTimes = assignedTimes;
+	}
+
 	private ArrayList<Duty> dutiesTeacherCanDo = new ArrayList<Duty>(); //list of duties that the teacher can do
 	
 	public ArrayList<Duty> getDutiesTeacherCanDo() {
