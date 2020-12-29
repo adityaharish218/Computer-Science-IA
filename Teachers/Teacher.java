@@ -162,12 +162,13 @@ public class Teacher {
 	}
 	
 	public Teacher() {} //empty constructor
-	public Teacher(String name, int ID, int lessonsPerWeek, boolean homebase, Lesson [] lessons) {
+	public Teacher(String name, int ID, int lessonsPerWeek, boolean homebase, Lesson [] lessons, ArrayList<AssignedTimes> assignedTimes) {
 		this.name = name;
 		this.id = ID;
 		this.lessonsPerWeek = lessonsPerWeek;
 		this.homebase = homebase;
 		this.lessons = lessons;
+		this.assignedTimes = assignedTimes;
 	}
 	
 	public String toStringWithNumberOfDutiesToBeSet() {

@@ -40,19 +40,27 @@ public class top_level {
 	public static final char[] allowedChars = {'(', ')', ' ', '.', '/', ',', '-'};
 
 	public static void main(String[] args) {
+		boolean g = importDutiesTakeTwo(); 
 		boolean b = importTeachers();
 		boolean c = importSubjectMeetingDays(); 
 		boolean d = importSubjects();
 		boolean e = importAdmins();
 		boolean f = importPeriodSix();
-		boolean g = importDutiesTakeTwo(); 
 		for(int i = 0; i < teachers.size(); i++ ) {
 			System.out.println(teachers.get(i).getAssignedTimes().size());
+		}
+		
+		for(int l = 0; l < teachers.size(); l++) {
+			for(int m = 0; m < teachers.get(l).getAssignedTimes().size(); m++) {
+				for(int n = 0; n < teachers.get(l).getAssignedTimes().get(m).assignedOnThisTime.length; n++) {
+					System.out.println(teachers.get(l).getAssignedTimes().get(m).assignedOnThisTime[n]);
+				}
+			} 
 		}
 		assignPossibleTeachers();
 		sortByPossibleTeachers();
 		sortByPossibleDuties();
-		boolean k = assignTheTeacher();
+		//boolean k = assignTheTeacher();
 		
 		//while(!k) {
 	//		k = assignTheTeacher();
@@ -465,7 +473,7 @@ public class top_level {
 				for(int z = 0; z < teachers.get(index).getAssignedTimes().get(indexOfTime).assignedOnThisTime.length; z++) {
 					System.out.println(teachers.get(index).getAssignedTimes().get(indexOfTime).assignedOnThisTime[z]);
 				}
-				if(teachers.get(index).getAssignedTimes().get(indexOfTime).assignedOnThisTime[dayOfTheWeekAsIndex] == true) { //check if a teacher has already been assigned on this time on this day
+				if(teachers.get(index).getAssignedTimes().get(indexOfTime).assignedOnThisTime[dayOfTheWeekAsIndex]) { //check if a teacher has already been assigned on this time on this day
 					canAssign = false; //cannot assign teacher this time
 					System.out.println("Condition already assigned on this time on this day ");
 				}
@@ -741,7 +749,7 @@ public class top_level {
 
 					// set the teacher's lessons
 				br.readLine(); //read the next line because the line does not have important information  either (Teacher rooms, not important for my code)
-				Teacher temp = new Teacher(name, Id, lessonsPerWeek, homebase, tempLessons); //create a new teacher with the attributes
+				Teacher temp = new Teacher(name, Id, lessonsPerWeek, homebase, tempLessons,theTimes); //create a new teacher with the attributes
 				teachers.add(temp);//add the teacher into the arraylist
 				
 				i++;
