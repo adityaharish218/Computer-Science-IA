@@ -60,6 +60,7 @@ public class top_level {
 		assignPossibleTeachers();
 		sortByPossibleTeachers();
 		sortByPossibleDuties();
+		assignTeachers();
 		//boolean k = assignTheTeacher();
 		
 		//while(!k) {
@@ -267,7 +268,11 @@ public class top_level {
 				if(teacher.getDutiesAssigned() == teacher.getDutiesToBeAssigned()) { //check if the teacher can have more duties
 					canAssign = false; //Teacher cannot be assigned duty if the duties assigned are greater are greater
 				}
-				
+				int indexOfTime = findTimes(assigned.getStartTime()); //access startTime as index
+				int indexOfDayOfTheWeek = searchForDay(assigned.getDayOfTheWeek()); //access dayOfTheWeek as index
+				if(teacher.getAssignedTimes().get(indexOfTime).assignedOnThisTime[indexOfDayOfTheWeek]) { //check if the teacher has already been assigned that time on that day of the week
+					canAssign = false;
+				}
 				
 				if (dutyStartTime.getHours() == 8) { // Check if the duty begins at before school, Begins at 8:00
 					
@@ -275,10 +280,7 @@ public class top_level {
 						canAssign = false; //Set can assign to false as the teacher cannot be assigned the duty
 					}
 
-					if(teacher.getDutiesAssigned() == teacher.getDutiesToBeAssigned()) { //check if the teacher can have more duties
-						canAssign = false; //Teacher cannot be assigned duty if the duties assigned are greater are greater
-
-					}
+	
 
 				}
 				if (dutyStartTime.getHours() == 11) { // Check if the duty begins at break, break begins at 11 hence hours = 11
@@ -349,6 +351,7 @@ public class top_level {
 					if(teacher.isAdmin()) { // check if the teacher being assigned is admin
 						dutiesAssignedToAdmins = dutiesAssignedToAdmins + 1; //if they are, increase it by one
 					}
+					teachers.get(j).getAssignedTimes().get(indexOfTime).assignedOnThisTime[indexOfDayOfTheWeek] = true; //change it such that teacher has already been assigned a duty at that time on that day of the week
 					duties.get(i).setHasBeenAssigned(true); //duty has been assigned. 
 					break; //break out of loop as teacher has been assigned 
 				}
