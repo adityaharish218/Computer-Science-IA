@@ -40,7 +40,7 @@ public class top_level {
 	public static final char[] allowedChars = {'(', ')', ' ', '.', '/', ',', '-'};
 
 	public static void main(String[] args) {
-		boolean g = importDutiesTakeTwo(); 
+		boolean a = importDutiesTakeTwo(); 
 		boolean b = importTeachers();
 		boolean c = importSubjectMeetingDays(); 
 		boolean d = importSubjects();

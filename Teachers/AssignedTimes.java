@@ -3,7 +3,7 @@ package Teachers;
 import duties.Time;
 
 public class AssignedTimes extends Time { //class to help organize duties based on times
-	public boolean [] assignedOnThisTime; //if the teacher has been assigned on this time. Make it public as it is easier to access 
+	public boolean [] assignedOnThisTime = new boolean[5]; //if the teacher has been assigned at this time on the day. Make it public as it is easier to access 
 	public AssignedTimes() {
 		// TODO Auto-generated constructor stub
 	}
