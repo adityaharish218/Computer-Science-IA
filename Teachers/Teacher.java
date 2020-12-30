@@ -183,5 +183,11 @@ public class Teacher {
 		return k;
 	}
 	
+	public int CompareForSort() { //used for sorting 
+		if(this.isAdmin()) { //if the teacher is admin
+			return 0; //return 0 signalling teacher is admin
+		}
+		return 1; //return 0 as teacher is not admin
+	}
 	
 }
