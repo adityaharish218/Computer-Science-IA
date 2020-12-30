@@ -394,7 +394,7 @@ public class top_level {
 				if (dutyStartTime.getHours() == 11) { // Check if the duty begins at break, break begins at 11 hence hours = 11
 					Lesson [] teacherLessons = teacher.getLessons(); //access teacher lessons
 					int index = searchForDay(assigned.getDayOfTheWeek());// access the day of the week as index
-					if(teacherLessons[index].two == true && teacherLessons[index].three == true) { //Check if teacher has lesson on period 1
+					if(teacherLessons[index].two == true && teacherLessons[index].three == true) { //Check if teacher has lesson on period 2 and three
 						canAssign = false; //Set can assign to false as the teacher cannot be assigned the duty
 					}
 				}
@@ -416,9 +416,11 @@ public class top_level {
 					}
 					Lesson [] teacherLessons = teacher.getLessons(); //access teacher lessons
 					int index = searchForDay(assigned.getDayOfTheWeek());// access the day of the week as index
-					if(teacherLessons[index].four == true && teacherLessons[index].lunch == true && teacherLessons[index].five == true) { //Check if teacher has lesson on period 4, lunch or 5
+					if(teacherLessons[index].four == true &&  teacherLessons[index].five == true) { //Check if teacher has a lesson on period 4 and 5
 						canAssign = false; //Set can assign to false as the teacher cannot be assigned the duty
-
+					}
+					if(teacherLessons[index].lunch == true) { //check if the teacher has a lesson on lunch
+						canAssign = false; //teacher cannot be assigned the duty as he/she is preoccupied during lunch
 					}
 				}
 				if (dutyStartTime.getHours() >= 14) { // Check if the duty begins after school. The after school duty is varied between 15:30 and 17:00 hence check if the hour is greater than 14
@@ -463,7 +465,6 @@ public class top_level {
 			if(i == duties.size()) {
 				return true; //all duties have been assigned
 			}
-			int dayOfTheWeekAsIndex = searchForDay(duties.get(i).getDayOfTheWeek());
 			System.out.println("Trying to assign duty:  " + duties.get(i).toString());
 			System.out.println("Number of teachers that can be assigned " + duties.get(i).getPossibleTeachers().size());
 			for(int j = 0; j < duties.get(i).getPossibleTeachers().size(); j++) { //loop through the duty's possible teachers
