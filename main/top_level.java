@@ -51,19 +51,30 @@ public class top_level {
 		assignPossibleTeachers();
 		sortByPossibleTeachers();
 		sortByPossibleDuties();
-		assignTheTeacher();
-		//boolean k = assignTheTeacher();
-		
-		//while(!k) {
-	//		k = assignTheTeacher();
-//		}
-		System.out.println(assignedDuties.size());
-		for(int q = 0; q < duties.size(); q++) {
-			System.out.println(duties.get(q).toString() + " " + duties.get(q).getPossibleTeachers().size());
+		for(int i = 0; i < duties.get(0).getPossibleTeachers().size(); i++) {
+			System.out.println(duties.get(0).getPossibleTeachers().get(i).toString());
 		}
-		in.close();
+		printTeacherByID(78617);
+		printTeacherByID(37395);
+		printTeacherByID(78287);
+		printTeacherByID(73856);
+		printTeacherByID(80567);
+		printTeacherByID(76445);
+		printTeacherByID(20996);
+		printTeacherByID(59921);
+		
+		boolean k = assignTheTeacher();
+		
+	//	while(k == false) {
+	//		k = assignTheTeacher();
+	//}
+		System.out.println(assignedDuties.size());
 	}
-
+	
+	public static void printTeacherByID(int id) { //method to print teacher by id
+		int index = findTeacherByID(id);
+		System.out.println(teachers.get(index).toStringWithLessons());
+	}
 	public static int searchForDay(String day) {
 		day = day.trim(); //remove any unnecessary spaces;
 		for(int i = 0; i < 5; i ++) { //Going through all days of the week
@@ -359,7 +370,7 @@ public class top_level {
 		}
 	return true; //all duties have been assigned;
 		
-	}
+	} 
 	
 	public static void assignPossibleTeachers() {
 		for (int i = 0; i < duties.size(); i++) { // going through all duties
@@ -383,7 +394,7 @@ public class top_level {
 				if (dutyStartTime.getHours() == 11) { // Check if the duty begins at break, break begins at 11 hence hours = 11
 					Lesson [] teacherLessons = teacher.getLessons(); //access teacher lessons
 					int index = searchForDay(assigned.getDayOfTheWeek());// access the day of the week as index
-					if(teacherLessons[index].two == true || teacherLessons[index].three == true) { //Check if teacher has lesson on period 1
+					if(teacherLessons[index].two == true && teacherLessons[index].three == true) { //Check if teacher has lesson on period 1
 						canAssign = false; //Set can assign to false as the teacher cannot be assigned the duty
 					}
 				}
@@ -405,7 +416,7 @@ public class top_level {
 					}
 					Lesson [] teacherLessons = teacher.getLessons(); //access teacher lessons
 					int index = searchForDay(assigned.getDayOfTheWeek());// access the day of the week as index
-					if(teacherLessons[index].four == true || teacherLessons[index].five == true || teacherLessons[index].lunch == true) { //Check if teacher has lesson on period 4, lunch or 5
+					if(teacherLessons[index].four == true && teacherLessons[index].lunch == true && teacherLessons[index].five == true) { //Check if teacher has lesson on period 4, lunch or 5
 						canAssign = false; //Set can assign to false as the teacher cannot be assigned the duty
 
 					}
