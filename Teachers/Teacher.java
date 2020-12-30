@@ -18,22 +18,28 @@ public class Teacher {
 	private boolean assignedAfterSchool = false; //whether a teacher has already been assigned an after school duty or not;
 	private int howManyDutiescanBeAssigned = 0; // how many different duties the teacher can perform.
 	private ArrayList<AssignedTimes> assignedTimes = new ArrayList<AssignedTimes>(); //the times that the teacher has been assigned
+	private ArrayList<Duty> assignedDuties = new ArrayList<Duty>(); //the duties assigned to the teacher
+	private ArrayList<Duty> dutiesTeacherCanDo = new ArrayList<Duty>(); //list of duties that the teacher can do
+	//setters and getters
 	public ArrayList<AssignedTimes> getAssignedTimes() {
 		return assignedTimes;
 	}
+	
 	public void setAssignedTimes(ArrayList<AssignedTimes> assignedTimes) {
 		this.assignedTimes = assignedTimes;
 	}
-
-	private ArrayList<Duty> dutiesTeacherCanDo = new ArrayList<Duty>(); //list of duties that the teacher can do
-	
+	public ArrayList<Duty> getAssignedDuties() {
+		return assignedDuties;
+	}
+	public void setAssignedDuties(ArrayList<Duty> assignedDuties) {
+		this.assignedDuties = assignedDuties;
+	}
 	public ArrayList<Duty> getDutiesTeacherCanDo() {
 		return dutiesTeacherCanDo;
 	}
 	public void setDutiesTeacherCanDo(ArrayList<Duty> dutiesTeacherCanDo) {
 		this.dutiesTeacherCanDo = dutiesTeacherCanDo;
 	}
-	//Setters and Getters 
 	public int getHowManyDutiescanBeAssigned() {
 		return howManyDutiescanBeAssigned;
 	}

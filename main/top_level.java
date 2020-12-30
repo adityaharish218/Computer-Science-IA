@@ -46,27 +46,21 @@ public class top_level {
 		boolean d = importSubjects();
 		boolean e = importAdmins();
 		boolean f = importPeriodSix();
-		for(int i = 0; i < teachers.size(); i++ ) {
-			System.out.println(teachers.get(i).getAssignedTimes().size());
-		}
 		
-		for(int l = 0; l < teachers.size(); l++) {
-			for(int m = 0; m < teachers.get(l).getAssignedTimes().size(); m++) {
-				for(int n = 0; n < teachers.get(l).getAssignedTimes().get(m).assignedOnThisTime.length; n++) {
-					System.out.println(teachers.get(l).getAssignedTimes().get(m).assignedOnThisTime[n]);
-				}
-			} 
-		}
+	
 		assignPossibleTeachers();
 		sortByPossibleTeachers();
 		sortByPossibleDuties();
-		assignTeachers();
+		assignTheTeacher();
 		//boolean k = assignTheTeacher();
 		
 		//while(!k) {
 	//		k = assignTheTeacher();
 //		}
 		System.out.println(assignedDuties.size());
+		for(int q = 0; q < duties.size(); q++) {
+			System.out.println(duties.get(q).toString() + " " + duties.get(q).getPossibleTeachers().size());
+		}
 		in.close();
 	}
 
@@ -472,14 +466,13 @@ public class top_level {
 					canAssign = false; //teacher cannot be assigned the duty;
 					System.out.println("Condition max assigned");
 				}
-				int indexOfTime = findTimes(duties.get(i).getStartTime()); // get the time as an index in the theTimes array
-				for(int z = 0; z < teachers.get(index).getAssignedTimes().get(indexOfTime).assignedOnThisTime.length; z++) {
-					System.out.println(teachers.get(index).getAssignedTimes().get(indexOfTime).assignedOnThisTime[z]);
+				for(int z = 0; z < teachers.get(index).getAssignedDuties().size(); z++) { //loop through the teacher's duties that have been assigned
+					if(teachers.get(index).getAssignedDuties().get(z).getDayOfTheWeek().equals(duties.get(i).getDayOfTheWeek()) && teachers.get(index).getAssignedDuties().get(z).getStartTime().equals(duties.get(i).getStartTime())) { //check if the duty trying to be assigned's day of the week and start time is the same as one of the teacher's assigned duties
+						canAssign = false; //teacher cannot be assigned as he/she already has a duty on that day of the week
+					System.out.println("Condition already assigned on this day on same time");
+					}
 				}
-				if(teachers.get(index).getAssignedTimes().get(indexOfTime).assignedOnThisTime[dayOfTheWeekAsIndex]) { //check if a teacher has already been assigned on this time on this day
-					canAssign = false; //cannot assign teacher this time
-					System.out.println("Condition already assigned on this time on this day ");
-				}
+				
 				
 				if(duties.get(i).getStartTime().getHours() == 8) { //check if the duty is in the morning
 					if(teachers.get(index).isAdmin() == true && dutiesAssignedToAdmins < noOfAdmins) { //check if the teacher is an admin and that the number of duties assigned to admins is < the number of admins
@@ -510,14 +503,18 @@ public class top_level {
 						dutiesAssignedToAdmins = dutiesAssignedToAdmins + 1; //if they are, increase it by one
 					}
 					duties.get(i).setHasBeenAssigned(true); //duty has been assigned. 
-					teachers.get(index).getAssignedTimes().get(indexOfTime).assignedOnThisTime[dayOfTheWeekAsIndex] = true; //change it so that the teacher has been assigned on this time on this day
+					teachers.get(index).getAssignedDuties().add(duties.get(i)); //add this duty to the list of duties assigned to teachers
 					System.out.println("Assigned successfully");
 					break; //break out of loop as teacher has been assigned 
 				}
 				System.out.println("Not assigned");
 			}
 		}
-		
+		for(int p = 0; p < duties.size(); p++) {
+			if(duties.get(p).isHasBeenAssigned() == false) {
+				System.out.println(duties.get(p));
+			}
+		}
 		return false; //assume all duties have not been assigned
 	}
 	
