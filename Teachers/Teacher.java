@@ -190,4 +190,10 @@ public class Teacher {
 		return 1; //return 0 as teacher is not admin
 	}
 	
+	public void setNoOfLessonsOnEachDay() { //method to set the number of lessons on each day for the teacher
+		for(int i = 0; i < this.lessons.length; i++) { //loop through all of the teacher lessons
+			this.lessons[i].setLessonsToday(); //uset the setLessonsToday method to set the lessons
+		}
+	}
+	
 }

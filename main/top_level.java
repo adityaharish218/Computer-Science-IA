@@ -59,6 +59,12 @@ public class top_level {
 		sortByPossibleDuties();
 		assignTheTeacher();
 		sortForFinalOutput();
+		System.out.println(assignedDuties.size());
+		for(int i = 0; i < duties.size(); i++) {
+			if(duties.get(i).isHasBeenAssigned() == false) {
+				System.out.println(duties.get(i));
+			}
+		}
 		generateCSV();
 		
 		
@@ -441,6 +447,12 @@ public class top_level {
 
 					}
 				}
+				
+				Lesson [] teacherLessons = teacher.getLessons(); //access teacher lessons
+				int index = searchForDay(assigned.getDayOfTheWeek()); //access the day of the week as index
+				if(teacherLessons[index].getLesosnsToday() > 3) { //check if the teacher has more than 4 lessons on the day
+					canAssign = false; //can assign = false
+				}
 				if(canAssign) { //check if the teacher can be assigned
 					possibleTeachers.add(teachers.get(j)); //add this teacher to the duty's possible teachers
 					teachers.get(j).setHowManyDutiescanBeAssigned(teachers.get(j).getHowManyDutiescanBeAssigned() + 1); //increase the number of duties this teacher can do by 1
@@ -512,7 +524,7 @@ public class top_level {
 					canAssign = false;
 					System.out.println("Condition has already been assigned");
 				}
-				
+
 				if(canAssign) { //if the duty can be assigned
 					AssignedDuty a = new AssignedDuty(duties.get(i),teachers.get(index)); //create a new assigned duty with the teacher
 					assignedDuties.add(a); //add this duty along with assigned teacher
@@ -627,7 +639,9 @@ public class top_level {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		for(int i = 0; i < teachers.size(); i++) { //loop through all teachers
+			teachers.get(i).setNoOfLessonsOnEachDay(); //use the set lessons method to set the number of lessons on each day
+		}
 		return true;
 	}
 	public static boolean importTeachers() { //returns a boolean, if true, then the teachers have been imported properly, if false means there is error
