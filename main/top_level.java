@@ -79,6 +79,11 @@ public class top_level {
 		System.out.println(assignedDuties.get(assignedDuties.size() - 1).getTeacher().getDutiesAssigned());
 		System.out.println(assignedDuties.get(assignedDuties.size() - 1).getTeacher().getDutiesToBeAssigned());
 
+		for(int g = 0; g < teachers.size(); g++) {
+			if(teachers.get(g).getDutiesAssigned() > teachers.get(g).getDutiesToBeAssigned()) {
+				System.out.println(teachers.get(g).toString());
+			}
+		}
 		sortForFinalOutput();
 		generateCSV();
 		
