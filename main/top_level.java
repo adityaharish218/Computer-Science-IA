@@ -58,19 +58,28 @@ public class top_level {
 		sortByPossibleTeachers();
 		sortByPossibleDuties();
 		assignTheTeacher();
-		sortForFinalOutput();
+		
+		
+		
 		System.out.println(assignedDuties.size());
-//		for(int i = 0; i < duties.size(); i++) {
-//			if(duties.get(i).isHasBeenAssigned() == false) {
-//				System.out.println(duties.get(i));
-//				for(int j = 0; j < duties.get(i).getPossibleTeachers().size(); j++) {
-//					int index = findTeacherByID(duties.get(i).getPossibleTeachers().get(j).getId());
-//					System.out.println(teachers.get(index));
-//					System.out.println(teachers.get(index).getDutiesAssigned());
-//					System.out.println(teachers.get(index).getDutiesToBeAssigned());
-//				}
-//			}
-//		}
+		for(int i = 0; i < duties.size(); i++) {
+			if(duties.get(i).isHasBeenAssigned() == false) {
+				System.out.println(duties.get(i));
+				for(int j = 0; j < duties.get(i).getPossibleTeachers().size(); j++) {
+					int index = findTeacherByID(duties.get(i).getPossibleTeachers().get(j).getId());
+					System.out.println(teachers.get(index));
+					System.out.println(teachers.get(index).getDutiesAssigned());
+					System.out.println(teachers.get(index).getDutiesToBeAssigned());
+				}
+			}
+		}
+		assignUnAssignedDuties();
+		System.out.println(assignedDuties.size());
+		System.out.println(assignedDuties.get(assignedDuties.size() - 1).toStringWithCommas());
+		System.out.println(assignedDuties.get(assignedDuties.size() - 1).getTeacher().getDutiesAssigned());
+		System.out.println(assignedDuties.get(assignedDuties.size() - 1).getTeacher().getDutiesToBeAssigned());
+
+		sortForFinalOutput();
 		generateCSV();
 		
 		
@@ -445,9 +454,84 @@ public class top_level {
 		return i; //return i as teacher has been found
 	}
 	
-
+	public static boolean checkTeacher(Teacher t, Duty d) { //method that returns if a teacher can fit a duty or not
+		int index = findTeacherByID(t.getId()); //access the index of the teacher in the main array;
+		if(teachers.get(index).getDutiesAssigned() == teachers.get(index).getDutiesToBeAssigned()) { //check if the teacher has already been assigned the max number of duties
+			return false; //return false as teacher cannot be assigned
+		}
+		if(d.getStartTime().getHours() >= 14) {//check if the duty is after school
+			if(teachers.get(index).isAssignedAfterSchool()) { //check if the teacher has been assigned after school
+				return false; //return false as teacher cannot be assigned
+			}
+		}
+		for(int i = 0; i < teachers.get(index).getAssignedDuties().size(); i++) { //go through all of the teachers assigned duties
+			int c = 0; //conditions variable
+			if(teachers.get(index).getAssignedDuties().get(i).getDayOfTheWeek().equals(d.getDayOfTheWeek())) { // check if the teacher has been assigned on this day of the week
+				c = c + 1; //increase condition
+			}
+			if(teachers.get(index).getAssignedDuties().get(i).getStartTime().equals(d.getStartTime())) { //check if the teacher has been assigned on this time
+				c = c + 1; //increase condition
+			}
+			
+			if(c == 2) { //if teacher has been assigned on this day and already on this time
+				return false; //teacher cannot be assigned
+			}
+		}
+		
+		return true; //teacher can be assigned this duty
+	}
 	
-
+	public static int findDutyByName(Duty d) {
+		int i = 0;
+		while(duties.get(i).getName().equals(d.getName())) { //while the name is not the same as that in the main list
+			i = i + 1; //increase i
+		}
+		
+		return i;
+	}
+	public static void assignUnAssignedDuties() {
+		ArrayList<Duty> notAssigned = new ArrayList<Duty>(); //create a new arrayList of unassigned duties
+		for(int i = 0; i < duties.size(); i++) { //loop through all duties
+			if(duties.get(i).isHasBeenAssigned() == false) { //check if a duty has not been assigned
+				notAssigned.add(duties.get(i)); //add this to the arrayList
+			}
+		}
+		
+		for(int k = 0; k < notAssigned.size(); k++) { //loop through all duties that are not assigned
+			Duty unAssigned = notAssigned.get(k); //access the duty
+			for(int j = 0; j < unAssigned.getPossibleTeachers().size(); j++) { //go through the duties possible teacher
+				int indexInMainList = findTeacherByID(unAssigned.getPossibleTeachers().get(j).getId()); //find the teacher in the main arrayList
+				Teacher reAssign = teachers.get(indexInMainList); //access the teacher 
+				for(int p = 0; p < reAssign.getAssignedDuties().size(); p++) { //go through the teachers assignedDuties
+					int indexForDutyInMainList = findDutyByName(reAssign.getAssignedDuties().get(p)); //find the duty in the main list
+					Duty dReAssign = duties.get(indexForDutyInMainList); //access the duty from the main list
+					for(int o = 0; o < dReAssign.getPossibleTeachers().size(); o++) { //go through that duty's possible teachers
+						if(checkTeacher(dReAssign.getPossibleTeachers().get(o), dReAssign)) { //check if another teacher from the duty's possible teachers can be assigned
+							int indexForAssignedDuty = findAssignedDutyByName(dReAssign.getName()); //get this duty's index in the AssignedDuties list
+							assignedDuties.get(indexForAssignedDuty).setTeacher(dReAssign.getPossibleTeachers().get(o)); //change it so that this teacher is made available
+							AssignedDuty a = new AssignedDuty(unAssigned,reAssign); //create a new assigned duty with this unassigned duty and this teacher
+							assignedDuties.add(a); //add the assigned duty to the list
+							p = reAssign.getAssignedDuties().size(); //change p to be the max value such that it will break out
+							j = unAssigned.getPossibleTeachers().size(); //change j to be the max value such that it will break out
+							break; //break out of the loop
+						}
+					}
+				}
+			}
+			int indexForReplacing = findDutyByName(unAssigned); //find the duties index as it has been assigned
+			duties.get(indexForReplacing).setHasBeenAssigned(true); //change it such that the duty has been assigned
+		}
+		
+	}
+	
+	public static boolean ensureAllDutiesAssigned(){
+		for(int i = 0; i < duties.size(); i++) {
+			if(duties.get(i).isHasBeenAssigned() == false) { //check if a duty has not been assigned
+				return false; //return false
+			}
+		}
+		return true;
+	}
 	public static void sortForFinalOutput() { //sort method for final output. First sort by day, then by time and finally by name
 		Collections.sort(assignedDuties, new Comparator<AssignedDuty>() { //use collections.sort method
 			public int compare(AssignedDuty a, AssignedDuty b) { //create new compare method 
