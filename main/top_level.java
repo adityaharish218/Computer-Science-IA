@@ -639,23 +639,23 @@ public class top_level {
 		}
 		return true;
 	}
-	public static boolean searchFor(char[] k, String name) {
-		for(int i = 0; i < name.length(); i++) {
-			
+	public static boolean searchFor(char[] k, String name) { //method to validate strings
+		for(int i = 0; i < name.length(); i++) { //go through whole string
+			char p = name.charAt(i); //get the string at the index
+			if(searchFor(k,p) == false) { //check if it is not in the array
+				return false; //return false
+			}
 		}
 		return true;
 	}
 	public static boolean custom() { //method to create a custom set of no of duties to be assigned to each teacher. Useful if one year has many duties and less teachers requiring teachers to maybe do more
 		System.out.println("[1] for Custom and [2] for default"); //output message asking user to input either one or two
 		String decision = in.next(); //get what the user chooses
-		for(int k = 0; k < decision.length(); k++) { //go through the whole string to ensure it is a number
-			char p = decision.charAt(k); //get the character
-			if(searchFor(IdNumbers,p) == false) { //if it is not a number
-				System.out.println("Error, invalid choice"); //tell user it is an invalid choice
-				return false; //return false 
-			}
+		if(searchFor(IdNumbers,decision) == false) { //if it is not a number
+			System.out.println("Error, please enter a number"); //ask user to input a number
+			return false; //return false
 		}
-		int choice = Integer.parseInt(decision);
+		int choice = Integer.parseInt(decision); //get it as an integer
 		if(choice != 1 || choice != 2) { //if the input is neither one or two
 			System.out.println("Error, not an option"); //tell user it is not an option
 			return false; //return false
@@ -664,7 +664,57 @@ public class top_level {
 			for(int z = 0; z < teachers.size(); z++) { //loop through all teachers array
 				teachers.get(z).setDutiesToBeAssigned(); //use the default method to set the number of duties for each teacher
 			}
-		
+			
+		}
+		else {
+			System.out.println("Enter how many hours for teacher to not be assigned any duties");
+			String hforNone = in.next(); //get the input
+			while(searchFor(IdNumbers,hforNone) == false) { //if it is not a number
+				System.out.println("Error, please enter a number"); //output error message
+				hforNone = in.next(); //get the input again
+			}
+			System.out.println("Enter how many hours for teacher to be assigned one duty");
+			String hforOne = in.next();
+			while(searchFor(IdNumbers,hforOne) == false) { //if it is not a number
+				System.out.println("Error, please enter a number"); //output error message
+				hforOne = in.next(); //get the input again
+			}
+			System.out.println("Enter how many duties for admin");
+			String fAdmin = in.next();
+			while(searchFor(IdNumbers,fAdmin) == false) { //if it is not a number
+				System.out.println("Error, please enter a number"); //output error message
+				fAdmin = in.next(); //get the input again
+			}
+			System.out.println("Enter how many hours for teacher to be considedered part time");
+			String hPartTime = in.next(); //get the input
+			while(searchFor(IdNumbers,hPartTime) == false) { //if it is not a number
+				System.out.println("Error, please enter a number"); //output error message
+				hPartTime = in.next(); //get the input again
+			}
+			System.out.println("Enter how many duties to be assigned to part timers");
+			String fPartTime = in.next();
+			while(searchFor(IdNumbers,fPartTime) == false) { //if it is not a number
+				System.out.println("Error, please enter a number");
+				fPartTime = in.next(); //get the input again
+			}
+			System.out.println("Enter how many duties to be assigned to normal teachers");
+			String fNormal = in.next();
+			while(searchFor(IdNumbers,fNormal) == false) { //if it is not a number
+				System.out.println("Error, please enter a number");
+				fNormal = in.next(); //get the input again
+			}
+			//extract the information as integers
+			int hoursForNone = Integer.parseInt(hforNone);
+			int hoursForOne = Integer.parseInt(hforOne);
+			int forAdmin = Integer.parseInt(fAdmin);
+			int hoursForPartTime = Integer.parseInt(hPartTime);
+			int forPartTimers = Integer.parseInt(fPartTime);
+			int forNormal = Integer.parseInt(fNormal);
+			
+			for(int i = 0; i < teachers.size(); i++) { //loop through teachers array
+				teachers.get(i).setDutiesToBeAssigned(hoursForNone, hoursForOne, forAdmin, hoursForPartTime, forPartTimers, forNormal); //go through all teachers and set their number of duties using this method
+			}
+					
 		}
 		return true; //return true as the function has accepted the inputs
 	}
