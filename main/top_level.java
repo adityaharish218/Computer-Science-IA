@@ -42,17 +42,35 @@ public class top_level {
 	public static final char[] allowedChars = {'(', ')', ' ', '.', '/', ',', '-'};
 
 	public static void main(String[] args) {
-		boolean a = importDutiesTakeTwo(); 
-		boolean b = importTeachers();
-		boolean c = importSubjectMeetingDays(); 
-		boolean d = importSubjects();
-		boolean e = importAdmins();
-		boolean f = importPeriodSix();
+		boolean a = importDutiesTakeTwo(); //function imports duties and returns true if all duties have been imported properly
+		while(!a) {  //it returns false meaning that there is some problem importing duties
+			duties.clear(); //clear the arrayList
+			a = importDutiesTakeTwo(); //method will output error message, user will fix and then re enter path
+		}
+		
+		boolean b = importTeachers(); //function imports all of the teachers
+		while(!b) { //it returns false if there is some problem in importing the teachers
+			teachers.clear(); //clear the arrayList
+			b = importTeachers(); //method will output error message, user will fix and then re enter path 
+		}
+		
+		boolean c = importSubjectMeetingDays();  //function imports all of the subjects with meeting days
+		while(!c) { //method will return false if there is an error
+			SubjectsWithDays.clear(); //clear the arrayList
+			c = importSubjectMeetingDays(); // method will output error message, user will fix and then re-enter path
+		}
+		boolean d = importSubjects(); //method to import the subjects each teacher has
+		while(!d) { //method will return false if there is an error
+			d = importSubjects(); //method will output error message, user will fix and then re-enter path. Just call method again. No need to clear because it is based on ID.	
+		}
+		boolean e = importPeriodSix();//method to import all the teachers who have period 6
+		while(!e) { //method will return false if there is a problem
+			e = importPeriodSix(); //method will output error message, user will fix and then re-enter path. Just call method again. No need to clear because it is based on ID.
+		}
+		boolean f = importAdmins(); //method to import all of the admins and SAL's who only get one duty
+		
 		
 		AdminsFirst();
-		for(int u = 0; u < noOfAdmins; u++) {
-			System.out.println(teachers.get(u));
-		}
 		
 		assignPossibleTeachers();
 		sortByPossibleTeachers();
@@ -621,6 +639,35 @@ public class top_level {
 		}
 		return true;
 	}
+	public static boolean searchFor(char[] k, String name) {
+		for(int i = 0; i < name.length(); i++) {
+			
+		}
+		return true;
+	}
+	public static boolean custom() { //method to create a custom set of no of duties to be assigned to each teacher. Useful if one year has many duties and less teachers requiring teachers to maybe do more
+		System.out.println("[1] for Custom and [2] for default"); //output message asking user to input either one or two
+		String decision = in.next(); //get what the user chooses
+		for(int k = 0; k < decision.length(); k++) { //go through the whole string to ensure it is a number
+			char p = decision.charAt(k); //get the character
+			if(searchFor(IdNumbers,p) == false) { //if it is not a number
+				System.out.println("Error, invalid choice"); //tell user it is an invalid choice
+				return false; //return false 
+			}
+		}
+		int choice = Integer.parseInt(decision);
+		if(choice != 1 || choice != 2) { //if the input is neither one or two
+			System.out.println("Error, not an option"); //tell user it is not an option
+			return false; //return false
+		}
+		else if(choice == 2) { //if the user wishes to use default
+			for(int z = 0; z < teachers.size(); z++) { //loop through all teachers array
+				teachers.get(z).setDutiesToBeAssigned(); //use the default method to set the number of duties for each teacher
+			}
+		
+		}
+		return true; //return true as the function has accepted the inputs
+	}
 	public static boolean importTeachers() { //returns a boolean, if true, then the teachers have been imported properly, if false means there is error
 	//System.out.println("Enter file path for teachers (Option + Right Click then select 'Copy as Pathname' "); // Ask user to input the filepath
 //	 
@@ -768,7 +815,7 @@ public class top_level {
 				Subjects[Subjects.length - 1] = Subjects[Subjects.length - 1].replace('\"', ' '); //replace the last " again with a space
 				//for printing and testing
 				Teacher temp = teachers.get(i); //get the teacher
-				if(Id != temp.getId()) { //check if ID does not match with ID stored in ArrayList (it should because it is alphabetical order
+				if(Id != temp.getId()) { //check if ID does not match with ID stored in ArrayList (it should because it is in alphabetical order but just incase
 					i++; //increase i
 					temp = teachers.get(i); //move onto next teacher
 				} 

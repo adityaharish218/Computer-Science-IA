@@ -96,6 +96,26 @@ public class Teacher {
 		this.dutiesToBeAssigned = 3; //default to 3 duties
 		
 	}
+	
+	public void setDutiesToBeAssigned(int hoursForNone, int hoursForOne, int forAdmin, int hoursForPartTime, int forPartTimers, int forNormal) { //custom method
+		if(this.lessonsPerWeek >= hoursForNone) { //check if the teacher has more than or is equal to these number of hours such that they should not be assigned a duty
+			this.dutiesToBeAssigned = 0; //this teacher can do 0 duties
+			return; //break out of the function
+		}
+		if(this.lessonsPerWeek >= hoursForOne) { //check if the teacher has more than or is equal to these number of hours such that they should only be assigned one duty
+			this.dutiesToBeAssigned = 1; //this teacher can only do 1 duty
+			return;//break out of the function
+		}
+		if(this.isAdmin()) { //if the teacher is admin
+			this.dutiesToBeAssigned = forAdmin; //assign them the number of duties the user wishes to be assigned to admin
+			return;
+		}
+		if(this.lessonsPerWeek <= hoursForPartTime) { //if the teacher is part time
+			this.dutiesToBeAssigned = forPartTimers; //assign them the number of duties the user wishes to be assigned to partTimers
+		}
+		this.lessonsPerWeek = forNormal; //if they do not meet any of the other conditions, then they are normal so assign them the number of duties the user wishes to be assigned to normal.
+		
+	}
 	public int getDutiesAssigned() {
 		return dutiesAssigned;
 	}
@@ -185,15 +205,17 @@ public class Teacher {
 	
 	public int CompareForSort() { //used for sorting 
 		if(this.isAdmin()) { //if the teacher is admin
-			return 0; //return 0 signalling teacher is admin
+			return 0; //return 0 signaling teacher is admin
 		}
 		return 1; //return 0 as teacher is not admin
 	}
 	
 	public void setNoOfLessonsOnEachDay() { //method to set the number of lessons on each day for the teacher
 		for(int i = 0; i < this.lessons.length; i++) { //loop through all of the teacher lessons
-			this.lessons[i].setLessonsToday(); //uset the setLessonsToday method to set the lessons
+			this.lessons[i].setLessonsToday(); //uses the setLessonsToday method to set the lessons
 		}
 	}
+	
+	
 	
 }
