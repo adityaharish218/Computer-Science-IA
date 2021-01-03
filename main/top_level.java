@@ -382,7 +382,7 @@ public class top_level {
 				
 				Lesson [] teacherLessons = teacher.getLessons(); //access teacher lessons
 				int index = searchForDay(assigned.getDayOfTheWeek()); //access the day of the week as index
-				if(teacherLessons[index].getLesosnsToday() > 3) { //check if the teacher has more than 4 lessons on the day
+				if(teacherLessons[index].getLesosnsToday() >= 4) { //check if the teacher has more than 4 lessons on the day
 					canAssign = false; //can assign = false
 				}
 				if(canAssign) { //check if the teacher can be assigned
