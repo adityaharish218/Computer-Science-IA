@@ -150,10 +150,9 @@ public class top_level {
 			}
 		}
 		//checking ID is unique
+		int identity = Integer.parseInt(id); //getting the ID as an integer. Should be given that all characters are numbers
 		for(int z = 0; z < teachers.size(); z++) { //looping through teachers arrayList so far
-			String compare = "" + teachers.get(z).getId(); //convert to string by getting teacher ID
-			compare = compare.trim(); //remove unnecessary spaces
-			if(id.equals(compare)) { //check if ID matches that of list
+			if(identity == teachers.get(z).getId()) { //check if ID matches that of list
 				System.out.println("ID already taken by " + teachers.get(z).getName()); //print out error message indicating that it's not a unique ID
 				return false; //Invalid ID as it is not unique
 			}
