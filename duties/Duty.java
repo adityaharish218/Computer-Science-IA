@@ -12,6 +12,13 @@ public class Duty {
 	private int pointsToDeduct; //points to deduct from teacher if duty is assigned
 	private boolean hasBeenAssigned = false; //if duty has been assigned or not
 	private ArrayList<Teacher> possibleTeachers = new ArrayList<Teacher>(); //possible teachers who can do this duty
+	private int Id; //variable to uniquely identify every duty
+	public int getId() {
+		return Id;
+	}
+	public void setId(int id) {
+		Id = id;
+	}
 	public ArrayList<Teacher> getPossibleTeachers() {
 		return possibleTeachers;
 	}
@@ -66,10 +73,11 @@ public class Duty {
 	}
 	
 	
-	public Duty(String name, Time startTime, Time endTime, String dayOfTheWeek) { //constructor 
+	public Duty(String name, Time startTime, Time endTime, String dayOfTheWeek, int id) { //constructor 
 		this.name = name;
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.dayOfTheWeek = dayOfTheWeek;
+		this.Id = id;
 	}
 }

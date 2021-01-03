@@ -39,6 +39,7 @@ public class top_level {
 	public static String line = "";
 	public static final char[] numbers = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '-', ':', ' ', '0'}; //array for checking of time
 	public static final char[] IdNumbers = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'}; //array for validation of ID
+	public static final char[] NotAllowedForDutyName = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'E', '+'}; //array for validation of duty name
 	public static final char[] allowedChars = {'(', ')', ' ', '.', '/', ',', '-'};
 
 	public static void main(String[] args) {
@@ -76,32 +77,15 @@ public class top_level {
 		sortByPossibleTeachers();
 		sortByPossibleDuties();
 		assignTheTeacher();
-		
-		
-		
-		System.out.println(assignedDuties.size());
-		for(int i = 0; i < duties.size(); i++) {
-			if(duties.get(i).isHasBeenAssigned() == false) {
-				System.out.println(duties.get(i));
-				for(int j = 0; j < duties.get(i).getPossibleTeachers().size(); j++) {
-					int index = findTeacherByID(duties.get(i).getPossibleTeachers().get(j).getId());
-					System.out.println(teachers.get(index));
-					System.out.println(teachers.get(index).getDutiesAssigned());
-					System.out.println(teachers.get(index).getDutiesToBeAssigned());
-				}
-			}
-		}
 		assignUnAssignedDuties();
+		System.out.println(ensureAllDutiesAssigned());
+		
 		System.out.println(assignedDuties.size());
 		System.out.println(assignedDuties.get(assignedDuties.size() - 1).toStringWithCommas());
 		System.out.println(assignedDuties.get(assignedDuties.size() - 1).getTeacher().getDutiesAssigned());
 		System.out.println(assignedDuties.get(assignedDuties.size() - 1).getTeacher().getDutiesToBeAssigned());
 
-		for(int g = 0; g < teachers.size(); g++) {
-			if(teachers.get(g).getDutiesAssigned() > teachers.get(g).getDutiesToBeAssigned()) {
-				System.out.println(teachers.get(g).toString());
-			}
-		}
+		
 		sortForFinalOutput();
 		generateCSV();
 		
@@ -239,7 +223,7 @@ public class top_level {
 		boolean allNumbers = true; //assume the duty is all numbers
 		for(int i = 0; i < duty.length(); i++) {
 			char k = duty.charAt(i); //get the character at the index
-			if(searchFor(numbers,k) == false) { //try to find the character in the numbers array and if it can't it means that it is not a number
+			if(searchFor(NotAllowedForDutyName,k) == false) { //try to find the character in the numbers array and if it can't it means that it is not a number
 				allNumbers = false; //duty name is not all numbers
 				break; //break out of loop
 			}
@@ -385,6 +369,12 @@ public class top_level {
 	public static void sortByPossibleTeachers() { //method to sort duties based on the number of possible teachers who can do the duty
 		Collections.sort(duties, new Comparator<Duty>() { //call sort method from collections class (Learnt from https://www.youtube.com/watch?v=wzWFQTLn8hI)
 			public int compare(Duty d1, Duty d2) { //create a compare method for duties
+				Time t1 = d1.getStartTime();
+				Time t2 = d2.getStartTime();
+				int timeCompare = t1.compareTo(t2);
+				if(timeCompare != 0 ) {
+					return timeCompare;
+				}
 				return Integer.valueOf(d1.getPossibleTeachers().size()).compareTo(d2.getPossibleTeachers().size()); //compare the size of the possibleTeachers arraylist for both duties and return the value
 			}
 		});
@@ -479,11 +469,15 @@ public class top_level {
 	
 	public static boolean checkTeacher(Teacher t, Duty d) { //method that returns if a teacher can fit a duty or not
 		int index = findTeacherByID(t.getId()); //access the index of the teacher in the main array;
+		System.out.println(t.toString());
+		System.out.println(teachers.get(index).toString());
 		if(teachers.get(index).getDutiesAssigned() == teachers.get(index).getDutiesToBeAssigned()) { //check if the teacher has already been assigned the max number of duties
+			System.out.println("Condition Max assigned");
 			return false; //return false as teacher cannot be assigned
 		}
 		if(d.getStartTime().getHours() >= 14) {//check if the duty is after school
 			if(teachers.get(index).isAssignedAfterSchool()) { //check if the teacher has been assigned after school
+				System.out.println("Condition already Assigned");
 				return false; //return false as teacher cannot be assigned
 			}
 		}
@@ -504,9 +498,9 @@ public class top_level {
 		return true; //teacher can be assigned this duty
 	}
 	
-	public static int findDutyByName(Duty d) {
+	public static int findDutyById(Duty d) {
 		int i = 0;
-		while(duties.get(i).getName().equals(d.getName())) { //while the name is not the same as that in the main list
+		while(duties.get(i).getId() != d.getId()) { //while the id is not the same as in the main arrayList
 			i = i + 1; //increase i
 		}
 		
@@ -521,28 +515,38 @@ public class top_level {
 		}
 		
 		for(int k = 0; k < notAssigned.size(); k++) { //loop through all duties that are not assigned
+			boolean hasBeenAssigned = false; //assume duty has not been assigned
 			Duty unAssigned = notAssigned.get(k); //access the duty
 			for(int j = 0; j < unAssigned.getPossibleTeachers().size(); j++) { //go through the duties possible teacher
 				int indexInMainList = findTeacherByID(unAssigned.getPossibleTeachers().get(j).getId()); //find the teacher in the main arrayList
 				Teacher reAssign = teachers.get(indexInMainList); //access the teacher 
 				for(int p = 0; p < reAssign.getAssignedDuties().size(); p++) { //go through the teachers assignedDuties
-					int indexForDutyInMainList = findDutyByName(reAssign.getAssignedDuties().get(p)); //find the duty in the main list
+					int indexForDutyInMainList = findDutyById(reAssign.getAssignedDuties().get(p)); //find the duty in the main list
 					Duty dReAssign = duties.get(indexForDutyInMainList); //access the duty from the main list
 					for(int o = 0; o < dReAssign.getPossibleTeachers().size(); o++) { //go through that duty's possible teachers
-						if(checkTeacher(dReAssign.getPossibleTeachers().get(o), dReAssign)) { //check if another teacher from the duty's possible teachers can be assigned
-							int indexForAssignedDuty = findAssignedDutyByName(dReAssign.getName()); //get this duty's index in the AssignedDuties list
+						Teacher toBeReassigned = dReAssign.getPossibleTeachers().get(o); //access the teacher
+						boolean canBeAssigned = checkTeacher(toBeReassigned,dReAssign);
+						System.out.println(canBeAssigned);
+						if(canBeAssigned) {
+							System.out.println(toBeReassigned.toString());
+						}
+						if(canBeAssigned && toBeReassigned.getId() != reAssign.getId()) { //check if another teacher from the duty's possible teachers can be assigned
+							int indexForAssignedDuty = findAssignedDutyByID(dReAssign); //get this duty's index in the AssignedDuties list
 							assignedDuties.get(indexForAssignedDuty).setTeacher(dReAssign.getPossibleTeachers().get(o)); //change it so that this teacher is made available
 							AssignedDuty a = new AssignedDuty(unAssigned,reAssign); //create a new assigned duty with this unassigned duty and this teacher
 							assignedDuties.add(a); //add the assigned duty to the list
 							p = reAssign.getAssignedDuties().size(); //change p to be the max value such that it will break out
 							j = unAssigned.getPossibleTeachers().size(); //change j to be the max value such that it will break out
+							hasBeenAssigned = true; //duty has been assigned
 							break; //break out of the loop
 						}
 					}
 				}
 			}
-			int indexForReplacing = findDutyByName(unAssigned); //find the duties index as it has been assigned
+			if(hasBeenAssigned) {
+			int indexForReplacing = findDutyById(unAssigned); //find the duties index as it has been assigned
 			duties.get(indexForReplacing).setHasBeenAssigned(true); //change it such that the duty has been assigned
+			}
 		}
 		
 	}
@@ -550,26 +554,16 @@ public class top_level {
 	public static boolean ensureAllDutiesAssigned(){
 		for(int i = 0; i < duties.size(); i++) {
 			if(duties.get(i).isHasBeenAssigned() == false) { //check if a duty has not been assigned
+				System.out.println(duties.get(i));
 				return false; //return false
 			}
 		}
 		return true;
 	}
-	public static void sortForFinalOutput() { //sort method for final output. First sort by day, then by time and finally by name
+	public static void sortForFinalOutput() { //sort method for final output. Sort by ID's as they have been made such that when each duty is added, a new ID is generated
 		Collections.sort(assignedDuties, new Comparator<AssignedDuty>() { //use collections.sort method
 			public int compare(AssignedDuty a, AssignedDuty b) { //create new compare method 
-				int day1 = searchForDay(a.getDuty().getDayOfTheWeek()); //get the first day of the week as index
-				int day2 = searchForDay(a.getDuty().getDayOfTheWeek()); //get the second day of the week as index
-				int dayCompare = day1 - day2; //compare the days of the week. If day1 is before day 2, it will be a positive value. Otherwise it will be a negative indiciating day2 is before day 1
-				if(dayCompare != 0) { //if it is not equal to 0
-					return dayCompare; //return this
-				}
-				Time time1 = a.getDuty().getStartTime(); //get the first duty's startTime
-				Time time2 = b.getDuty().getStartTime(); //get the second duty's startTime
-				if( time1.compareTo(time2) != 0) { // check if it is the same time
-					return time1.compareTo(time2); //return if it is not
-				}
-				return a.getDuty().getName().compareTo(b.getDuty().getName()); //compare the names 
+				return a.getDuty().getId() - b.getDuty().getId(); //compare the ID's and return
 				
 			}
 		});
@@ -577,9 +571,19 @@ public class top_level {
 	
 	}
 	
-	public static int findAssignedDutyByName(String name) { //method to search for assignedDuties
+	public static int findAssignedDutyByID(AssignedDuty a) { //method to search for assignedDuties with another assignedDuty
 		int i = 0; //counter variable
-		while(assignedDuties.get(i).getDuty().getName().equals(name) == false) { //while the name has not been found
+		while(assignedDuties.get(i).getDuty().getId() != a.getDuty().getId()) { //while the ID has not been found
+			i = i + 1; //move on to next index
+			if(i == assignedDuties.size()) { //check if it equal to the size
+				return i; //return the size as the name has not been found
+			}
+		}
+		return i; //return the index
+	}
+	public static int findAssignedDutyByID(Duty a) { //method to search for assignedDuties with a duty
+		int i = 0; //counter variable
+		while(assignedDuties.get(i).getDuty().getId() != a.getId()) { //while the ID has not been found
 			i = i + 1; //move on to next index
 			if(i == assignedDuties.size()) { //check if it equal to the size
 				return i; //return the size as the name has not been found
@@ -588,11 +592,9 @@ public class top_level {
 		return i; //return the index
 	}
 	public static boolean importPeriodSix() { //import teachers who have period six
-	//System.out.println("Enter file path for list of teachers with period 6"); //output message 
-	//String path = in.next(); //read the path
-		System.out.println("Importing period six");
-	String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/Period_6.csv";
-		try {
+	System.out.println("Enter file path for list of teachers with period 6"); //output message 
+	String path = in.next(); //read the path
+	try {
 			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new bufferedReader
 			br.readLine(); //read the first Line as it is not important
 			while(br.ready()) { //while the BufferedReader is ready
@@ -719,12 +721,10 @@ public class top_level {
 		return true; //return true as the function has accepted the inputs
 	}
 	public static boolean importTeachers() { //returns a boolean, if true, then the teachers have been imported properly, if false means there is error
-	//System.out.println("Enter file path for teachers (Option + Right Click then select 'Copy as Pathname' "); // Ask user to input the filepath
-//	 
-		//String path = in.next(); //create a new string called path which stores the filepath
-	System.out.println("Importing Teachers");
-		String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/HS_TT_summary_23Oct20.csv";
-		try {
+	System.out.println("Enter file path for teachers (Option + Right Click then select 'Copy as Pathname' "); // Ask user to input the filepath
+	 
+		String path = in.next(); //create a new string called path which stores the filepath
+	try {
 			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new buffered reader which reads the path
 			int i = 0; //counter variable
 			br.readLine(); //going through first line because it doesn't matter (days of the week)
@@ -745,11 +745,14 @@ public class top_level {
 				}
 				int Id = Integer.parseInt(values[0]); //first element is ID
 				if(isValidName(values[1]) == false) { //check if the name is valid
-					System.out.println("Error. Name " + values[1] + " of teacher with ID " + values[0] + " is invalid. Please fix and re-enter");
+					System.out.println("Error. Name " + values[1] + " of teacher with ID " + values[0] + " is invalid. Please fix and re-enter"); //output error message
 					return false;
 				}
 				String name = values[1];// second element is Name  
-				
+				if(isValidLessonsPerWeek(values[2]) == false) { //check if the lessons per week is not valid+
+					System.out.println("Error, Lessons per Week for " + values[1] + " with ID" + values[0] + " is not valid, please fix and re-enter"); //output error message
+					return false;
+				}
 				int lessonsPerWeek = Integer.parseInt(values[2]); //third element is the number of lessons the teacher has
 				boolean homebase = setLesson(values[3]); //fourth element is the teacher's homebase
 				//Setting all the temp lessons to false to avoid NullPointer exception
@@ -798,11 +801,9 @@ public class top_level {
 		return true; //Import successful
 	}
 	public static boolean importAdmins() { //importing all the admins 
-//		System.out.println("Enter file path for List of Admins");
-//	String path = in.next();
-		System.out.println("Importing admins");
-		String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/Teachers_Admin_List.csv";
-		try {
+		System.out.println("Enter file path for List of Admins");
+	String path = in.next();
+	try {
 			//First add all admin IDs to an arraylist
 			BufferedReader br = new BufferedReader(new FileReader(path));//create a new BufferedReader
 			br.readLine(); //read the first line as it is not important
@@ -844,12 +845,10 @@ public class top_level {
 	}
 	public static boolean importSubjects() { //import the teacher subjects 
 	
-		//System.out.println("Enter file path for teaching departments"); // ask user to input path name
-		//String path = in.next(); //store path name 
+		System.out.println("Enter file path for teaching departments"); // ask user to input path name
+		String path = in.next(); //store path name 
 
-		System.out.println("Importing Subjects");
-		String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/HS_Tchng_Depts.csv";
-		try {
+	try {
 			BufferedReader br = new BufferedReader(new FileReader(path));
 			br.readLine(); //read the first line as it is not important
 			int i = 0; //counter variable
@@ -908,11 +907,9 @@ public class top_level {
 	}
 	
 	public static boolean importSubjectMeetingDays() { //method to import subjects with meeting days
-		//	System.out.println("Enter file path for list of subjects and meeting days"); 
-		//	String path = in.next(); //read the filepath
-		System.out.println("Import Subjects with Meeting days");
-		String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/Subject_Area_Meeting_Days.csv";
-		try {
+			System.out.println("Enter file path for list of subjects and meeting days"); 
+			String path = in.next(); //read the filepath
+	try {
 			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new buffered reader 
 			br.readLine(); //read first line as it is not important
 			
@@ -945,6 +942,7 @@ public class top_level {
 	public static boolean importDutiesTakeTwo() {
 		System.out.println("Enter path for list of duties");
 		String path = in.next();
+		int id = 0;
 		Time oldStartTime = new Time(0,0); //create a new oldStart Time with 0 0 
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new buffered reader
@@ -953,23 +951,50 @@ public class top_level {
 				line = br.readLine(); //read the line
 				String [] values = line.split(","); //split the line by commas and store it into a new array
 				String name = values[0]; //first element is the name of the duty
+				name = name.trim(); //remove any unnecessary spaces if present
 				if(isValidDutyName(name) == false) { //check if the duty name is not valid 
 					System.out.println("Error. Duty name " + name + " is not valid. Please fix and re enter");
+					return false;
 				}
 				String timeInString = values[1]; //second element is the times 
 				String [] times = timeInString.split("-"); //split the time in terms of "-", there are two times one being the starting time and the second being the ending time
 				String [] forStartTime = times[0].split(":"); //now for the start time which is the first value stored in values array, split it by the ":". So if the value was like 11:35, this will give me an array with the values of 11 and 35
 				//trim to get rid of any unnecessary spaces 
+				for(int z = 0; z < forStartTime.length; z++) {
+					forStartTime[z] = forStartTime[z].trim();
+				}
+				for(int z = 0; z < forStartTime.length; z++) {
+					if(searchFor(IdNumbers,forStartTime[z]) == false) {
+						System.out.println("Error, Time " + forStartTime[z] + " for duty '" + name +  "' is not valid. Please fix and re-enter");
+						return false;
+					}
+					String temp = forStartTime[z]; //get as string
+					if(temp.length() == 0 ) { //if it's length is 0
+						System.out.println("Error, Time " + forStartTime[z] + " for duty '" + name +  "' is not valid. Please fix and re-enter");
+						return false;
+					}
+				}
 				int startHours = Integer.parseInt(forStartTime[0].trim()); //first element is the hours
 				int starMin = Integer.parseInt(forStartTime[1].trim()); //second element is the minutes
 				Time startTime = new Time(startHours, starMin); //create a new time with those parameters
 				//repeat process for endTime
 				String[] forEndTime = times[1].split(":");
+				for(int z = 0; z < forEndTime.length; z++) {
+					forEndTime[z] = forEndTime[z].trim();
+				}
+				for(int z = 0; z < forEndTime.length; z++) {
+					if(searchFor(IdNumbers,forEndTime[z]) == false) {
+						System.out.println("condition 1, end time");
+						System.out.println("Error, Time " + forEndTime[z] + " for duty '" + name +  "' is not valid. Please fix and re-enter");
+						return false;
+					}
+					
+				}
 				int endHours = Integer.parseInt(forEndTime[0].trim()); //first element is the hours
 				int endMin = Integer.parseInt(forEndTime[1].trim()); //second element is the minutes
 				Time endTime = new Time(endHours, endMin); 
 				if(validTimes(startTime,endTime) == false) { //check if the times are not valid
-					System.out.println("Error, start time " + startTime.toString() + " and end time " + endTime.toString() + " are not valid. Please fix and re enter"); //output message
+					System.out.println("Error, start time " + startTime.toString() + " and end time " + endTime.toString() + " for duty: '" + name + "' are not valid. Please fix and re enter"); //output message
 					return false; //import not successful
 				}
 				if(oldStartTime.equals(startTime) == false) { //check if new there is a new startTime
@@ -980,17 +1005,19 @@ public class top_level {
 				for(int i = 0; i < values.length - 2; i++) { //loop through the length of the duties array - the first two elements
 					if(values[i + 2].length() > 0 && searchForDay(values[i+2]) != -1) { //check if it it's length is longer than 0 and it is a day of the week
 					String dayofTheWeek = values[i + 2]; //get the day of the week
-					Duty temp = new Duty(name,startTime,endTime,dayofTheWeek); //create a new duty
+					Duty temp = new Duty(name,startTime,endTime,dayofTheWeek,id); //create a new duty
+					id = id + 1; //increase id
 					duties.add(temp); //add duty into array list
 					}
 				}
 			}
+			//exceptions with appropriate error messages
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Error, File not found");
+			return false;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Error, input does not match system. Please check handout to see how input should be");
+			return false;
 		} 
 
 		return true; //import successful 
