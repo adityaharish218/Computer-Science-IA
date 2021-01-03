@@ -17,28 +17,14 @@ public class Teacher {
 	private boolean homebase; // whether the teacher has a homebase or not 
 	private boolean assignedAfterSchool = false; //whether a teacher has already been assigned an after school duty or not;
 	private int howManyDutiescanBeAssigned = 0; // how many different duties the teacher can perform.
-	private ArrayList<AssignedTimes> assignedTimes = new ArrayList<AssignedTimes>(); //the times that the teacher has been assigned
 	private ArrayList<Duty> assignedDuties = new ArrayList<Duty>(); //the duties assigned to the teacher
-	private ArrayList<Duty> dutiesTeacherCanDo = new ArrayList<Duty>(); //list of duties that the teacher can do
+
 	//setters and getters
-	public ArrayList<AssignedTimes> getAssignedTimes() {
-		return assignedTimes;
-	}
-	
-	public void setAssignedTimes(ArrayList<AssignedTimes> assignedTimes) {
-		this.assignedTimes = assignedTimes;
-	}
 	public ArrayList<Duty> getAssignedDuties() {
 		return assignedDuties;
 	}
 	public void setAssignedDuties(ArrayList<Duty> assignedDuties) {
 		this.assignedDuties = assignedDuties;
-	}
-	public ArrayList<Duty> getDutiesTeacherCanDo() {
-		return dutiesTeacherCanDo;
-	}
-	public void setDutiesTeacherCanDo(ArrayList<Duty> dutiesTeacherCanDo) {
-		this.dutiesTeacherCanDo = dutiesTeacherCanDo;
 	}
 	public int getHowManyDutiescanBeAssigned() {
 		return howManyDutiescanBeAssigned;
@@ -188,13 +174,13 @@ public class Teacher {
 	}
 	
 	public Teacher() {} //empty constructor
-	public Teacher(String name, int ID, int lessonsPerWeek, boolean homebase, Lesson [] lessons, ArrayList<AssignedTimes> assignedTimes) {
+	public Teacher(String name, int ID, int lessonsPerWeek, boolean homebase, Lesson [] lessons) {
 		this.name = name;
 		this.id = ID;
 		this.lessonsPerWeek = lessonsPerWeek;
 		this.homebase = homebase;
 		this.lessons = lessons;
-		this.assignedTimes = assignedTimes;
+		
 	}
 	
 	public String toStringWithNumberOfDutiesToBeSet() {
@@ -212,8 +198,14 @@ public class Teacher {
 	
 	public void setNoOfLessonsOnEachDay() { //method to set the number of lessons on each day for the teacher
 		for(int i = 0; i < this.lessons.length; i++) { //loop through all of the teacher lessons
-			this.lessons[i].setLessonsToday(); //uses the setLessonsToday method to set the lessons
+			this.lessons[i].setLessonsToday(); //uses the setLessonsToday method to set the lessons on each day
 		}
+	}
+	
+	public void clearForCustom() { //method to clear the teacher of all duties assigned
+		this.getAssignedDuties().clear(); //clear the duties that have been assigned to this teacher
+		this.setAssignedAfterSchool(false); //set to false that this teacher has been assigned after school
+		
 	}
 	
 	

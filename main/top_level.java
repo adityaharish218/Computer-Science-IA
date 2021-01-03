@@ -69,34 +69,63 @@ public class top_level {
 			e = importPeriodSix(); //method will output error message, user will fix and then re-enter path. Just call method again. No need to clear because it is based on ID.
 		}
 		boolean f = importAdmins(); //method to import all of the admins and SAL's who only get one duty
+		//output messages to see whether user wants to use custom or default
+		System.out.println("Number of duties : " + duties.size());
+		System.out.println("Number of teachers : " + teachers.size());
+		System.out.println("Number of admins : " + noOfAdmins);
 		
-		
-		AdminsFirst();
-		
-		assignPossibleTeachers();
-		sortByPossibleTeachers();
-		sortByPossibleDuties();
-		assignTheTeacher();
-		assignUnAssignedDuties();
-		System.out.println(ensureAllDutiesAssigned());
-		
+		System.out.println("Do you want to use custom setup? (Yes/No)"); //output whether user wants to use custom arrangement or not
+		String decision = in.next(); //get the user's input
+//		boolean g = custom(decision);
+//		while(!g) { //method will return false if there is an issue with input
+//			decision = in.next();
+//			g = custom(decision);
+//		}
+		custom("no");
+		AdminsFirst(); //first sort the admins
+		assignPossibleTeachers(); //assign possible teachers
+		sortByPossibleTeachers(); //sort by possible teachers
+		assignTheTeacher(); //assign the teacher
+		assignUnAssignedDuties(); //assign all of the unassigned duties by shifting teachers
 		System.out.println(assignedDuties.size());
-		System.out.println(assignedDuties.get(assignedDuties.size() - 1).toStringWithCommas());
-		System.out.println(assignedDuties.get(assignedDuties.size() - 1).getTeacher().getDutiesAssigned());
-		System.out.println(assignedDuties.get(assignedDuties.size() - 1).getTeacher().getDutiesToBeAssigned());
-
-		
-		sortForFinalOutput();
-		generateCSV();
-		
-		
-	//	while(k == false) {
-	//		k = assignTheTeacher();
-	//}
-		
+		boolean h = ensureAllDutiesAssigned(); //make sure all duties are assigned
+		if(h) { //if all duties are assigned proceed to output
+			sortForFinalOutput();
+			generateCSV();
+		}
+		while(!h) { //if they are not assigned, ask user if they wish to try with custom
+			System.out.println("Error, not all duties assigned."); //error message
+			System.out.println("Number of duties assigned : " + assignedDuties.size());
+			System.out.println("Number of duties : " + duties.size());
+			System.out.println("Do you wish to try again with a custom setup or output all duties assigned?");
+			String yes = "yes";
+			String no = "no";
+			decision = in.next(); //get the user input
+			decision = decision.trim(); //remove any unnecessary spaces
+			while(decision.equals(yes) == false || decision.equals(no)) { //while they are not yes or no
+				System.out.println("Error, please enter a valid option");
+			}
+			if(decision.equals(yes)){ //if it equals yes
+				custom(yes); //go ahead and ask user for custom setup
+				
+			}
+			else { //go ahead and output all duties that have been assigned
+				sortForFinalOutput();
+				generateCSV();
+			}
+		}
 		
 	}
 	
+	public static void clearForCustom() { //method if user wishes to redo the duties with a custom setup
+		assignedDuties.clear(); //clear assignedDuties list
+		for(int i = 0; i < duties.size(); i++) { //go through duties and remove all possible teachers
+			duties.get(i).getPossibleTeachers().clear();
+		}
+		for(int i = 0; i < teachers.size(); i++) {
+			
+		}
+	}
 	
 	public static void printTeacherByID(int id) { //method to print teacher by id
 		int index = findTeacherByID(id);
@@ -613,7 +642,7 @@ public class top_level {
 							int index = searchForDay(tempDaysOfTheWeek[k]); //find the index of the day of the week (I.e if monday then 0, tuesday than 1 etc)
 							Lesson [] tempLessons = teachers.get(i).getLessons();//get the teachers lessons
 							tempLessons[index].six = true; //change period six on that day to be true
-							teachers.get(i).setLessons(tempLessons);
+							teachers.get(i).setLessons(tempLessons); 
 							
 						}
 					}
@@ -635,9 +664,6 @@ public class top_level {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		for(int i = 0; i < teachers.size(); i++) { //loop through all teachers
-			teachers.get(i).setNoOfLessonsOnEachDay(); //use the set lessons method to set the number of lessons on each day
-		}
 		return true;
 	}
 	public static boolean searchFor(char[] k, String name) { //method to validate strings
@@ -649,22 +675,17 @@ public class top_level {
 		}
 		return true;
 	}
-	public static boolean custom() { //method to create a custom set of no of duties to be assigned to each teacher. Useful if one year has many duties and less teachers requiring teachers to maybe do more
-		System.out.println("[1] for Custom and [2] for default"); //output message asking user to input either one or two
-		String decision = in.next(); //get what the user chooses
-		if(searchFor(IdNumbers,decision) == false) { //if it is not a number
-			System.out.println("Error, please enter a number"); //ask user to input a number
-			return false; //return false
-		}
-		int choice = Integer.parseInt(decision); //get it as an integer
-		if(choice != 1 || choice != 2) { //if the input is neither one or two
+	public static boolean custom(String decision) { //method to create a custom set of no of duties to be assigned to each teacher. Useful if one year there are many duties and less teachers requiring teachers to maybe do more than usual
+		decision = decision.trim(); //remove any unwanted spaces
+		String yes = "yes"; //if client chooses yes
+		String no = "no"; //if client chooses no
+		
+		if(decision.equalsIgnoreCase(yes) == false && decision.equalsIgnoreCase(no) == false) { //if the input is neither yes or two
 			System.out.println("Error, not an option"); //tell user it is not an option
 			return false; //return false
 		}
-		else if(choice == 2) { //if the user wishes to use default
-			for(int z = 0; z < teachers.size(); z++) { //loop through all teachers array
-				teachers.get(z).setDutiesToBeAssigned(); //use the default method to set the number of duties for each teacher
-			}
+		else if(decision.equals(no)) { //if the user chooses no
+			setTeachersDutiesToBeAssigned(); //method that sets using the default method
 			
 		}
 		else {
@@ -776,7 +797,7 @@ public class top_level {
 
 					// set the teacher's lessons
 				br.readLine(); //read the next line because the line does not have important information  either (Teacher rooms, not important for my code)
-				Teacher temp = new Teacher(name, Id, lessonsPerWeek, homebase, tempLessons,theTimes); //create a new teacher with the attributes
+				Teacher temp = new Teacher(name, Id, lessonsPerWeek, homebase, tempLessons); //create a new teacher with the attributes
 				teachers.add(temp);//add the teacher into the arraylist
 				
 				i++;
@@ -795,7 +816,9 @@ public class top_level {
 			//close the scanner
 			return false; //return false as there is an error that has occurred 
 		}
-		//close the scanner
+		for(int k = 0; k < teachers.size(); k++) {
+			teachers.get(k).setNoOfLessonsOnEachDay();
+		}
 
 		return true; //Import successful
 	}
@@ -838,7 +861,6 @@ public class top_level {
 				return false; // exit the function with false
 			}
 		}
-		setTeachersDutiesToBeAssigned(); //change the teacher duties 
 		return true; //import successful
 
 	}
