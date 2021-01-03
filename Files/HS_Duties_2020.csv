@@ -1,7 +1,7 @@
 ﻿Name,Time,Days of the week,,,,
 Duty-Atrium/Lockers/Lift lobby Sweep,8:30 - 9:00,Monday,Tuesday,Wednesday,Thursday,Friday
 Duty-Reception ,8:30 - 9:00,Monday,Tuesday,Wednesday,Thursday,Friday
-Duty-MRT ,8:30 - 9:00,Monday,,Wednesday,,Friday
+Duty-MRT,8:30 - 9:00,Monday,,Wednesday,,Friday
 Duty-Canteen queues,11:05 - 11:25,Monday,Tuesday,Wednesday,Thursday,Friday
 Duty-Canteen tables,11:05 - 11:25,Monday,Tuesday,Wednesday,Thursday,Friday
 Duty-Courts/Small Field ,11:05 - 11:25,Monday,Tuesday,Wednesday,Thursday,Friday
@@ -9,7 +9,7 @@ Duty-Atrium & Lift lobby @11:15,11:05 - 11:25,Monday,Tuesday,Wednesday,Thursday,
 Duty-Drama Foyer/PE Change Rooms Sweep,11:05 - 11:25,Monday,Tuesday,Wednesday,Thursday,Friday
 Duty-Cricket/Garden/Reception Sweep,11:05 - 11:25,Monday,Tuesday,Wednesday,Thursday,Friday
 Duty-L1 Lockers & Lift lobby,11:05 - 11:25,Monday,Tuesday,Wednesday,Thursday,Friday
-Duty-Library ,11:05 - 11:25,Monday,Tuesday,Wednesday,Thursday,Friday
+Duty-Library,11:05 - 11:25,Monday,Tuesday,Wednesday,Thursday,Friday
 Duty-Level 7 - 11 Sweep,11:05 - 11:25,Monday,Tuesday,Wednesday,Thursday,Friday
 Duty-Canteen queues,13:25 - 13:55,Monday,Tuesday,Wednesday,Thursday,Friday
 Duty-Canteen tables,13:25 - 13:55,Monday,Tuesday,Wednesday,Thursday,Friday
