@@ -18,7 +18,7 @@ public class Teacher {
 	private boolean assignedAfterSchool = false; //whether a teacher has already been assigned an after school duty or not;
 	private int howManyDutiescanBeAssigned = 0; // how many different duties the teacher can perform.
 	private ArrayList<Duty> assignedDuties = new ArrayList<Duty>(); //the duties assigned to the teacher
-
+ 
 	//setters and getters
 	public ArrayList<Duty> getAssignedDuties() {
 		return assignedDuties;
