@@ -74,12 +74,11 @@ public class top_level {
 		
 		System.out.println("Do you want to use custom setup? (Yes/No)"); //output whether user wants to use custom arrangement or not
 		String decision = in.next(); //get the user's input
-//		boolean g = custom(decision);
-//		while(!g) { //method will return false if there is an issue with input
-//			decision = in.next();
-//			g = custom(decision);
-//		}
-		custom("no");
+		boolean g = custom(decision);
+		while(!g) { //method will return false if there is an issue with input
+			decision = in.next();			
+			g = custom(decision);
+		}
 		AdminsFirst(); //first sort the admins
 		assignPossibleTeachers(); //assign possible teachers
 		sortByPossibleTeachers(); //sort by possible teachers
@@ -100,16 +99,25 @@ public class top_level {
 			String no = "no";
 			decision = in.next(); //get the user input
 			decision = decision.trim(); //remove any unnecessary spaces
-			while(decision.equals(yes) == false || decision.equals(no)) { //while they are not yes or no
+			while(decision.equals(yes) == false && decision.equals(no)) { //while they are not yes or no
 				System.out.println("Error, please enter a valid option");
+				decision = in.next(); //get the user input
+				decision = decision.trim(); //trim it to remove any spaces
 			}
 			if(decision.equals(yes)){ //if it equals yes
+				clearForCustom(); //clear method that resets all teachers 
 				custom(yes); //go ahead and ask user for custom setup
-				
+				AdminsFirst(); //first sort the admins
+				assignPossibleTeachers(); //assign possible teachers
+				sortByPossibleTeachers(); //sort by possible teachers
+				assignTheTeacher(); //assign the teacher
+				assignUnAssignedDuties(); //assign all of the unassigned duties by shifting teachers
 			}
 			else { //go ahead and output all duties that have been assigned
 				sortForFinalOutput();
 				generateCSV();
+				h = true;
+				break; //exit out of the loop
 			}
 		}
 		
@@ -120,8 +128,10 @@ public class top_level {
 		for(int i = 0; i < duties.size(); i++) { //go through duties and remove all possible teachers
 			duties.get(i).getPossibleTeachers().clear();
 		}
-		for(int i = 0; i < teachers.size(); i++) {
-			
+		for(int i = 0; i < teachers.size(); i++) { //go through each teacher and remove assigned afterschool and duties set
+			teachers.get(i).setDutiesAssigned(0);
+			teachers.get(i).setAssignedAfterSchool(false);
+			teachers.get(i).getAssignedDuties().clear();
 		}
 	}
 	
@@ -500,7 +510,7 @@ public class top_level {
 		}
 		if(d.getStartTime().getHours() >= 14) {//check if the duty is after school
 			if(teachers.get(index).isAssignedAfterSchool()) { //check if the teacher has been assigned after school
-				System.out.println("Condition already Assigned");
+				System.out.println("Condition already Assigned after school");
 				return false; //return false as teacher cannot be assigned
 			}
 		}
@@ -542,7 +552,7 @@ public class top_level {
 			Duty unAssigned = notAssigned.get(k); //access the duty
 			for(int j = 0; j < unAssigned.getPossibleTeachers().size(); j++) { //go through the duties possible teacher
 				int indexInMainList = findTeacherByID(unAssigned.getPossibleTeachers().get(j).getId()); //find the teacher in the main arrayList
-				Teacher reAssign = teachers.get(indexInMainList); //access the teacher 
+				Teacher reAssign = teachers.get(indexInMainList); //access the teacher
 				for(int p = 0; p < reAssign.getAssignedDuties().size(); p++) { //go through the teachers assignedDuties
 					int indexForDutyInMainList = findDutyById(reAssign.getAssignedDuties().get(p)); //find the duty in the main list
 					Duty dReAssign = duties.get(indexForDutyInMainList); //access the duty from the main list
@@ -682,7 +692,7 @@ public class top_level {
 			System.out.println("Error, not an option"); //tell user it is not an option
 			return false; //return false
 		}
-		else if(decision.equals(no)) { //if the user chooses no
+		else if(decision.equalsIgnoreCase(no)) { //if the user chooses no
 			setTeachersDutiesToBeAssigned(); //method that sets using the default method
 			
 		}
@@ -962,6 +972,7 @@ public class top_level {
 	public static boolean importDutiesTakeTwo() {
 		System.out.println("Enter path for list of duties");
 		String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/HS_Duties_2020.csv";
+		path = in.next();
 		int id = 0;
 		Time oldStartTime = new Time(0,0); //create a new oldStart Time with 0 0 
 		try {
