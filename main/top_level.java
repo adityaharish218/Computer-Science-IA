@@ -69,9 +69,6 @@ public class top_level {
 			e = importPeriodSix(); //method will output error message, user will fix and then re-enter path. Just call method again. No need to clear because it is based on ID.
 		}
 		boolean f = importAdmins(); //method to import all of the admins and SAL's who only get one duty
-		for(int i = 0; i < duties.size(); i++) {
-			System.out.println(duties.get(i).toString() + " " + duties.get(i).getPossibleTeachers().size());
-		}
 		//output messages to see whether user wants to use custom or default
 		System.out.println("Number of duties : " + duties.size());
 		System.out.println("Number of teachers : " + teachers.size());
