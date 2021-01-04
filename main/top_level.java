@@ -94,17 +94,17 @@ public class top_level {
 			System.out.println("Error, not all duties assigned."); //error message
 			System.out.println("Number of duties assigned : " + assignedDuties.size());
 			System.out.println("Number of duties : " + duties.size());
-			System.out.println("Do you wish to try again with a custom setup or output all duties assigned?");
+			System.out.println("Do you wish to try again with a custom setup or output all duties assigned?(Yes/No)");
 			String yes = "yes";
 			String no = "no";
 			decision = in.next(); //get the user input
 			decision = decision.trim(); //remove any unnecessary spaces
-			while(decision.equals(yes) == false && decision.equals(no)) { //while they are not yes or no
+			while(decision.equalsIgnoreCase(yes) == false && decision.equalsIgnoreCase(no)) { //while they are not yes or no
 				System.out.println("Error, please enter a valid option");
 				decision = in.next(); //get the user input
 				decision = decision.trim(); //trim it to remove any spaces
 			}
-			if(decision.equals(yes)){ //if it equals yes
+			if(decision.equalsIgnoreCase(yes)){ //if it equals yes
 				clearForCustom(); //clear method that resets all teachers 
 				custom(yes); //go ahead and ask user for custom setup
 				AdminsFirst(); //first sort the admins
@@ -553,6 +553,14 @@ public class top_level {
 			for(int j = 0; j < unAssigned.getPossibleTeachers().size(); j++) { //go through the duties possible teacher
 				int indexInMainList = findTeacherByID(unAssigned.getPossibleTeachers().get(j).getId()); //find the teacher in the main arrayList
 				Teacher reAssign = teachers.get(indexInMainList); //access the teacher
+				while(reAssign.isAlreadyReassigned()) {
+					j++; //move onto the next teacher
+					if(j == unAssigned.getPossibleTeachers().size()) { //if j is the max meaning that this duty cannot be assigned
+						break; //break out of the loop and move onto the next one
+					}
+					 indexInMainList = findTeacherByID(unAssigned.getPossibleTeachers().get(j).getId()); //find the teacher in the main arrayList
+					 reAssign = teachers.get(indexInMainList); //access the teacher
+				} //while the teacher has already been reAssigned
 				for(int p = 0; p < reAssign.getAssignedDuties().size(); p++) { //go through the teachers assignedDuties
 					int indexForDutyInMainList = findDutyById(reAssign.getAssignedDuties().get(p)); //find the duty in the main list
 					Duty dReAssign = duties.get(indexForDutyInMainList); //access the duty from the main list
@@ -568,6 +576,7 @@ public class top_level {
 							assignedDuties.get(indexForAssignedDuty).setTeacher(dReAssign.getPossibleTeachers().get(o)); //change it so that this teacher is made available
 							AssignedDuty a = new AssignedDuty(unAssigned,reAssign); //create a new assigned duty with this unassigned duty and this teacher
 							assignedDuties.add(a); //add the assigned duty to the list
+							teachers.get(indexInMainList).setAlreadyReassigned(true); //teacher has already been reAssigned
 							p = reAssign.getAssignedDuties().size(); //change p to be the max value such that it will break out
 							j = unAssigned.getPossibleTeachers().size(); //change j to be the max value such that it will break out
 							hasBeenAssigned = true; //duty has been assigned
