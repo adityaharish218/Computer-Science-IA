@@ -205,7 +205,14 @@ public class Teacher {
 	public void clearForCustom() { //method to clear the teacher of all duties assigned
 		this.getAssignedDuties().clear(); //clear the duties that have been assigned to this teacher
 		this.setAssignedAfterSchool(false); //set to false that this teacher has been assigned after school
-		
+	}
+	
+	public String toStringWithLessonCount() {
+		String k = this.toString();
+		for(int i = 0; i < this.lessons.length; i++) {
+			k = k + " Day " + (i+1) + " " + this.lessons[i].getLesosnsToday();
+		}
+		return k;
 	}
 	
 	
