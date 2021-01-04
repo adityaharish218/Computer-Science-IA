@@ -24,12 +24,6 @@ public class top_level {
 	public static ArrayList<AssignedDuty> assignedDuties = new ArrayList<AssignedDuty>(); // list of duties with teachers assigned
 	public static ArrayList<Integer> adminIds = new ArrayList<Integer>(); //list of adminIds
 	public static ArrayList<Subject> SubjectsWithDays = new ArrayList<Subject>(); 
-	public static ArrayList<FixTime> fixTimes = new ArrayList<FixTime>();
-	public static ArrayList<Duty> dutiesYetToBeAssigned = new ArrayList<Duty>(); //arraylist for duties that still have to be assigned
-	public static ArrayList<Teacher> teachersStillCanBeAssigned = new ArrayList<Teacher>(); //arraylist for teachers that can still be assigned duties
-	public static ArrayList<AssignedTimes> theTimes = new ArrayList<AssignedTimes>(); //the times of the duties. Used when assigning
-	public static ArrayList<AssignedDuty> assignedDutiesSorted = new ArrayList<AssignedDuty>(); //array list that is sorted such that the final output is in order
-
 	public static final String[] daysOfTheWeek = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};	
 	public static final boolean[] falseOnAllDays = {false,false,false,false,false}; //array to say that on all days it is false
 	public static int noOfAdmins = 0; // the number of admins 
@@ -69,6 +63,10 @@ public class top_level {
 			e = importPeriodSix(); //method will output error message, user will fix and then re-enter path. Just call method again. No need to clear because it is based on ID.
 		}
 		boolean f = importAdmins(); //method to import all of the admins and SAL's who only get one duty
+		while(!f) {
+			adminIds.clear(); //clear the adminIds list
+			f = importAdmins(); // method will output error message, user will fix and then re-enter path.
+		}
 		//output messages to see whether user wants to use custom or default
 		System.out.println("Number of duties : " + duties.size());
 		System.out.println("Number of teachers : " + teachers.size());
@@ -310,13 +308,7 @@ public class top_level {
 		}
 	}
 
-	public static int findTimes(Time startTime) {
-		int i = 0;
-		while(theTimes.get(i).equals(startTime) == false) {
-			i = i + 1;
-		}
-		return i;
-	}
+	
 	
 	public static void assignPossibleTeachers() {
 		for (int i = 0; i < duties.size(); i++) { // going through all duties
@@ -836,17 +828,20 @@ public class top_level {
 			while(br.ready()) { //While the bufferedReader is ready
 				line = br.readLine(); //read the first line
 				String[] values = line.split(","); //create an array which has values with split
+				if(searchFor(IdNumbers,values[1]) == false) { //check to make sure it is an ID
+					System.out.println("Error, ID : " + values[1] + " of teacher" + values[0] + " is not valid. Please fix and re enter"); //output message
+					return false;
+				}
 				int id = Integer.parseInt(values[1]);// Second element is the ID
 				adminIds.add(id);//add the ID to the list
-
 			}
 			br.close(); //close the bufferedreader
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Error, File not found");
+			return false;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Error, input output is wrong. Please refer to guide");
+			return false;
 		}
 		//Check adminID against all teachers and then set admin if found
 		for (int k = 0; k < adminIds.size(); k++) { //going through all the adminIds
@@ -1024,7 +1019,7 @@ public class top_level {
 				}
 				if(oldStartTime.equals(startTime) == false) { //check if new there is a new startTime
 					AssignedTimes a = new AssignedTimes(startTime, falseOnAllDays); //create a new assigned Times with false indicating teacher has not been assigned yet
-					theTimes.add(a); //add this to the public arrayList
+	
 					oldStartTime = startTime; //change the oldStartTime to the startTime
 				}
 				for(int i = 0; i < values.length - 2; i++) { //loop through the length of the duties array - the first two elements
