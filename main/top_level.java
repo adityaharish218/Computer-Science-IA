@@ -65,6 +65,9 @@ public class top_level {
 		boolean f = importAdmins(); //method to import all of the admins and SAL's who only get one duty
 		while(!f) {
 			adminIds.clear(); //clear the adminIds list
+			for(int i = 0; i < teachers.size(); i++) { //go through arrayList and change it such that every teacher is not admin
+				teachers.get(i).setAdmin(false);
+			}
 			f = importAdmins(); // method will output error message, user will fix and then re-enter path.
 		}
 		//output messages to see whether user wants to use custom or default
@@ -358,7 +361,7 @@ public class top_level {
 							break; //break out of loop
 						}
 						
-						if (dayOfTheWeek.equals(teacherSubjects[k].getMeetingDay())) { // check if the subject's meeting day is the same as the duty's day
+						if (dayOfTheWeek.equalsIgnoreCase(teacherSubjects[k].getMeetingDay())) { // check if the subject's meeting day is the same as the duty's day
 							canAssign = false; // teacher has a subject so cannot assign them a lunch duty
 							break; // break out of loop as teacher cannot be allocated this duty on this day
 						}
@@ -444,7 +447,7 @@ public class top_level {
 					System.out.println("Condition max assigned");
 				}
 				for(int z = 0; z < teachers.get(index).getAssignedDuties().size(); z++) { //loop through the teacher's duties that have been assigned
-					if(teachers.get(index).getAssignedDuties().get(z).getDayOfTheWeek().equals(duties.get(i).getDayOfTheWeek()) && teachers.get(index).getAssignedDuties().get(z).getStartTime().equals(duties.get(i).getStartTime())) { //check if the duty trying to be assigned's day of the week and start time is the same as one of the teacher's assigned duties
+					if(teachers.get(index).getAssignedDuties().get(z).getDayOfTheWeek().equalsIgnoreCase(duties.get(i).getDayOfTheWeek()) && teachers.get(index).getAssignedDuties().get(z).getStartTime().equals(duties.get(i).getStartTime())) { //check if the duty trying to be assigned's day of the week and start time is the same as one of the teacher's assigned duties
 						canAssign = false; //teacher cannot be assigned as he/she already has a duty on that day of the week
 					System.out.println("Condition already assigned on this day on same time");
 					}
@@ -516,7 +519,7 @@ public class top_level {
 		}
 		for(int i = 0; i < teachers.get(index).getAssignedDuties().size(); i++) { //go through all of the teachers assigned duties
 			int c = 0; //conditions variable
-			if(teachers.get(index).getAssignedDuties().get(i).getDayOfTheWeek().equals(d.getDayOfTheWeek())) { // check if the teacher has been assigned on this day of the week
+			if(teachers.get(index).getAssignedDuties().get(i).getDayOfTheWeek().equalsIgnoreCase(d.getDayOfTheWeek())) { // check if the teacher has been assigned on this day of the week
 				c = c + 1; //increase condition
 			}
 			if(teachers.get(index).getAssignedDuties().get(i).getStartTime().equals(d.getStartTime())) { //check if the teacher has been assigned on this time
@@ -634,18 +637,34 @@ public class top_level {
 		return i; //return the index
 	}
 	public static boolean importPeriodSix() { //import teachers who have period six
-	System.out.println("Enter file path for list of teachers with period 6"); //output message 
+	System.out.println("Enter file path for list of teachers with period 6 (Enter no if there isn't a list)"); //output message 
 	String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/Period_6.csv"; //read the path
+	path = in.next();
+	if(path.equalsIgnoreCase("No")) { //if client says there are no period six's
+		return true;
+	}
 	try {
 			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new bufferedReader
 			br.readLine(); //read the first Line as it is not important
 			while(br.ready()) { //while the BufferedReader is ready
 				line = br.readLine(); //read the line
 				String values[] = line.split(","); //split it and store in array 
+				if(searchFor(IdNumbers,values[0]) == false) {
+					System.out.println("Error, Id: " + values[0] + " is not valid. Please fix and re-enter");
+					return false;
+				}
 				int Id = Integer.parseInt(values[0]); //get the Id which is the first element 
 				String [] tempDaysOfTheWeek = new String[values.length - 2]; //create a new array called days of the week with a size two less than values (First two elements are name and ID)
-				for (int q = 0; q < tempDaysOfTheWeek.length; q++) { //loop through subjects array
-					tempDaysOfTheWeek[q] = values[q + 2]; //store the subject in the array
+				if(values.length > 3) { //check if the value is greater than 3
+				values[2] = values[2].replace('\"', ' '); //replace the quotation mark with a space
+				values[values.length - 1] = values[values.length - 1].replace('\"', ' '); //replace the last " again with a space
+				}
+				for (int q = 0; q < tempDaysOfTheWeek.length; q++) { //loop through  array
+					if(searchForDay(values[q + 2].trim()) == -1) { //if it returns -1 meaning it is not a day of the week
+						System.out.println("Error, " + values[q + 2] + " is not valid. Please fix and Re-enter");
+						return false;
+					}
+					tempDaysOfTheWeek[q] = values[q + 2].trim(); //store the dayOfTheWeek in the array
 				}
 				boolean teacherFound = false; //flag variable
 				for(int i = 0; i < teachers.size(); i++) { //go through the whole teachers arrayList
@@ -665,18 +684,18 @@ public class top_level {
 					}
 				}
 				if(!teacherFound) {
-					System.out.println("Error, Id: " + Id + " not found. Please fix");
+					System.out.println("Error, Id: " + Id + " not found. Please fix and re-enter");
 					return false;
 				}
 			} 
 				
 			
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Error, File not found. Please re-enter");
+			return false;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Error, input does not match. Please refer to guide");
+			return false;
 		}
 	for(int k = 0; k < teachers.size(); k++) {
 		teachers.get(k).setNoOfLessonsOnEachDay();
@@ -761,10 +780,14 @@ public class top_level {
 	System.out.println("Enter file path for teachers (Option + Right Click then select 'Copy as Pathname' "); // Ask user to input the filepath
 	 
 		String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/HS_TT_summary_23Oct20.csv"; //create a new string called path which stores the filepath
-	try {
+		path = in.next();
+		try {
 			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new buffered reader which reads the path
 			int i = 0; //counter variable
-			br.readLine(); //going through first line because it doesn't matter (days of the week)
+			//reading the first 3 lines as they are not important
+			br.readLine(); 
+			br.readLine(); 
+			br.readLine();
 			while (br.ready()) {//check if the the bufferedreader is ready
 				line = br.readLine(); // read the next line 
 				String [] values = new String[34]; //initialize a values array with 33 elements (Max number of elements that a row can have (discounting period 6))
@@ -840,6 +863,7 @@ public class top_level {
 	public static boolean importAdmins() { //importing all the admins 
 		System.out.println("Enter file path for List of Admins");
 	String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/Teachers_Admin_List.csv";
+	path = in.next();
 	try {
 			//First add all admin IDs to an arraylist
 			BufferedReader br = new BufferedReader(new FileReader(path));//create a new BufferedReader
@@ -848,7 +872,7 @@ public class top_level {
 				line = br.readLine(); //read the first line
 				String[] values = line.split(","); //create an array which has values with split
 				if(searchFor(IdNumbers,values[1]) == false) { //check to make sure it is an ID
-					System.out.println("Error, ID : " + values[1] + " of teacher" + values[0] + " is not valid. Please fix and re enter"); //output message
+					System.out.println("Error, ID : " + values[1] + " of teacher " + values[0] + " is not valid. Please fix and re enter"); //output message
 					return false;
 				}
 				int id = Integer.parseInt(values[1]);// Second element is the ID
@@ -875,7 +899,7 @@ public class top_level {
 				}
 			}
 			if(!adminfound) { //if admin is not found 
-				System.out.println("Error, admin id" + id + "not found"); //output error message and where it occurred
+				System.out.println("Error, admin id " + id + " not found. Please fix and re-enter"); //output error message and where it occurred
 				return false; // exit the function with false
 			}
 		}
@@ -886,14 +910,19 @@ public class top_level {
 	
 		System.out.println("Enter file path for teaching departments"); // ask user to input path name
 		String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/HS_Tchng_Depts.csv"; //store path name 
-
+		path = in.next();
 	try {
 			BufferedReader br = new BufferedReader(new FileReader(path));
 			br.readLine(); //read the first line as it is not important
-			int i = 0; //counter variable
+			int i = 0; //search variable
 			while(br.ready()) { //while it is ready
+				i = 0; //reset search variable
 				line = br.readLine();
 				String [] values = line.split(","); //split and store into array
+				if(searchFor(IdNumbers,values[0]) == false) { //check if it is not a valid id
+					System.out.println("Error, ID Number " + values[0] + " of teacher " + values[2] + " is not valid, Please fix and re-enter");
+					return false;
+				}
 				int Id = Integer.parseInt(values[0]); //get the teachers id
 				String [] Subjects = new String[values.length - 3]; //create a new array with size 3 less than the length of values (First 3 elements are ID, Last name and name)
 				for (int q = 0; q < Subjects.length; q++) { //loop through the subjects
@@ -903,18 +932,23 @@ public class top_level {
 				Subjects[Subjects.length - 1] = Subjects[Subjects.length - 1].replace('\"', ' '); //replace the last " again with a space
 				//for printing and testing
 				Teacher temp = teachers.get(i); //get the teacher
-				if(Id != temp.getId()) { //check if ID does not match with ID stored in ArrayList (it should because it is in alphabetical order but just incase
+				while(Id != temp.getId()) { //check if ID does not match with ID stored in ArrayList (it should because it is in alphabetical order but just incase
 					i++; //increase i
+					if(i < teachers.size()) {
 					temp = teachers.get(i); //move onto next teacher
-				} 
+				} else {
+					System.out.println("Error, ID number " + Id + " of teacher " + values[2] + " is not found. Please fix and re-enter ");
+					return false;
+				}
+				}
 					boolean SubjectFound = false; //assume subject has not yet been found 
-					Subject [] tempSubjects = new Subject[Subjects.length]; //create a new array the lenght of the subjects array
+					Subject [] tempSubjects = new Subject[Subjects.length]; //create a new array the length of the subjects array
 					for(int j = 0; j < tempSubjects.length; j++) { //loop through all of the teachers subjects
 						String sName = Subjects[j]; //get the name of the teacher's subject
 						sName = sName.trim(); //trim it so that all the spaces are removed
 						for (int k = 0; k < SubjectsWithDays.size(); k++) { //loop through arrayList with subjects and meeting days
 							String sNameInList = SubjectsWithDays.get(k).getName(); //get the name of the subject in the list
-							if(sName.equals(sNameInList)) { //check if names math
+							if(sName.equalsIgnoreCase(sNameInList)) { //check if names math
 								tempSubjects[j] = SubjectsWithDays.get(k); //if they do then set that to the tempSubjects array
 								SubjectFound = true; //subject has been found
 								break; //break out of the loop
@@ -926,19 +960,15 @@ public class top_level {
 						}
 					SubjectFound = false; //set back to false as moving on to next subject. 
 					}
-					temp.setSubject(tempSubjects); //set the teacher subjects to be this
-				
-				teachers.set(i, temp); //add the new teacher to the teachers arraylist with the subjects
-				i++; // increase and move on to the next teacher
-				
+				teachers.get(i).setSubject(tempSubjects); //set the teacher subjects
 				
 			}
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Error, File not Found. Please re-enter");
+			return false;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Error, Input not expected. Please refer to guide");
+			return false;
 		}
 
 
@@ -948,7 +978,8 @@ public class top_level {
 	public static boolean importSubjectMeetingDays() { //method to import subjects with meeting days
 			System.out.println("Enter file path for list of subjects and meeting days"); 
 			String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/Subject_Area_Meeting_Days.csv"; //read the filepath
-	try {
+			path = in.next();
+			try {
 			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new buffered reader 
 			br.readLine(); //read first line as it is not important
 			
@@ -960,10 +991,10 @@ public class top_level {
 					return false; //import not successful. 
 				}
 				if(validDayOfTheWeek(values[1]) == false) { //check if the day of the week is not valid
-					System.out.println("Error, Subject name " + values[1] + " is not a valid day of the week. Please fix and re-enter"); //output error message
+					System.out.println("Error, Day of the Week for " + values[0] + " is not a valid day of the week. Please fix and re-enter"); //output error message
 					return false; //import not successful.
 				}
-				Subject s = new Subject(values[0].trim(),values[1]); //first value is the name and second is meetingday
+				Subject s = new Subject(values[0].trim(),values[1]); //first value is the name and second is meetingday. Trim the first value to get rid of any unnecessary spaces
 				SubjectsWithDays.add(s); //store into the array list
 			}
 			
