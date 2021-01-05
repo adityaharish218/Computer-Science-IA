@@ -580,6 +580,16 @@ public class top_level {
 							AssignedDuty a = new AssignedDuty(unAssigned,reAssign); //create a new assigned duty with this unassigned duty and this teacher
 							assignedDuties.add(a); //add the assigned duty to the list
 							teachers.get(indexInMainList).setAlreadyReassigned(true); //teacher has already been reAssigned
+							teachers.get(indexInMainList).getAssignedDuties().add(unAssigned); //add this duty to the teacher
+							for(int t = 0; t < teachers.get(indexInMainList).getAssignedDuties().size(); t++) { //go through teachers assigned duties
+								if(teachers.get(indexInMainList).getAssignedDuties().get(t).getId() == dReAssign.getId()) {
+									teachers.get(indexInMainList).getAssignedDuties().remove(t); //remove that duty from the teachers assigned duties
+									break; //break
+								}
+							}
+							int indexForReassignedTeacher = findTeacherByID(dReAssign.getPossibleTeachers().get(o).getId()); //access the teacher that has been reAssigned in the main array List
+							teachers.get(indexForReassignedTeacher).getAssignedDuties().add(dReAssign);//add this duty to her arrayList
+							teachers.get(indexForReassignedTeacher).setDutiesAssigned(teachers.get(indexForReassignedTeacher).getDutiesAssigned() + 1); //change it so that the teacher has been assigned another duty
 							p = reAssign.getAssignedDuties().size(); //change p to be the max value such that it will break out
 							j = unAssigned.getPossibleTeachers().size(); //change j to be the max value such that it will break out
 							hasBeenAssigned = true; //duty has been assigned
@@ -786,8 +796,6 @@ public class top_level {
 			int i = 0; //counter variable
 			//reading the first 3 lines as they are not important
 			br.readLine(); 
-			br.readLine(); 
-			br.readLine();
 			while (br.ready()) {//check if the the bufferedreader is ready
 				line = br.readLine(); // read the next line 
 				String [] values = new String[34]; //initialize a values array with 33 elements (Max number of elements that a row can have (discounting period 6))
