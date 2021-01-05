@@ -91,7 +91,10 @@ public class top_level {
 		boolean h = ensureAllDutiesAssigned(); //make sure all duties are assigned
 		if(h) { //if all duties are assigned proceed to output
 			sortForFinalOutput();
-			generateCSV();
+			boolean i = generateCSV();
+			while(!i) {
+				i = generateCSV();
+			}
 		}
 		while(!h) { //if they are not assigned, ask user if they wish to try with custom
 			System.out.println("Error, not all duties assigned."); //error message
@@ -118,7 +121,10 @@ public class top_level {
 			}
 			else { //go ahead and output all duties that have been assigned
 				sortForFinalOutput();
-				generateCSV();
+				boolean i = generateCSV();
+				while(!i) {
+					i = generateCSV();
+				}
 				h = true;
 				break; //exit out of the loop
 			}
@@ -735,25 +741,25 @@ public class top_level {
 			
 		}
 		else {
-			System.out.println("Enter how many hours for teacher to not be assigned any duties");
+			System.out.println("Enter how many Lessons for teacher to not be assigned any duties");
 			String hforNone = in.next(); //get the input
 			while(searchFor(IdNumbers,hforNone) == false) { //if it is not a number
 				System.out.println("Error, please enter a number"); //output error message
 				hforNone = in.next(); //get the input again
 			}
-			System.out.println("Enter how many hours for teacher to be assigned one duty");
+			System.out.println("Enter how many lessons for teacher to be assigned one duty");
 			String hforOne = in.next();
 			while(searchFor(IdNumbers,hforOne) == false) { //if it is not a number
 				System.out.println("Error, please enter a number"); //output error message
 				hforOne = in.next(); //get the input again
 			}
-			System.out.println("Enter how many duties for admin");
+			System.out.println("Enter how many duites to be assigned to admin");
 			String fAdmin = in.next();
 			while(searchFor(IdNumbers,fAdmin) == false) { //if it is not a number
 				System.out.println("Error, please enter a number"); //output error message
 				fAdmin = in.next(); //get the input again
 			}
-			System.out.println("Enter how many hours for teacher to be considedered part time");
+			System.out.println("Enter how many lessons for teacher to be considedered part time");
 			String hPartTime = in.next(); //get the input
 			while(searchFor(IdNumbers,hPartTime) == false) { //if it is not a number
 				System.out.println("Error, please enter a number"); //output error message
@@ -1131,8 +1137,6 @@ public class top_level {
 			System.out.println("Finished"); //output message
 			in.close();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
 			System.out.println("Error, File path not found");
 			return false;
 		}

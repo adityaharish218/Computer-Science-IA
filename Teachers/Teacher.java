@@ -74,7 +74,7 @@ public class Teacher {
 		return dutiesToBeAssigned;
 	}
 	public void setDutiesToBeAssigned() { //As this is being set internally, this does not take any input
-		if(this.lessonsPerWeek == 21) { //If they have 21, they get 0 duties 
+		if(this.lessonsPerWeek >= 21) { //If they have 21, they get 0 duties 
 			this.dutiesToBeAssigned = 0;
 			return;
 		}
