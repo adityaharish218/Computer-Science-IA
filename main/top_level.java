@@ -540,6 +540,30 @@ public class top_level {
 		return true; //teacher can be assigned this duty
 	}
 	
+	public static boolean checkTeacherTime(Teacher t, Duty d) {
+		int index = findTeacherByID(t.getId());
+		if(d.getStartTime().getHours() >= 14) { //check if duty is afterSchool
+			if(teachers.get(index).isAssignedAfterSchool()) { //if teacher has been assigned after School
+				return false; //teacher cannot be assigned the duty
+			}
+		}
+		
+		for(int i = 0; i < teachers.get(index).getAssignedDuties().size(); i++) { //go through all of the teachers assigned duties
+			int c = 0; //conditions variable
+			if(teachers.get(index).getAssignedDuties().get(i).getDayOfTheWeek().equalsIgnoreCase(d.getDayOfTheWeek())) { // check if the teacher has been assigned on this day of the week
+				c = c + 1; //increase condition
+			}
+			if(teachers.get(index).getAssignedDuties().get(i).getStartTime().equals(d.getStartTime())) { //check if the teacher has been assigned on this time
+				c = c + 1; //increase condition
+			}
+			
+			if(c == 2) { //if teacher has been assigned on this day and already on this time
+				return false; //teacher cannot be assigned
+			}
+		}
+		return true; //teacher can be assigned the duty
+	}
+	
 	public static int findDutyById(Duty d) {
 		int i = 0;
 		while(duties.get(i).getId() != d.getId()) { //while the id is not the same as in the main arrayList
@@ -562,7 +586,7 @@ public class top_level {
 			for(int j = 0; j < unAssigned.getPossibleTeachers().size(); j++) { //go through the duties possible teacher
 				int indexInMainList = findTeacherByID(unAssigned.getPossibleTeachers().get(j).getId()); //find the teacher in the main arrayList
 				Teacher reAssign = teachers.get(indexInMainList); //access the teacher
-				while(reAssign.isAlreadyReassigned()) {
+				while(reAssign.isAlreadyReassigned() || checkTeacherTime(reAssign,unAssigned) == false) { //check if the teacher has been reAssigned and if the teacher hasn't been assigned a duty at that time. (Teacher is doing the same amount of duties just swapping with another teacher hence only checking time)
 					j++; //move onto the next teacher
 					if(j == unAssigned.getPossibleTeachers().size()) { //if j is the max meaning that this duty cannot be assigned
 						break; //break out of the loop and move onto the next one

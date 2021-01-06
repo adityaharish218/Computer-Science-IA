@@ -1,19 +1,19 @@
-Day of the week ,Duty name,Start time,End time,Teacher name,Teacher ID
-Monday,Duty-Atrium/Lockers/Lift lobby Sweep,08:30,09:00,FITZGIBBON Jessica,77229
-Tuesday,Duty-Atrium/Lockers/Lift lobby Sweep,08:30,09:00,DAS Grace,73545
-Wednesday,Duty-Atrium/Lockers/Lift lobby Sweep,08:30,09:00,LIM Wui Ling Jennifer,51275
-Thursday,Duty-Atrium/Lockers/Lift lobby Sweep,08:30,09:00,REHAN Seema,67316
-Friday,Duty-Atrium/Lockers/Lift lobby Sweep,08:30,09:00,DELL Jillian Christine,69219
-Monday,Duty-Reception ,08:30,09:00,GARSIDE Heather Mary,67403
-Tuesday,Duty-Reception ,08:30,09:00,HAY-CAMPBELL Isabelle,46314
-Wednesday,Duty-Reception ,08:30,09:00,RIPPEL Tarryn,46377
-Thursday,Duty-Reception ,08:30,09:00,WATSON Kevin Barry,80112
-Friday,Duty-Reception ,08:30,09:00,HAY-CAMPBELL Isabelle,46314
-Monday,Duty-MRT,08:30,09:00,KAUTT Charlotte,72270
-Tuesday,Duty-MRT,08:30,09:00,LIANG Jiaying,69235
-Wednesday,Duty-MRT,08:30,09:00,ROGOZINSKI Deborah Anne,36512
-Thursday,Duty-MRT,08:30,09:00,WONG Hok Lung Rex,30380
-Friday,Duty-MRT,08:30,09:00,HUBBARD Thomas,81495
+﻿Day of the week ,Duty name,Start time,End time,Teacher name,Teacher ID
+Monday,Duty-Atrium/Lockers/Lift lobby Sweep,8:30,9:00,FITZGIBBON Jessica,77229
+Tuesday,Duty-Atrium/Lockers/Lift lobby Sweep,8:30,9:00,DAS Grace,73545
+Wednesday,Duty-Atrium/Lockers/Lift lobby Sweep,8:30,9:00,LIM Wui Ling Jennifer,51275
+Thursday,Duty-Atrium/Lockers/Lift lobby Sweep,8:30,9:00,REHAN Seema,67316
+Friday,Duty-Atrium/Lockers/Lift lobby Sweep,8:30,9:00,DELL Jillian Christine,69219
+Monday,Duty-Reception¬†,8:30,9:00,GARSIDE Heather Mary,67403
+Tuesday,Duty-Reception¬†,8:30,9:00,HAY-CAMPBELL Isabelle,46314
+Wednesday,Duty-Reception¬†,8:30,9:00,RIPPEL Tarryn,46377
+Thursday,Duty-Reception¬†,8:30,9:00,WATSON Kevin Barry,80112
+Friday,Duty-Reception¬†,8:30,9:00,HAY-CAMPBELL Isabelle,46314
+Monday,Duty-MRT,8:30,9:00,KAUTT Charlotte,72270
+Tuesday,Duty-MRT,8:30,9:00,LIANG Jiaying,69235
+Wednesday,Duty-MRT,8:30,9:00,ROGOZINSKI Deborah Anne,36512
+Thursday,Duty-MRT,8:30,9:00,WONG Hok Lung Rex,30380
+Friday,Duty-MRT,8:30,9:00,HUBBARD Thomas,81495
 Monday,Duty-Canteen queues,11:05,11:25,HORNELL Colin,53729
 Tuesday,Duty-Canteen queues,11:05,11:25,DENCH Elizabeth Helen,66260
 Wednesday,Duty-Canteen queues,11:05,11:25,DAS Sachin Dev,73546
@@ -149,11 +149,11 @@ Tuesday,Duty-B1 Bus Park @3.30 / Canteen Sweep @3:45-4.00,15:30,17:00,THOMAS She
 Wednesday,Duty-B1 Bus Park @3.30 / Canteen Sweep @3:45-4.00,15:30,17:00,RIDDELL Jennelle Dianne,80833
 Thursday,Duty-B1 Bus Park @3.30 / Canteen Sweep @3:45-4.00,15:30,17:00,BURGMANN Ross Andrew,80581
 Friday,Duty-B1 Bus Park @3.30 / Canteen Sweep @3:45-4.00,15:30,17:00,WOOLLARD Lee David,80605
-Monday,Duty-Reception 3.30 - 4.00,15:30,17:00,MAGEE Bridget Teresa,76446
-Tuesday,Duty-Reception 3.30 - 4.00,15:30,17:00,VIDANOVIC Maja,37395
-Wednesday,Duty-Reception 3.30 - 4.00,15:30,17:00,ROMERO MARIN Lorena,59921
-Thursday,Duty-Reception 3.30 - 4.00,15:30,17:00,COX Kevin Anthony,21842
-Friday,Duty-Reception 3.30 - 4.00,15:30,17:00,ZHANG Liang,64010
+Monday,Duty-Reception¬†3.30 - 4.00,15:30,17:00,MAGEE Bridget Teresa,76446
+Tuesday,Duty-Reception¬†3.30 - 4.00,15:30,17:00,VIDANOVIC Maja,37395
+Wednesday,Duty-Reception¬†3.30 - 4.00,15:30,17:00,ROMERO MARIN Lorena,59921
+Thursday,Duty-Reception¬†3.30 - 4.00,15:30,17:00,COX Kevin Anthony,21842
+Friday,Duty-Reception¬†3.30 - 4.00,15:30,17:00,ZHANG Liang,64010
 Monday,Duty-Shuttle Bus. 3.30 - 4.00,15:30,17:00,NI Jimmy Joe,80612
 Tuesday,Duty-Shuttle Bus. 3.30 - 4.00,15:30,17:00,VLASKOVSKY Martin Stephen,63144
 Wednesday,Duty-Shuttle Bus. 3.30 - 4.00,15:30,17:00,SELLECK Diann Martha,78294
