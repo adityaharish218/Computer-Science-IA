@@ -681,6 +681,9 @@ public class top_level {
 	String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/Period_6.csv"; //read the path
 	path = in.next();
 	if(path.equalsIgnoreCase("No")) { //if client says there are no period six's
+		for(int k = 0; k < teachers.size(); k++) { //loop through lessons
+			teachers.get(k).setNoOfLessonsOnEachDay(); //set each teacher's number of lessons
+		}
 		return true;
 	}
 	try {
