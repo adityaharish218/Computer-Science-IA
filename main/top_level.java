@@ -692,8 +692,8 @@ public class top_level {
 			while(br.ready()) { //while the BufferedReader is ready
 				line = br.readLine(); //read the line
 				String values[] = line.split(","); //split it and store in array 
-				if(searchFor(IdNumbers,values[0]) == false) {
-					System.out.println("Error, Id: " + values[0] + " is not valid. Please fix and re-enter");
+				if(searchFor(IdNumbers,values[0]) == false) { //check if ID is valid
+					System.out.println("Error, Id: " + values[0] + " is not valid. Please fix and re-enter"); //output error message
 					return false;
 				}
 				int Id = Integer.parseInt(values[0]); //get the Id which is the first element 
