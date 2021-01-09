@@ -1071,7 +1071,7 @@ public class top_level {
 				String timeInString = values[1]; //second element is the times 
 				String [] times = timeInString.split("-"); //split the time in terms of "-", there are two times one being the starting time and the second being the ending time
 				String [] forStartTime = times[0].split(":"); //now for the start time which is the first value stored in values array, split it by the ":". So if the value was like 11:35, this will give me an array with the values of 11 and 35
-				//trim to get rid of any unnecessary spaces 
+				//trim all strings to get rid of any unnecessary spaces 
 				for(int z = 0; z < forStartTime.length; z++) {
 					forStartTime[z] = forStartTime[z].trim();
 				}
