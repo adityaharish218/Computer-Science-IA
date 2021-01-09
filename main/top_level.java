@@ -1087,7 +1087,12 @@ public class top_level {
 					}
 				}
 				int startHours = Integer.parseInt(forStartTime[0].trim()); //first element is the hours
+				
 				int starMin = Integer.parseInt(forStartTime[1].trim()); //second element is the minutes
+				if(startHours > 23 || startHours < 0 || starMin > 59 || starMin < 0) { //make sure it is a valid integer
+					System.out.println("Error, time " + times[0] + " is not valid. Please fix and re-enter"); //output error message
+					return false;
+				}
 				Time startTime = new Time(startHours, starMin); //create a new time with those parameters
 				//repeat process for endTime
 				String[] forEndTime = times[1].split(":");
@@ -1104,6 +1109,10 @@ public class top_level {
 				}
 				int endHours = Integer.parseInt(forEndTime[0].trim()); //first element is the hours
 				int endMin = Integer.parseInt(forEndTime[1].trim()); //second element is the minutes
+				if(endHours > 23 || endHours < 0 || endMin > 59 || endMin < 0) { //make sure it is a valid integer
+					System.out.println("Error, time " + times[1] + " is not valid. Please fix and re-enter"); //output error message
+					return false;
+				}
 				Time endTime = new Time(endHours, endMin); 
 				if(validTimes(startTime,endTime) == false) { //check if the times are not valid
 					System.out.println("Error, start time " + startTime.toString() + " and end time " + endTime.toString() + " for duty: '" + name + "' are not valid. Please fix and re enter"); //output message
