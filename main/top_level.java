@@ -91,6 +91,7 @@ public class top_level {
 		boolean h = ensureAllDutiesAssigned(); //make sure all duties are assigned
 		if(h) { //if all duties are assigned proceed to output
 			sortForFinalOutput();
+			System.out.println("All duties assigned");
 			boolean i = generateCSV();
 			while(!i) {
 				i = generateCSV();
