@@ -48,7 +48,7 @@
   </class>  
   <class id="6" language="java" name="Teachers.Subject" project="Computer-Science-IA" 
     file="/Computer-Science-IA/Teachers/Subject.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1904" y="1402"/>    
+    <position height="-1" width="-1" x="1648" y="1218"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -57,7 +57,7 @@
   </class>  
   <class id="7" language="java" name="Teachers.Lesson" project="Computer-Science-IA" 
     file="/Computer-Science-IA/Teachers/Lesson.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1164" y="1648"/>    
+    <position height="-1" width="-1" x="1176" y="1432"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -77,10 +77,10 @@
   <association id="11">    
     <end type="SOURCE" refId="5" navigable="false">      
       <attribute id="12" name="subject">        
-        <position height="19" width="47" x="1789" y="1272"/>      
+        <position height="19" width="47" x="1487" y="1132"/>      
       </attribute>      
       <multiplicity id="13" minimum="0" maximum="2147483647">        
-        <position height="17" width="24" x="1778" y="1310"/>      
+        <position height="17" width="24" x="1531" y="1151"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="6" navigable="true"/>    
@@ -89,10 +89,10 @@
   <association id="14">    
     <end type="SOURCE" refId="5" navigable="false">      
       <attribute id="15" name="lessons">        
-        <position height="19" width="49" x="1176" y="1480"/>      
+        <position height="19" width="49" x="1188" y="1264"/>      
       </attribute>      
       <multiplicity id="16" minimum="0" maximum="2147483647">        
-        <position height="17" width="24" x="1241" y="1475"/>      
+        <position height="17" width="24" x="1258" y="1263"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="7" navigable="true"/>    
@@ -128,7 +128,7 @@
   <association id="24">    
     <end type="SOURCE" refId="1" navigable="false">      
       <attribute id="25" name="allFalse">        
-        <position height="19" width="53" x="964" y="1469"/>      
+        <position height="19" width="53" x="976" y="1253"/>      
       </attribute>      
       <multiplicity id="26" minimum="0" maximum="1"/>    
     </end>    
@@ -215,7 +215,7 @@
   <association id="46">    
     <end type="SOURCE" refId="1" navigable="false">      
       <attribute id="47" name="SubjectsWithDays">        
-        <position height="19" width="109" x="1661" y="1357"/>      
+        <position height="19" width="109" x="1405" y="1173"/>      
       </attribute>      
       <multiplicity id="48" minimum="0" maximum="2147483647"/>    
     </end>    
