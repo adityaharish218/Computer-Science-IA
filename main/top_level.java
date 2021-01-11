@@ -414,11 +414,11 @@ public class top_level {
 			public int compare(Duty d1, Duty d2) { //create a compare method for duties
 				Time t1 = d1.getStartTime();
 				Time t2 = d2.getStartTime();
-				int timeCompare = t1.compareTo(t2);
-				if(timeCompare != 0 ) {
-					return timeCompare;
+				int timeCompare = t1.compareTo(t2); //first compare by time
+				if(timeCompare != 0 ) { //if it is not 0
+					return timeCompare; //return that value
 				}
-				return Integer.valueOf(d1.getPossibleTeachers().size()).compareTo(d2.getPossibleTeachers().size()); //compare the size of the possibleTeachers arraylist for both duties and return the value
+				return Integer.valueOf(d1.getPossibleTeachers().size()).compareTo(d2.getPossibleTeachers().size()); // else compare the size of the possibleTeachers arraylist for both duties and return the value
 			}
 		});
 	}
