@@ -186,7 +186,7 @@ public class top_level {
 			}
 		id = id.trim(); //remove unnecessary spaces
 		//Length check 
-		if(id.length() != 5) { //check if length of ID is not 6
+		if(id.length() != 5) { //check if length of ID is not 5
 			return false; //Invalid ID
 		}
 		//Format check (All characters are numbers)
