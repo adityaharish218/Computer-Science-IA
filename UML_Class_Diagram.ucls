@@ -65,47 +65,53 @@
     </display>  
   </class>  
   <association id="8">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="9" name="teacher">        
-        <position height="19" width="49" x="1400" y="296"/>      
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="9" name="allFalse">        
+        <position height="19" width="53" x="976" y="1253"/>      
       </attribute>      
-      <multiplicity id="10" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="11">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="12" name="subject">        
-        <position height="19" width="47" x="1487" y="1132"/>      
-      </attribute>      
-      <multiplicity id="13" minimum="0" maximum="2147483647">        
-        <position height="17" width="24" x="1531" y="1151"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="14">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="15" name="lessons">        
-        <position height="19" width="49" x="1188" y="1264"/>      
-      </attribute>      
-      <multiplicity id="16" minimum="0" maximum="2147483647">        
-        <position height="17" width="24" x="1258" y="1263"/>      
+      <multiplicity id="10" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="7" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
+  <association id="11">    
+    <bendpoint x="838" y="361"/>    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="12" name="assignedDuties">        
+        <position height="19" width="91" x="310" y="-102"/>      
+      </attribute>      
+      <multiplicity id="13" minimum="0" maximum="2147483647">        
+        <position height="17" width="24" x="278" y="-113"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="14">    
+    <bendpoint x="-138" y="260"/>    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="15" name="startTime">        
+        <position height="19" width="58" x="152" y="471"/>      
+      </attribute>      
+      <multiplicity id="16" minimum="0" maximum="1">        
+        <position height="17" width="26" x="-17" y="382"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
   <association id="17">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="18" name="assignedDuties">        
-        <position height="19" width="94" x="809" y="-161"/>      
+      <attribute id="18" name="duties">        
+        <position height="19" width="44" x="245" y="40"/>      
       </attribute>      
-      <multiplicity id="19" minimum="0" maximum="2147483647"/>    
+      <multiplicity id="19" minimum="0" maximum="2147483647">        
+        <position height="17" width="24" x="205" y="31"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
+    <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="20">    
@@ -121,107 +127,111 @@
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <dependency id="23">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="4"/>  
-  </dependency>  
-  <association id="24">    
+  <association id="23">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="25" name="allFalse">        
-        <position height="19" width="53" x="976" y="1253"/>      
+      <attribute id="24" name="assignedDuties">        
+        <position height="19" width="94" x="913" y="-126"/>      
       </attribute>      
-      <multiplicity id="26" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="27">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="4"/>  
-  </dependency>  
-  <association id="28">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="29" name="duty">        
-        <position height="19" width="31" x="274" y="-246"/>      
-      </attribute>      
-      <multiplicity id="30" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="31">    
-    <bendpoint x="-138" y="260"/>    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="32" name="startTime">        
-        <position height="19" width="58" x="152" y="471"/>      
-      </attribute>      
-      <multiplicity id="33" minimum="0" maximum="1">        
-        <position height="17" width="26" x="-17" y="382"/>      
+      <multiplicity id="25" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
+    <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="34">    
+  <association id="26">    
     <bendpoint x="934" y="61"/>    
     <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="35" name="possibleTeachers">        
+      <attribute id="27" name="possibleTeachers">        
         <position height="19" width="101" x="1330" y="392"/>      
       </attribute>      
-      <multiplicity id="36" minimum="0" maximum="2147483647">        
+      <multiplicity id="28" minimum="0" maximum="2147483647">        
         <position height="17" width="24" x="1450" y="401"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="37">    
+  <association id="29">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="38" name="duties">        
-        <position height="19" width="44" x="245" y="40"/>      
+      <attribute id="30" name="SubjectsWithDays">        
+        <position height="19" width="109" x="1405" y="1173"/>      
       </attribute>      
-      <multiplicity id="39" minimum="0" maximum="2147483647">        
-        <position height="17" width="24" x="205" y="31"/>      
+      <multiplicity id="31" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
+    <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="40">    
-    <bendpoint x="838" y="361"/>    
+  <association id="32">    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="41" name="assignedDuties">        
-        <position height="19" width="91" x="310" y="-102"/>      
+      <attribute id="33" name="subject">        
+        <position height="19" width="47" x="1487" y="1132"/>      
       </attribute>      
-      <multiplicity id="42" minimum="0" maximum="2147483647">        
-        <position height="17" width="24" x="278" y="-113"/>      
+      <multiplicity id="34" minimum="0" maximum="2147483647">        
+        <position height="17" width="24" x="1531" y="1151"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
+    <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="43">    
+  <association id="35">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="36" name="lessons">        
+        <position height="19" width="49" x="1188" y="1264"/>      
+      </attribute>      
+      <multiplicity id="37" minimum="0" maximum="2147483647">        
+        <position height="17" width="24" x="1258" y="1263"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="38">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="44" name="teachers">        
+      <attribute id="39" name="teachers">        
         <position height="19" width="58" x="1413" y="529"/>      
       </attribute>      
-      <multiplicity id="45" minimum="0" maximum="2147483647">        
+      <multiplicity id="40" minimum="0" maximum="2147483647">        
         <position height="17" width="24" x="1459" y="561"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="46">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="47" name="SubjectsWithDays">        
-        <position height="19" width="109" x="1405" y="1173"/>      
+  <association id="41">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="42" name="teacher">        
+        <position height="19" width="49" x="1400" y="296"/>      
       </attribute>      
-      <multiplicity id="48" minimum="0" maximum="2147483647"/>    
+      <multiplicity id="43" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
+    <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
+  <association id="44">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="45" name="duty">        
+        <position height="19" width="31" x="274" y="-246"/>      
+      </attribute>      
+      <multiplicity id="46" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="47">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="4"/>  
+  </dependency>  
+  <dependency id="48">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="4"/>  
+  </dependency>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    
