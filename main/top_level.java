@@ -808,7 +808,7 @@ public class top_level {
 		return true; //return true as the function has accepted the inputs
 	}
 	public static boolean importTeachers() { //returns a boolean, if true, then the teachers have been imported properly, if false means there is error
-	System.out.println("Enter file path for teachers (Option + Right Click then select 'Copy as Pathname' "); // Ask user to input the filepath
+	System.out.println("Enter file path for teachers "); // Ask user to input the filepath
 	 
 		String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/HS_TT_summary_23Oct20.csv"; //create a new string called path which stores the filepath
 		path = in.next();
