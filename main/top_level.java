@@ -87,7 +87,6 @@ public class top_level {
 		sortByPossibleTeachers(); //sort by possible teachers
 		assignTheTeacher(); //assign the teacher
 		assignUnAssignedDuties(); //assign all of the unassigned duties by shifting teachers
-		System.out.println(assignedDuties.size());
 		boolean h = ensureAllDutiesAssigned(); //make sure all duties are assigned
 		if(h) { //if all duties are assigned proceed to output
 			sortForFinalOutput();
@@ -395,9 +394,6 @@ public class top_level {
 				Lesson [] teacherLessons = teacher.getLessons(); //access teacher lessons
 				int index = searchForDay(assigned.getDayOfTheWeek()); //access the day of the week as index
 				if(teacherLessons[index].getLesosnsToday() >= 5) { //check if the teacher has more than 4 lessons on the day
-					System.out.println(assigned.getDayOfTheWeek());
-					System.out.println(teacher.toStringWithLessonCount());
-					System.out.println("Condition max lessons on day");
 					canAssign = false; //can assign = false
 				}
 				if(canAssign) { //check if the teacher can be assigned
@@ -502,12 +498,12 @@ public class top_level {
 		System.out.println(t.toString());
 		System.out.println(teachers.get(index).toString());
 		if(teachers.get(index).getDutiesAssigned() == teachers.get(index).getDutiesToBeAssigned()) { //check if the teacher has already been assigned the max number of duties
-			System.out.println("Condition Max assigned");
+			
 			return false; //return false as teacher cannot be assigned
 		}
 		if(d.getStartTime().getHours() >= 14) {//check if the duty is after school
 			if(teachers.get(index).isAssignedAfterSchool()) { //check if the teacher has been assigned after school
-				System.out.println("Condition already Assigned after school");
+				
 				return false; //return false as teacher cannot be assigned
 			}
 		}
@@ -588,10 +584,6 @@ public class top_level {
 					for(int o = 0; o < dReAssign.getPossibleTeachers().size(); o++) { //go through that duty's possible teachers
 						Teacher toBeReassigned = dReAssign.getPossibleTeachers().get(o); //access the teacher
 						boolean canBeAssigned = checkTeacher(toBeReassigned,dReAssign);
-						System.out.println(canBeAssigned);
-						if(canBeAssigned) {
-							System.out.println(toBeReassigned.toString());
-						}
 						if(canBeAssigned && toBeReassigned.getId() != reAssign.getId()) { //check if another teacher from the duty's possible teachers can be assigned
 							int indexForAssignedDuty = findAssignedDutyByID(dReAssign); //get this duty's index in the AssignedDuties list
 							assignedDuties.get(indexForAssignedDuty).setTeacher(dReAssign.getPossibleTeachers().get(o)); //change it so that this teacher is made available
@@ -627,7 +619,6 @@ public class top_level {
 	public static boolean ensureAllDutiesAssigned(){
 		for(int i = 0; i < duties.size(); i++) {
 			if(duties.get(i).isHasBeenAssigned() == false) { //check if a duty has not been assigned
-				System.out.println(duties.get(i));
 				return false; //return false
 			}
 		}
@@ -1089,7 +1080,6 @@ public class top_level {
 				}
 				for(int z = 0; z < forEndTime.length; z++) {
 					if(searchFor(IdNumbers,forEndTime[z]) == false) {
-						System.out.println("condition 1, end time");
 						System.out.println("Error, Time " + forEndTime[z] + " for duty '" + name +  "' is not valid. Please fix and re-enter");
 						return false;
 					}
