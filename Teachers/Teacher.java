@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import duties.Duty;
 
 public class Teacher {
-	private String name = ""; //name of the teacher\, set it empty to avoid null pointer exception
+	private String name = ""; //name of the teacher, set it empty to avoid null pointer exception
 	private int lessonsPerWeek; //number of lessons the teacher has per week
 	private boolean admin; //whether the teacher is an administrator or not. This includes Subject area leaders and part timers
 	private int id; //id of the teacher
