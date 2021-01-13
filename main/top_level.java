@@ -495,8 +495,6 @@ public class top_level {
 	
 	public static boolean checkTeacher(Teacher t, Duty d) { //method that returns if a teacher can fit a duty or not
 		int index = findTeacherByID(t.getId()); //access the index of the teacher in the main array;
-		System.out.println(t.toString());
-		System.out.println(teachers.get(index).toString());
 		if(teachers.get(index).getDutiesAssigned() == teachers.get(index).getDutiesToBeAssigned()) { //check if the teacher has already been assigned the max number of duties
 			
 			return false; //return false as teacher cannot be assigned
