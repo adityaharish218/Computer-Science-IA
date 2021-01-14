@@ -352,7 +352,7 @@ public class top_level {
 				if (dutyStartTime.getHours() == 11) { // Check if the duty begins at break, break begins at 11 hence hours = 11
 					Lesson [] teacherLessons = teacher.getLessons(); //access teacher lessons
 					int index = searchForDay(assigned.getDayOfTheWeek());// access the day of the week as index
-					if(teacherLessons[index].two == true && teacherLessons[index].three == true) { //Check if teacher has lesson on period 2 and three
+					if(teacherLessons[index].two == true && teacherLessons[index].three == true) { //check if teacher has lesson on period 2 and three
 						canAssign = false; //Set can assign to false as the teacher cannot be assigned the duty
 					}
 				}
