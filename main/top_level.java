@@ -1125,7 +1125,9 @@ public class top_level {
 		System.out.println("Enter file path to where you wish to save final list"); //get the location client wishes to store final list 
 		String path = in.next(); //store the location
 		try { //catch the path not found exception
-			PrintWriter k = new PrintWriter(new File(path + "/test.csv")); //create a dummy printwriter that is not going to be used
+			File test = new File(path + "/test.csv"); //create a file
+			PrintWriter k = new PrintWriter(test); //create a dummy printwriter that is not going to be used
+			test.delete(); //delete the file
 		}
 		catch(FileNotFoundException e) { //catch the exception
 			System.out.println("Error, file path not found"); //output error message	
