@@ -748,37 +748,37 @@ public class top_level {
 			System.out.println("Enter how many Lessons for teacher to not be assigned any duties");
 			String hforNone = in.next(); //get the input
 			while(searchFor(IdNumbers,hforNone) == false) { //if it is not a number
-				System.out.println("Error, please enter a number"); //output error message
+				System.out.println("Error, please enter a valid number"); //output error message
 				hforNone = in.next(); //get the input again
 			}
 			System.out.println("Enter how many lessons for teacher to be assigned one duty");
 			String hforOne = in.next();
 			while(searchFor(IdNumbers,hforOne) == false) { //if it is not a number
-				System.out.println("Error, please enter a number"); //output error message
+				System.out.println("Error, please enter a valid number"); //output error message
 				hforOne = in.next(); //get the input again
 			}
 			System.out.println("Enter how many duites to be assigned to admin");
 			String fAdmin = in.next();
 			while(searchFor(IdNumbers,fAdmin) == false) { //if it is not a number
-				System.out.println("Error, please enter a number"); //output error message
+				System.out.println("Error, please enter a valid number"); //output error message
 				fAdmin = in.next(); //get the input again
 			}
 			System.out.println("Enter how many lessons for teacher to be considedered part time");
 			String hPartTime = in.next(); //get the input
 			while(searchFor(IdNumbers,hPartTime) == false) { //if it is not a number
-				System.out.println("Error, please enter a number"); //output error message
+				System.out.println("Error, please enter a valid number"); //output error message
 				hPartTime = in.next(); //get the input again
 			}
 			System.out.println("Enter how many duties to be assigned to part timers");
 			String fPartTime = in.next();
 			while(searchFor(IdNumbers,fPartTime) == false) { //if it is not a number
-				System.out.println("Error, please enter a number");
+				System.out.println("Error, please enter a valid number");
 				fPartTime = in.next(); //get the input again
 			}
 			System.out.println("Enter how many duties to be assigned to normal teachers");
 			String fNormal = in.next();
 			while(searchFor(IdNumbers,fNormal) == false) { //if it is not a number
-				System.out.println("Error, please enter a number");
+				System.out.println("Error, please enter a valid number");
 				fNormal = in.next(); //get the input again
 			}
 			//extract the information as integers
