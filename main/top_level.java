@@ -1124,6 +1124,13 @@ public class top_level {
 	public static boolean generateCSV() {
 		System.out.println("Enter file path to where you wish to save final list"); //get the location client wishes to store final list 
 		String path = in.next(); //store the location
+		try { //catch the path not found exception
+			PrintWriter k = new PrintWriter(new File(path + "/test.csv")); //create a dummy printwriter that is not going to be used
+		}
+		catch(FileNotFoundException e) { //catch the exception
+			System.out.println("Error, file path not found"); //output error message	
+			return false; //return false
+		}
 		System.out.println("Enter name of file"); // get the name of the file
 		String name = in.next(); //store the name of the file 
 		try {
