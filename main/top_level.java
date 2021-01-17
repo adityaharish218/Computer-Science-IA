@@ -393,7 +393,7 @@ public class top_level {
 				
 				Lesson [] teacherLessons = teacher.getLessons(); //access teacher lessons
 				int index = searchForDay(assigned.getDayOfTheWeek()); //access the day of the week as index
-				if(teacherLessons[index].getLesosnsToday() >= 5) { //check if the teacher has more than 4 lessons on the day
+				if(teacherLessons[index].getLesosnsToday() >= 4) { //check if the teacher has more than 4 lessons on the day
 					canAssign = false; //can assign = false
 				}
 				if(canAssign) { //check if the teacher can be assigned
@@ -495,6 +495,7 @@ public class top_level {
 	
 	public static boolean checkTeacher(Teacher t, Duty d) { //method that returns if a teacher can fit a duty or not
 		int index = findTeacherByID(t.getId()); //access the index of the teacher in the main array;
+		int indexOfDay = searchForDay(d.getDayOfTheWeek()); //access tge dat of the week as index
 		if(teachers.get(index).getDutiesAssigned() == teachers.get(index).getDutiesToBeAssigned()) { //check if the teacher has already been assigned the max number of duties
 			
 			return false; //return false as teacher cannot be assigned
