@@ -96,7 +96,7 @@ public class top_level {
 				i = generateCSV();
 			}
 		}
-		while(!h) { //if they are not assigned, ask user if they wish to try with custom
+		while(!h) { //if they are not assigned, ask user if they wish to try with custom p
 			System.out.println("Error, not all duties assigned."); //error message
 			System.out.println("Number of duties assigned : " + assignedDuties.size());
 			System.out.println("Number of duties : " + duties.size());
