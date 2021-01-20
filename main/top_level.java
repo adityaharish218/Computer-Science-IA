@@ -722,8 +722,8 @@ public class top_level {
 						break; //break out of the for loop and move onto the next teacher who has period 6
 					}
 				}
-				if(!teacherFound) {
-					System.out.println("Error, Id: " + Id + " not found. Please fix and re-enter");
+				if(!teacherFound) { //if the teacher is not found
+					System.out.println("Error, Id: " + Id + " not found. Please fix and re-enter"); //output an error
 					return false;
 				}
 			} 
@@ -735,6 +735,10 @@ public class top_level {
 		} catch (IOException e) {
 			System.out.println("Error, input does not match. Please refer to guide");
 			return false;
+		}
+		  catch (NullPointerException e) { //catch the nullpointer exception which could be caused by not the file that it wants
+				System.out.println("Error, make sure it is the correct file. Please refer to guide to check which file it is and what it should look like"); //output error message
+				return false; //return false
 		}
 	for(int k = 0; k < teachers.size(); k++) {
 		teachers.get(k).setNoOfLessonsOnEachDay();
@@ -882,18 +886,16 @@ public class top_level {
 			br.close(); //Close the bufferedreader
 
 		} catch (FileNotFoundException e) { //catch the file not found exception
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			 //close the scanner.
 			System.out.println("Error, File not found"); //output error message. 
 			return false; //return false as there is an error that has occurred
 		} catch (IOException e) { //catch the IO exception caused by br.readLine()
-			// TODO Auto-generated catch block
-			e.printStackTrace(); 
-			//close the scanner
+			System.out.println("Error, please follow guide to see how data should be");
 			return false; //return false as there is an error that has occurred 
 		}
-		
+		  catch (NullPointerException e) {
+				System.out.println("Error, make sure it is the correct file. Please refer to guide to check which file it is and what it should look like");
+				return false;
+		}
 
 		return true; //Import successful
 	}
@@ -923,6 +925,10 @@ public class top_level {
 			System.out.println("Error, input output is wrong. Please refer to guide");
 			return false;
 		}
+	  catch (NullPointerException e) {
+			System.out.println("Error, make sure it is the correct file. Please refer to guide to check which file it is and what it should look like");
+			return false;
+	}
 		//Check adminID against all teachers and then set admin if found
 		for (int k = 0; k < adminIds.size(); k++) { //going through all the adminIds
 			int id = adminIds.get(k); //get the adminId
@@ -1008,6 +1014,10 @@ public class top_level {
 			System.out.println("Error, Input not expected. Please refer to guide");
 			return false;
 		}
+	  catch (NullPointerException e) {
+			System.out.println("Error, make sure it is the correct file. Please refer to guide to check which file it is and what it should look like");
+			return false;
+	}
 
 
 		return true;// import is successful return true 
@@ -1038,11 +1048,17 @@ public class top_level {
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Error, file not found. Please re-enter");
+			return false;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Error, input output mismatch. Please refer to guide and re-enter");
+			return false;
 		}
+			catch (NullPointerException e) {
+					System.out.println("Error, make sure it is the correct file. Please refer to guide to check which file it is and what it should look like");
+					return false;
+			}
 		
 		return true; //import successful 
 	}
@@ -1136,6 +1152,10 @@ public class top_level {
 			System.out.println("Error, input does not match system. Please check handout to see how input should be");
 			return false;
 		} 
+		 catch (NullPointerException e) {
+				System.out.println("Error, make sure it is the correct file. Please refer to guide to check which file it is and what it should look like");
+				return false;
+		}
 
 		return true; //import successful 
 	}
