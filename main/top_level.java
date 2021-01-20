@@ -105,7 +105,7 @@ public class top_level {
 			String no = "no";
 			decision = in.next(); //get the user input
 			decision = decision.trim(); //remove any unnecessary spaces
-			while(decision.equalsIgnoreCase(yes) == false && decision.equalsIgnoreCase(no)) { //while they are not yes or no
+			while(decision.equalsIgnoreCase(yes) == false && decision.equalsIgnoreCase(no) == false) { //while they are not yes or no
 				System.out.println("Error, please enter a valid option");
 				decision = in.next(); //get the user input
 				decision = decision.trim(); //trim it to remove any spaces
