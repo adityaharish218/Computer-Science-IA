@@ -83,6 +83,7 @@ public class top_level {
 		boolean f = importAdmins(); //method to import all of the admins and SAL's who only get one duty
 		while(!f) {
 			adminIds.clear(); //clear the adminIds list
+			noOfAdmins = 0; //set the number of admins to be 0
 			for(int i = 0; i < teachers.size(); i++) { //go through arrayList and change it such that every teacher is not admin
 				teachers.get(i).setAdmin(false);
 			}
