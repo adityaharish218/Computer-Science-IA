@@ -35,6 +35,7 @@ public class top_level {
 	public static final char[] IdNumbers = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'}; //array for validation of ID
 	public static final char[] NotAllowedForDutyName = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'E', '+'}; //array for validation of duty name
 	public static final char[] allowedChars = {'(', ')', ' ', '.', '/', ',', '-'};
+	public static boolean MoreSubjectNeeded = true; //if the client needs another subject
 
 	public static void main(String[] args) {
 		boolean a = importDutiesTakeTwo(); //function imports duties and returns true if all duties have been imported properly
@@ -56,6 +57,23 @@ public class top_level {
 		}
 		boolean d = importSubjects(); //method to import the subjects each teacher has
 		while(!d) { //method will return false if there is an error
+			if(!MoreSubjectNeeded) { //if system found a subject in this list not in meeting days list then try to ask client whether or not to re-enter list of subjects
+			System.out.println("Do you wish to re-enter list of subjects with meeting days? (Yes/No)"); //ask client if she wants to re-enter subjects with meeting days
+			String decision = in.next(); //get the user's input
+			while(decision.equalsIgnoreCase("yes") == false && decision.equalsIgnoreCase("no") == false) { //check to make sure the decision is either yes or no
+				System.out.println("Error, not an option, Please re-enter"); //output error message
+				decision = in.next(); //get the user's input
+			}
+			if(decision.equalsIgnoreCase("yes")) { //if user says yes
+				SubjectsWithDays.clear(); //clear subjects with days
+				c = importSubjectMeetingDays(); //import all of the subjects again
+				while(!c) {
+					SubjectsWithDays.clear();
+					c = importSubjectMeetingDays();
+				}
+			}
+			MoreSubjectNeeded = true; //change it so that subjects have been imported again
+			}
 			d = importSubjects(); //method will output error message, user will fix and then re-enter path. Just call method again. No need to clear because it is based on ID.	
 		}
 		boolean e = importPeriodSix();//method to import all the teachers who have period 6
@@ -975,6 +993,7 @@ public class top_level {
 						}
 						if(!SubjectFound) { //if subject is not found
 							System.out.println("Error, Teacher : " + teachers.get(i).getName() + " with subject " + sName + " not found. Please fix and re enter"); //output error message
+							MoreSubjectNeeded = false; //change it so that client can be asked to input subjects again
 							return false; //return false as subject was not found
 						}
 					SubjectFound = false; //set back to false as moving on to next subject. 
