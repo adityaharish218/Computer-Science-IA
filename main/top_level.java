@@ -239,7 +239,7 @@ public class top_level {
 			char k = name.charAt(i); //get the character at the index
 			int ASCII = toASCII(k); //convert to ASCII value
 				if(ASCII < 65 || ASCII > 90) {//check if it is not a capital letter
-					if(ASCII < 96 || ASCII > 122) { //check if it is not a letter
+					if(ASCII < 96 || ASCII > 122) { //check if it is not a lowercase letter
 						if(searchFor(allowedChars, k) == false) { //check if it is not an allowed character like '(' or ')'
 							return false; //Invalid ID
 						}
