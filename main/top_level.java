@@ -502,7 +502,7 @@ public class top_level {
 		
 		
 		return false; //assume all duties have not been assigned
-	}
+	} //test
 	
 	public static int findTeacherByID(int id) { //method to find teacher by ID. I do not need to worry about validation as the data has already been validated
 		int i = 0; //counter variable
