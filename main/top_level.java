@@ -675,8 +675,8 @@ public class top_level {
 	}
 	public static boolean importPeriodSix() { //import teachers who have period six
 	System.out.println("Enter file path for list of teachers with period 6 (Enter no if there isn't a list)"); //output message 
-	String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/Period_6.csv"; //read the path
-	path = in.next();
+	String path = ""; 
+	path = in.next();//read the path
 	if(path.equalsIgnoreCase("No")) { //if client says there are no period six's
 		for(int k = 0; k < teachers.size(); k++) { //loop through lessons
 			teachers.get(k).setNoOfLessonsOnEachDay(); //set each teacher's number of lessons
@@ -823,7 +823,7 @@ public class top_level {
 	public static boolean importTeachers() { //returns a boolean, if true, then the teachers have been imported properly, if false means there is error
 	System.out.println("Enter file path for teachers "); // Ask user to input the filepath
 	 
-		String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/HS_TT_summary_23Oct20.csv"; //create a new string called path which stores the filepath
+		String path = ""; //create a new string called path which stores the filepath
 		path = in.next();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new buffered reader which reads the path
@@ -902,7 +902,7 @@ public class top_level {
 	}
 	public static boolean importAdmins() { //importing all the admins 
 		System.out.println("Enter file path for List of Admins");
-	String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/Teachers_Admin_List.csv";
+	String path = "";
 	path = in.next();
 	try {
 			//First add all admin IDs to an arraylist
@@ -953,8 +953,8 @@ public class top_level {
 	public static boolean importSubjects()  { //import the teacher subjects 
 	
 		System.out.println("Enter file path for teaching departments"); // ask user to input path name
-		String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/HS_Tchng_Depts.csv"; //store path name 
-		path = in.next();
+		String path = "";  
+		path = in.next(); //store path name 
 	try {
 			BufferedReader br = new BufferedReader(new FileReader(path));
 			br.readLine(); //read the first line as it is not important
@@ -1026,8 +1026,8 @@ public class top_level {
 	
 	public static boolean importSubjectMeetingDays() { //method to import subjects with meeting days
 			System.out.println("Enter file path for list of subjects and meeting days"); 
-			String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/Subject_Area_Meeting_Days.csv"; //read the filepath
-			path = in.next();
+			String path = ""; 
+			path = in.next(); //read the filepath
 			try {
 			BufferedReader br = new BufferedReader(new FileReader(path)); //create a new buffered reader 
 			br.readLine(); //read first line as it is not important
@@ -1066,7 +1066,7 @@ public class top_level {
 	
 	public static boolean importDutiesTakeTwo() {
 		System.out.println("Enter path for list of duties");
-		String path = "/Users/adityaharish/Documents/Documents/Subjects/CompSci/G11/Computer-Science-IA/Files/HS_Duties_2020.csv";
+		String path = "";
 		path = in.next();
 		int id = 0;
 		Time oldStartTime = new Time(0,0); //create a new oldStart Time with 0 0 
