@@ -149,6 +149,8 @@ public class top_level {
 			}
 		}
 		
+		System.exit(0);
+		
 	}
 	
 	public static void clearForCustom() { //method if user wishes to redo the duties with a custom setup

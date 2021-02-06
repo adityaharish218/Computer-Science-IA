@@ -1,0 +1,155 @@
+Day of the week ,Duty name,Start time,End time,Teacher name,Teacher ID
+Monday,Duty-Atrium/Lockers/Lift lobby Sweep,08:30,09:00,Kajus Dixon,10049
+Tuesday,Duty-Atrium/Lockers/Lift lobby Sweep,08:30,09:00,Mirza Becker,10036
+Wednesday,Duty-Atrium/Lockers/Lift lobby Sweep,08:30,09:00,Greyson Schofield,10069
+Thursday,Duty-Atrium/Lockers/Lift lobby Sweep,08:30,09:00,Inaayah Roth,10050
+Friday,Duty-Atrium/Lockers/Lift lobby Sweep,08:30,09:00,Kylan Weber,10023
+Monday,Duty-Reception ,08:30,09:00,Greyson Schofield,10069
+Tuesday,Duty-Reception ,08:30,09:00,Anum Searle,10042
+Wednesday,Duty-Reception ,08:30,09:00,Lois Leach,10088
+Thursday,Duty-Reception ,08:30,09:00,Carley Hampton,10084
+Friday,Duty-Reception ,08:30,09:00,Mirza Becker,10036
+Monday,Duty-MRT,08:30,09:00,Chandler Mccabe,10074
+Wednesday,Duty-MRT,08:30,09:00,Lorena Torres,10090
+Friday,Duty-MRT,08:30,09:00,Rome Li,10040
+Monday,Duty-Canteen,11:05,11:25,Elle-May Skinner,10038
+Tuesday,Duty-Canteen,11:05,11:25,Inez Vang,10062
+Wednesday,Duty-Canteen,11:05,11:25,Adam Rosales,10003
+Thursday,Duty-Canteen,11:05,11:25,Sierra Mcgrath,10000
+Friday,Duty-Canteen,11:05,11:25,Shelbie Maxwell,10008
+Monday,Duty-Canteen tables,11:05,11:25,Dylon Melton,10021
+Tuesday,Duty-Canteen tables,11:05,11:25,Yousaf Griffith,10080
+Wednesday,Duty-Canteen tables,11:05,11:25,Fearne Morin,10063
+Thursday,Duty-Canteen tables,11:05,11:25,Sabina Mcclain,10001
+Friday,Duty-Canteen tables,11:05,11:25,Belle Stark,10025
+Monday,Duty-Courts/Small Field,11:05,11:25,Aneesa Finnegan,10055
+Tuesday,Duty-Courts/Small Field,11:05,11:25,Issa Lu,10099
+Wednesday,Duty-Courts/Small Field,11:05,11:25,Kamila Figueroa,10077
+Thursday,Duty-Courts/Small Field,11:05,11:25,Archibald Munoz,10002
+Friday,Duty-Courts/Small Field,11:05,11:25,Kay Villarreal,10041
+Monday,Duty-Atrium & Lift lobby @11:15,11:05,11:25,Kerys Reader,10056
+Tuesday,Duty-Atrium & Lift lobby @11:15,11:05,11:25,Johnny Ray,10100
+Wednesday,Duty-Atrium & Lift lobby @11:15,11:05,11:25,Samirah Underwood,10085
+Thursday,Duty-Atrium & Lift lobby @11:15,11:05,11:25,Lyra Beil,10005
+Friday,Duty-Atrium & Lift lobby @11:15,11:05,11:25,Hayden Frost,10044
+Monday,Duty-Drama Foyer/PE Change Rooms Sweep,11:05,11:25,Adela Rowland,10064
+Tuesday,Duty-Drama Foyer/PE Change Rooms Sweep,11:05,11:25,Tim Walls,10101
+Wednesday,Duty-Drama Foyer/PE Change Rooms Sweep,11:05,11:25,Jax Hoffman,10051
+Thursday,Duty-Drama Foyer/PE Change Rooms Sweep,11:05,11:25,Mercedes Hoover,10009
+Friday,Duty-Drama Foyer/PE Change Rooms Sweep,11:05,11:25,Precious Valentine,10065
+Monday,Duty-Cricket/Garden/Reception Sweep,11:05,11:25,Arnas Hester,10067
+Tuesday,Duty-Cricket/Garden/Reception Sweep,11:05,11:25,Glenn Henry,10102
+Wednesday,Duty-Cricket/Garden/Reception Sweep,11:05,11:25,Justin Burrows,10037
+Thursday,Duty-Cricket/Garden/Reception Sweep,11:05,11:25,Aayat Martins,10011
+Friday,Duty-Cricket/Garden/Reception Sweep,11:05,11:25,Kamran Long,10076
+Monday,Duty-L1 Lockers & Lift lobby,11:05,11:25,Lynsey Underwood,10094
+Tuesday,Duty-L1 Lockers & Lift lobby,11:05,11:25,Sierra Mcgrath,10000
+Wednesday,Duty-L1 Lockers & Lift lobby,11:05,11:25,Cinar Robins,10048
+Thursday,Duty-L1 Lockers & Lift lobby,11:05,11:25,Haydon Delaney,10013
+Friday,Duty-L1 Lockers & Lift lobby,11:05,11:25,Vlad Arias,10086
+Monday,Duty-Library,11:05,11:25,Nikodem Luna,10095
+Tuesday,Duty-Library,11:05,11:25,Lyra Beil,10005
+Wednesday,Duty-Library,11:05,11:25,Norma Hansen,10053
+Thursday,Duty-Library,11:05,11:25,Tolga Rosas,10014
+Friday,Duty-Library,11:05,11:25,Tara Contreras,10096
+Monday,Duty-Level 7 - 11 Sweep,11:05,11:25,Pharrell Meyers,10097
+Tuesday,Duty-Level 7 - 11 Sweep,11:05,11:25,Mercedes Hoover,10009
+Wednesday,Duty-Level 7 - 11 Sweep,11:05,11:25,Moshe Read,10054
+Thursday,Duty-Level 7 - 11 Sweep,11:05,11:25,Irfan Finney,10015
+Friday,Duty-Level 7 - 11 Sweep,11:05,11:25,Salahuddin Mcgill,10098
+Monday,Duty-Canteen queues,13:25,13:55,Sabina Mcclain,10001
+Tuesday,Duty-Canteen queues,13:25,13:55,Lyra Beil,10005
+Wednesday,Duty-Canteen queues,13:25,13:55,Herman Farrow,10006
+Thursday,Duty-Canteen queues,13:25,13:55,Sierra Mcgrath,10000
+Friday,Duty-Canteen queues,13:25,13:55,Sabina Mcclain,10001
+Monday,Duty-Canteen tables,13:25,13:55,Archibald Munoz,10002
+Tuesday,Duty-Canteen tables,13:25,13:55,Laura Koch,10031
+Wednesday,Duty-Canteen tables,13:25,13:55,Mercedes Hoover,10009
+Thursday,Duty-Canteen tables,13:25,13:55,Arabella Cervantes,10035
+Friday,Duty-Canteen tables,13:25,13:55,Salman Bond,10007
+Monday,Duty-Courts,13:25,13:55,Sophie Wormald,10004
+Tuesday,Duty-Courts,13:25,13:55,Nichola Cornish,10034
+Wednesday,Duty-Courts,13:25,13:55,Irfan Finney,10015
+Thursday,Duty-Courts,13:25,13:55,Mirza Becker,10036
+Friday,Duty-Courts,13:25,13:55,Kacper Clark,10012
+Monday,Duty-Temp Check/Small Field,13:25,13:55,Herman Farrow,10006
+Tuesday,Duty-Temp Check/Small Field,13:25,13:55,Kajus Dixon,10049
+Wednesday,Duty-Temp Check/Small Field,13:25,13:55,Alicja Mccarthy,10030
+Thursday,Duty-Temp Check/Small Field,13:25,13:55,Sabah Pierce,10047
+Friday,Duty-Temp Check/Small Field,13:25,13:55,Tomas Barnes,10017
+Monday,Duty-Drama Foyer/PE Change Rooms Sweep,13:25,13:55,Salman Bond,10007
+Tuesday,Duty-Drama Foyer/PE Change Rooms Sweep,13:25,13:55,Huzaifah Velazquez,10057
+Wednesday,Duty-Drama Foyer/PE Change Rooms Sweep,13:25,13:55,Destiny Hayward,10032
+Thursday,Duty-Drama Foyer/PE Change Rooms Sweep,13:25,13:55,Luciano Redman,10058
+Friday,Duty-Drama Foyer/PE Change Rooms Sweep,13:25,13:55,Caoimhe Davie,10018
+Monday,Duty-Cricket/Garden/Reception Sweep,13:25,13:55,Aayat Martins,10011
+Tuesday,Duty-Cricket/Garden/Reception Sweep,13:25,13:55,Eamonn Ryan,10073
+Wednesday,Duty-Cricket/Garden/Reception Sweep,13:25,13:55,Lukas Coulson,10043
+Thursday,Duty-Cricket/Garden/Reception Sweep,13:25,13:55,Nikodem Richardson,10060
+Friday,Duty-Cricket/Garden/Reception Sweep,13:25,13:55,Sumaya Noel,10019
+Monday,Duty-Library,13:25,13:55,Kacper Clark,10012
+Tuesday,Duty-Library,13:25,13:55,Mayson Lugo,10075
+Wednesday,Duty-Library,13:25,13:55,Harold Dominguez,10045
+Thursday,Duty-Library,13:25,13:55,Greyson Schofield,10069
+Friday,Duty-Library,13:25,13:55,Timur Andrade,10020
+Monday,Duty-Level 7 - 11 Sweep,13:25,13:55,Kylan Weber,10023
+Tuesday,Duty-Level 7 - 11 Sweep,13:25,13:55,Raiden Nash,10081
+Wednesday,Duty-Level 7 - 11 Sweep,13:25,13:55,Kajus Dixon,10049
+Thursday,Duty-Level 7 - 11 Sweep,13:25,13:55,Raiden Nash,10081
+Friday,Duty-Level 7 - 11 Sweep,13:25,13:55,Kylan Weber,10023
+Monday,Duty-Canteen tables,13:55,14:25,Archibald Munoz,10002
+Tuesday,Duty-Canteen tables,13:55,14:25,Laura Koch,10031
+Wednesday,Duty-Canteen tables,13:55,14:25,Herman Farrow,10006
+Thursday,Duty-Canteen tables,13:55,14:25,Arabella Cervantes,10035
+Friday,Duty-Canteen tables,13:55,14:25,Tomas Barnes,10017
+Monday,Duty-Canteen tables,13:55,14:25,Salman Bond,10007
+Tuesday,Duty-Canteen tables,13:55,14:25,Huzaifah Velazquez,10057
+Wednesday,Duty-Canteen tables,13:55,14:25,Irfan Finney,10015
+Thursday,Duty-Canteen tables,13:55,14:25,Luciano Redman,10058
+Friday,Duty-Canteen tables,13:55,14:25,Caoimhe Davie,10018
+Monday,Duty-Courts,13:55,14:25,Aayat Martins,10011
+Tuesday,Duty-Courts,13:55,14:25,Eamonn Ryan,10073
+Wednesday,Duty-Courts,13:55,14:25,Harold Dominguez,10045
+Thursday,Duty-Courts,13:55,14:25,Nikodem Richardson,10060
+Friday,Duty-Courts,13:55,14:25,Sumaya Noel,10019
+Monday,Duty-Small Field/Atrium  & Lift lobby @2:15,13:55,14:25,Kacper Clark,10012
+Tuesday,Duty-Small Field/Atrium  & Lift lobby @2:15,13:55,14:25,Mayson Lugo,10075
+Wednesday,Duty-Small Field/Atrium  & Lift lobby @2:15,13:55,14:25,Nikodem Richardson,10060
+Thursday,Duty-Small Field/Atrium  & Lift lobby @2:15,13:55,14:25,Rosemary Peck,10087
+Friday,Duty-Small Field/Atrium  & Lift lobby @2:15,13:55,14:25,Timur Andrade,10020
+Monday,Duty-Drama Foyer/PE Change Rooms Sweep,13:55,14:25,Laura Koch,10031
+Tuesday,Duty-Drama Foyer/PE Change Rooms Sweep,13:55,14:25,Raiden Nash,10081
+Wednesday,Duty-Drama Foyer/PE Change Rooms Sweep,13:55,14:25,Eamonn Ryan,10073
+Thursday,Duty-Drama Foyer/PE Change Rooms Sweep,13:55,14:25,Kush Whittington,10010
+Friday,Duty-Drama Foyer/PE Change Rooms Sweep,13:55,14:25,Huma Montgomery,10027
+Monday,Duty-Cricket/Garden/Reception Sweep,13:55,14:25,Arabella Cervantes,10035
+Tuesday,Duty-Cricket/Garden/Reception Sweep,13:55,14:25,Rosemary Peck,10087
+Wednesday,Duty-Cricket/Garden/Reception Sweep,13:55,14:25,Mayson Lugo,10075
+Thursday,Duty-Cricket/Garden/Reception Sweep,13:55,14:25,Timothy Adkins,10016
+Friday,Duty-Cricket/Garden/Reception Sweep,13:55,14:25,Jax Hoffman,10051
+Monday,Duty-L1 Lockers & Lift lobby @2:10,13:55,14:25,Harold Dominguez,10045
+Tuesday,Duty-L1 Lockers & Lift lobby @2:10,13:55,14:25,Ellie-Mai Schneider,10092
+Wednesday,Duty-L1 Lockers & Lift lobby @2:10,13:55,14:25,Kamila Figueroa,10077
+Thursday,Duty-L1 Lockers & Lift lobby @2:10,13:55,14:25,Derren Lozano,10024
+Friday,Duty-L1 Lockers & Lift lobby @2:10,13:55,14:25,Sonny Gilbert,10059
+Monday,Duty-Library,13:55,14:25,Rafi Goodman,10046
+Tuesday,Duty-Library,13:55,14:25,Jorja Heaton,10093
+Wednesday,Duty-Library,13:55,14:25,Samirah Underwood,10085
+Thursday,Duty-Library,13:55,14:25,Winston Aldred,10029
+Friday,Duty-Library,13:55,14:25,Israr Greer,10061
+Monday,Duty-Level 7 - 11 Sweep,13:55,14:25,Jax Hoffman,10051
+Tuesday,Duty-Level 7 - 11 Sweep,13:55,14:25,Carson Mclellan,10033
+Wednesday,Duty-Level 7 - 11 Sweep,13:55,14:25,Carrie Bone,10091
+Thursday,Duty-Level 7 - 11 Sweep,13:55,14:25,Piers Devlin,10039
+Friday,Duty-Level 7 - 11 Sweep,13:55,14:25,Lili Nairn,10066
+Wednesday,Duty-B1 Bus Park @3.30 / Canteen Sweep @3:45-4.00,15:30,17:00,Haydon Delaney,10013
+Friday,Duty-B1 Bus Park @3.30 / Canteen Sweep @3:45-4.00,15:30,17:00,Tomas Barnes,10017
+Monday,Duty-Reception 3.30 - 4.00,15:30,17:00,Dylon Melton,10021
+Friday,Duty-Reception 3.30 - 4.00,15:30,17:00,Caoimhe Davie,10018
+Monday,Duty-Shuttle Bus. 3.30 - 4.00,15:30,17:00,Roma Vaughn,10026
+Friday,Duty-Shuttle Bus. 3.30 - 4.00,15:30,17:00,Sumaya Noel,10019
+Tuesday,Duty-B1 Bus Park  5.00 - 5.15,15:30,17:00,Ahsan Roy,10022
+Thursday,Duty-B1 Bus Park  5.00 - 5.15,15:30,17:00,Carina Cochran,10052
+Tuesday,Duty-B2 Car Park  5.00 - 5.15,15:30,17:00,Belle Stark,10025
+Thursday,Duty-B2 Car Park  5.00 - 5.15,15:30,17:00,Huzaifah Velazquez,10057
+Friday,Duty-B2 Car Park  5.00 - 5.15,15:30,17:00,Timur Andrade,10020
